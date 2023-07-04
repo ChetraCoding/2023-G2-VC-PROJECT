@@ -10,47 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    // user login ----------------
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-    public function login(LoginUserRequest $request){
-        $credentials = $request->only('email','password');
+        $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             // dd($user);
@@ -58,10 +22,19 @@ class UserController extends Controller
             return response()->json([
                 'user' => new UserResource($user),
                 'token' => $token
-            ],200);
+            ], 200);
         }
         return response()->json([
-            'message' => 'Invalid credentials'
+            'message' => 'Invalid credentials.'
         ], 401);
+    }
+    // user logout ---------------
+
+    public function logout(Request $request)
+    {
+        // The user is logged in, delete their tokens
+        $request->user()->tokens()->delete();
+        // Return a success JSON response
+        return response()->json(['message' => 'Logged out successfully.'], 200);
     }
 }

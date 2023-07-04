@@ -15,7 +15,6 @@ class UserTableSeeder extends Seeder
     {
         $users = [
             [
-                'store_id'=>1,
                 'role_id'=>1,
                 'first_name'=>"Sreyka",
                 'last_name'=>"Thor",
