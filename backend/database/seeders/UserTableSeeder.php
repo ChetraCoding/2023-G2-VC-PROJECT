@@ -63,6 +63,26 @@ class UserTableSeeder extends Seeder
                 'password'=>'12345678',
                 'is_active'=>true
             ],
+            [
+                'store_id'=>2,
+                'role_id'=>4,
+                'first_name'=>"Kaka",
+                'last_name'=>"Ko",
+                'email'=>'kaka@gmail.com',
+                'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
+                'password'=>'12345678',
+                'is_active'=>true
+            ],
+            [
+                'store_id'=>3,
+                'role_id'=>4,
+                'first_name'=>"Lala",
+                'last_name'=>"Ly",
+                'email'=>'lala@gmail.com',
+                'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
+                'password'=>'12345678',
+                'is_active'=>true
+            ],
         ];
         foreach ($users as $user){
             User::create($user);
