@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
     // list category
-    Route::get('/listCategory',[UserController::class,'listCategory']);
+    Route::get('/listCategory',[CategoryController::class,'index']);
     
 });
 Route::post('/login',[UserController::class,'login']);

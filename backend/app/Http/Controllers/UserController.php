@@ -38,16 +38,4 @@ class UserController extends Controller
         // Return a success JSON response
         return response()->json(['message' => 'Logged out successfully.'], 200);
     }
-
-    // list category --------------
-    public function listCategory(){
-        $categories = Auth::user()->store->categories;
-        if ($categories ->count()> 0){
-            // dd(CategoryResource::collection($categories));
-            $listCategory = CategoryResource::collection($categories);
-            return response()->json(["success"=>true, "data"=>$listCategory],200);
-        }
-        return response()->json(["success"=>false, "message" => "No category"],401);
-        
-    }
 }
