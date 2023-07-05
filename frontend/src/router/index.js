@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import CategoryView from '../views/CategoryView.vue'
-import LoginView from "../views/LoginView.vue";
+import CategoryView from '@/views/CategoryView.vue'
+import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView";
 
 const routes = [

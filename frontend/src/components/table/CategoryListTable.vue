@@ -8,8 +8,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="cate in categories" :key="cate" class="">
-        <td>{{ cate.id }}</td>
+      <tr v-for="(cate,index) in categories" :key="cate" class="">
+        <td>{{ index + 1 }}</td>
         <td>{{ cate.name }}</td>
         <td class="text-right">
           <span
