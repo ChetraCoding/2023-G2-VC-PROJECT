@@ -5,7 +5,7 @@
 
 <script>
 
-  import CategoryView from "./views/CategoryView.vue"
+import CategoryView from "./views/CategoryView.vue"
 export default{
   components:{CategoryView,}
 }

@@ -10,7 +10,7 @@
     <tbody>
       <tr v-for="cate in categories" :key="cate" class="">
         <td>{{ cate.id }}</td>
-        <td>{{ cate.first_name }}</td>
+        <td>{{ cate.name }}</td>
         <td class="text-right">
           <span
             class="mr-4 glyphicon text-info glyphicon-edit hover-cursor-pointer;-"

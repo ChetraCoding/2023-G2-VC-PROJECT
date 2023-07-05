@@ -26,7 +26,7 @@ import axios from "axios";
 
 let items = ref([10, 15, 20, 25, 30, 35, 40]);
 let categories = ref([]);
-let categoryAPI = "";
+let categoryAPI = "http://127.0.0.1:8000/api/listCategory";
 
 let fetchCategory = () => {
   axios.get(categoryAPI).then((response) => {
