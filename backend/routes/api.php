@@ -22,8 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
+
+    // category ------------------//
     // list category
     Route::get('/listCategory',[CategoryController::class,'index']);
+    // create category
+    Route::post('/createCategory',[CategoryController::class,'store']);
     
 });
 Route::post('/login',[UserController::class,'login']);

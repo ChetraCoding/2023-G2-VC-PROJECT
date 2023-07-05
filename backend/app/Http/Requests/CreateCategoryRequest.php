@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-
-class LoginUserRequest extends FormRequest
+class CreateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,7 +18,6 @@ class LoginUserRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,8 +26,7 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=>'required|email',
-            'password'=>'required'
+            'name' => 'required'
         ];
     }
 }

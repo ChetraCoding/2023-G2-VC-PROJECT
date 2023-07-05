@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -16,7 +18,6 @@ class CategoryController extends Controller
     {
         $categories = Auth::user()->store->categories;
         if ($categories ->count()> 0){
-            // dd(CategoryResource::collection($categories));
             $listCategory = CategoryResource::collection($categories);
             return response()->json(["success"=>true, "data"=>$listCategory],200);
         }
@@ -26,9 +27,24 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        //
+        $storeId = Auth::user()->store_id;
+        // get name category from input
+        $nameCategory = $request->all()['name'];
+        // get all categories in store of
+        $categoriesInStore = Auth::user()->store->categories;
+        // Check if the category already exists in the store,it'll return error message .
+        foreach ( $categoriesInStore as $category){
+            if(strtoupper($category->name) == strtoupper($nameCategory)){
+                return response()->json(['success' => false,'message' => "The category already exists."],409);
+            }
+        };
+        $newCategory = ['store_id'=>$storeId,"name"=> $nameCategory];
+        $category = Category::create($newCategory);
+        $category = new CategoryResource($category);
+        return response()->json(['success'=>true, 'data' => $category, 'message'=>"You have created new category.", 'status' => 200]);
+
     }
 
     /**
