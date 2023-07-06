@@ -10,6 +10,7 @@ class ProductCustomize extends Model
 {
     protected $fillable = [
         'product_id',
+        'quantity',
         'size',
         'price'
     ];

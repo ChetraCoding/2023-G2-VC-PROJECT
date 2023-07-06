@@ -1,18 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // list category --------------
     public function index()
     {
-        //
+        $categories = Auth::user()->store->categories;
+        $listCategory = CategoryResource::collection($categories);
+        return response()->json(["success"=>true, "data"=>$listCategory ,"message" => "Get all categories success."],200);
+       
     }
 
     /**
