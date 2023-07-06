@@ -25,12 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout',[UserController::class,'logout']);
 
     // category ------------------//
-    // list category
-    Route::get('/listCategory',[CategoryController::class,'index']);
-    // create category
-    Route::post('/createCategory',[CategoryController::class,'store']);
-    // list product
-    Route::get('/listProduct',[ProductController::class,'index']);
+    Route::resource('categories', CategoryController::class);
     
+    // prouduct ------------------//
+    Route::resource('products', ProductController::class);
 });
-Route::post('/login',[UserController::class,'login']);
+Route::post('/login',[UserController::class,'login']);  
