@@ -1,29 +1,25 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import router from './router'
+import router from './router';
+import vuetify from './plugins/vuetify'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
-import CategoryListTable from './components/table/CategoryListTable.vue';
+import LoginForm from '@/components/form/LoginForm.vue'
+import SideBar from '@/components/aside/SideBar';
+import HeaderComponent from '@/components/widget/header/HeaderComponent';
+import CategoryListTable from '@/components/table/CategoryListTable';
+import ProductListTable from '@/components/table/ProductListTable';
 const app = createApp(App);
-const pinia = createPinia()
+const pinia = createPinia();
 
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-// Login component
-import LoginForm from './components/form/LoginForm.vue'
+// Components
+app.component('side-bar', SideBar);
+app.component('header-component', HeaderComponent);
 
 // Restaurant owner component
 app.component('category-list-table', CategoryListTable)
-
-const vuetify = createVuetify({
-  components,
-  directives,
-})
+app.component('product-list-table', ProductListTable)
 
 // Login component
 app.component('login-form', LoginForm);
