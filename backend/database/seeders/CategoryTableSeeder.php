@@ -14,11 +14,11 @@ class CategoryTableSeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['store_id'=>"1",'name'=> "Pizza"],
-            ['store_id'=>"1",'name'=> "Hamburger"],
-            ['store_id'=>"1",'name'=> "Drink"],
-            ['store_id'=>"2",'name'=> "French Fry"],
-            ['store_id'=>"2",'name'=> "Fry Chicken"],
+            ['store_id'=>1,'name'=> "Pizza"],
+            ['store_id'=>1,'name'=> "Hamburger"],
+            ['store_id'=>1,'name'=> "Drink"],
+            ['store_id'=>2,'name'=> "French Fry"],
+            ['store_id'=>2,'name'=> "Fry Chicken"],
           
         ];
         foreach ($categories as $category){
