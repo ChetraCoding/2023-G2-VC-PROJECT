@@ -1,7 +1,7 @@
 <template>
   <v-card class="d-flex mx-4">
     <v-col class="mt-3">
-      <v-btn class="btn-add bg-orange">
+      <v-btn class="btn-add bg-orange" @click.prevent="isShowForm = !isShowForm">
         <span class="glyphicon text-light glyphicon-plus"></span>
       </v-btn>
     </v-col>
@@ -18,6 +18,8 @@
       :categories="categoryStore.categories"
     ></category-list-table>
   </div>
+
+  <category-form :isShowForm="isShowForm" @close-form="closeForm"></category-form>
 </template>
 
 <script setup>
@@ -25,8 +27,13 @@ import { onMounted, ref } from "vue";
 import { useCategoryStore } from "@/stores/category";
 
 const categoryStore = useCategoryStore();
-
 let items = ref([10, 15, 20, 25, 30, 35, 40]);
+
+let isShowForm = ref(false);
+
+const closeForm = () => {
+  isShowForm.value = !isShowForm.value;
+}
 
 onMounted(() => {
   categoryStore.getCategories();

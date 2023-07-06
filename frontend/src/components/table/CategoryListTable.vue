@@ -25,7 +25,7 @@
 <script setup>
 import { defineProps } from "vue";
 
-defineProps(["categories"]);
+defineProps(["categories",]);
 </script>
 
 <style>
