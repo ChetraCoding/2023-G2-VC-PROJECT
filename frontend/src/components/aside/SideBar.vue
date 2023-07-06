@@ -41,6 +41,8 @@
         title="Categories"
         value="categories"
         class="text-orange-darken-4"
+        style="text-decoration: none"
+        to="/category"
       >
       </v-list-item>
 

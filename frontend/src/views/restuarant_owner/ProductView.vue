@@ -15,9 +15,9 @@
           ></v-icon>
           <v-spacer></v-spacer>
           <v-text-field
-              density="compact"
-              variant="outlined"
-              append-inner-icon="mdi-magnify"
+            density="compact"
+            variant="outlined"
+            append-inner-icon="mdi-magnify"
           ></v-text-field>
         </v-card>
 
