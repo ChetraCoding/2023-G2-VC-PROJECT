@@ -1,14 +1,17 @@
 <template>
-  <v-table class="table table-hover">
+  <div v-if="categories.length === 0" class="p-5">
+    <h1 class="display-4 text-center text-orange text-bold">No Category</h1>
+  </div>
+  <v-table class="table table-hover" v-else>
     <thead>
       <tr>
-        <th style="width: 100px" >N</th>
+        <th style="width: 100px">N</th>
         <th scope="col">Name</th>
         <th style="width: 100px"></th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(cate,index) in categories" :key="cate" class="">
+      <tr v-for="(cate, index) in categories" :key="cate" class="">
         <td>{{ index + 1 }}</td>
         <td>{{ cate.name }}</td>
         <td class="text-right">
