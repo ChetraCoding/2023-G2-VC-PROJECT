@@ -18,7 +18,6 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            // dd($user);
             $token = $user->createToken('API Token')->plainTextToken;
             return response()->json([
                 'user' => new UserResource($user),
@@ -26,7 +25,7 @@ class UserController extends Controller
             ], 200);
         }
         return response()->json([
-            'message' => 'Invalid credentials.'
+            'message' => 'Invalid email and password.'
         ], 401);
     }
     // user logout ---------------
