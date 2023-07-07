@@ -1,3 +1,6 @@
 <template>
-    <h1>My Home</h1>
+  <v-layout>
+    <side-bar />
+    <header-component title="Dashbord" />
+  </v-layout>
 </template>

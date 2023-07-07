@@ -17,16 +17,15 @@ class Product extends Model
         'barcode',
         'description',
         'image',
-        'quantity',
         'is_active'
     ];
-    public function productCustomize():BelongsTo {
-        return $this->belongsTo(ProductCustomize::class);
+    public function productCustomize():HasMany {
+        return $this->hasMany(ProductCustomize::class);
     }
     public function orderDetails():BelongsToMany {
         return $this->belongsToMany(Order::class);
     }
-    public function categorys():BelongsTo {
+    public function category():BelongsTo {
         return $this->belongsTo(Category::class);
     }
     public function store():BelongsTo {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -12,7 +14,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Auth::user()->store->products;
+        $listproducts = ProductResource::collection($products);
+        // dd($listproducts);
+        return response()->json(["success"=>true, "data"=>$listproducts ,"message" => "Get all products success."],200);
     }
 
     /**

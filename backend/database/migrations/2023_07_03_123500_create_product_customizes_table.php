@@ -18,7 +18,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
-            $table->integer('size');
+            $table->string('size');
+            $table->integer('quantity');
             $table->decimal('price');
             $table->timestamps();
         });

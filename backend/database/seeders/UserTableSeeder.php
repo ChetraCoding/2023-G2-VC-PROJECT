@@ -58,7 +58,7 @@ class UserTableSeeder extends Seeder
                 'role_id'=>5,
                 'first_name'=>"Chectra",
                 'last_name'=>"Hong",
-                'email'=>'chectra@gmail.com',
+                'email'=>'chetra@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
                 'is_active'=>true
