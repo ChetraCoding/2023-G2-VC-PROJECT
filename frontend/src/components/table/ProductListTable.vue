@@ -5,15 +5,19 @@
   <v-table >
     <thead>
       <tr>
-        <th class="text-left text-black font-weight-bold" style="width: 100px">#</th>
         <th class="text-left text-black font-weight-bold">Name</th>
-        <th class="text-left text-black font-weight-bold" style="width: 100px">Action</th>
+        <th class="text-left text-black font-weight-bold">Calories</th>
+        <th class="text-left text-black font-weight-bold">Description</th>
+        <th class="text-left text-black font-weight-bold">Quantity</th>
+        <th class="text-left text-black font-weight-bold">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(category, index) in props.categories" :key="category.id">
-        <td>{{ index + 1 }}</td>
-        <td>{{ category.name }}</td>
+      <tr v-for="product in props.products" :key="product.name">
+        <td>{{ product.name }}</td>
+        <td>{{ product.calories }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ 30 }}</td>
         <td > 
           <v-icon icon="mdi-square-edit-outline" color="blue" class="mr-3"></v-icon>
           <v-icon icon="mdi-delete" color="red"></v-icon>
@@ -27,7 +31,7 @@
 <script setup>
 import { defineProps } from "vue";
 
-const props = defineProps(['categories']);
+const props = defineProps(['products']);
 
 </script>
 

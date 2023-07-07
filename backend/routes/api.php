@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/listCategory',[CategoryController::class,'index']);
     // create category
     Route::post('/createCategory',[CategoryController::class,'store']);
+    // list product
+    Route::get('/listProduct',[ProductController::class,'index']);
     
 });
 Route::post('/login',[UserController::class,'login']);
