@@ -17,12 +17,12 @@ class ProductResource extends JsonResource
         return [
             'product_id'=>$this->id,
             'category'=> $this->category->name,
-            'product_customize'=> ProductCustomizeResource::collection($this->productCustomize),
             'name'=>$this->name,
             'barcode'=>$this->barcode,
             'description'=>$this->description,
             'image'=>$this->image,
-            'is_active'=>$this->is_active
+            'is_active'=>$this->is_active,
+            'product_customize'=> ProductCustomizeResource::collection($this->productCustomize)
         ];
     }
 }
