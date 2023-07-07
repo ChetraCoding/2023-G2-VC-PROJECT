@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import CategoryView from '@/views/restuarant_owner/CategoryView.vue'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView";
+import WaiterView from "@/views/waiter/WaiterView";
 import ProductView from "@/views/restuarant_owner/ProductView";
 
 const routes = [
@@ -24,10 +25,15 @@ const routes = [
     component: CategoryView,
   },
   {
+    path: '/waiter',
+    name: 'waiter',
+    component: WaiterView,
+  },
+  {
     path: '/product',
     name: 'product',
     component: ProductView,
-  },
+  }
 ];
 
 const router = createRouter({
