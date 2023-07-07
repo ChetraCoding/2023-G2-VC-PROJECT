@@ -8,7 +8,7 @@ export const useProductStore = defineStore("product", {
     };
   },
   actions: {
-    async getProducts() {
+    async getData() {
         const res = await http.get('products');
         if (res.data.success) {
             this.products = res.data.data;

@@ -20,7 +20,7 @@
         <!-- A product customize -->
         <v-card v-if="productCustomize" class="overflow-visible">
             <v-layout>
-                <v-navigation-drawer style="margin-bottom: 55px;" class="h-auto rounded-t-xl" v-model="isCustomize"
+                <v-navigation-drawer style="margin-bottom: 56px;" class="h-auto rounded-t-xl" v-model="isCustomize"
                     temporary location="bottom">
                     <v-card class="mx-auto rounded-t-xl">
                         <v-card-item class="bg-orange-darken-4">
@@ -64,8 +64,8 @@
         </v-card>
 
         <!-- Order summary -->
-        <v-layout class="overflow-visible" style="height: 200px">
-            <v-bottom-navigation class="bg-black rounded-pill">
+        <v-layout class="overflow-visible">
+            <v-bottom-navigation class="bg-black rounded-t-xl">
                 <div class="d-flex align-center bg-orange-darken-4 rounded-pill px-4">
                     <div>
                         <v-icon class="text-h4" icon="mdi-cart"></v-icon>
@@ -102,7 +102,7 @@
         </v-card>
     </main>
 </template>
-  
+
 <script setup>
 // Import
 import { onMounted, ref } from "vue";
@@ -124,9 +124,9 @@ const onCustomize = (product) => {
     productCustomize.value = product;
 }
 
-// Life cycle hook
+// Lifecycle hook
 onMounted(() => {
-    productStore.getProducts();
+    productStore.getData();
 });
 
 </script>
