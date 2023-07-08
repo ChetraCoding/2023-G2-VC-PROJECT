@@ -11,6 +11,10 @@ import HeaderComponent from '@/components/widget/header/HeaderComponent';
 import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
+import CategoryForm from '@/components/form/CategoryForm';	
+import PrimaryButton from '@/components/widget/button/PrimaryButton';
+import DangerButton from '@/components/widget/button/DangerButton';
+
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -19,7 +23,12 @@ app.component('side-bar', SideBar);
 app.component('header-component', HeaderComponent);
 app.component('product-card', ProductCard);
 
+// Buttons
+app.component('primary-button', PrimaryButton);
+app.component('danger-button', DangerButton);
+
 // Restaurant owner component
+app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 
