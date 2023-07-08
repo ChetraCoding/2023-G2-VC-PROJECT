@@ -29,7 +29,7 @@
           <v-spacer></v-spacer>
           <v-select
             :items="items"
-            density="comfortable"
+            density="compact"
             label="Row Number"
           ></v-select>
         </v-card>

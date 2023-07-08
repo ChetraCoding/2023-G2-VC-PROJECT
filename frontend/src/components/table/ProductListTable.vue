@@ -1,26 +1,36 @@
 // Reference : https://vuetifyjs.com/en/components/tables/
 
 <template>
-<!-- Create table of list products -->
-  <v-table >
+  <!-- Create table of list products -->
+  <v-table>
     <thead>
       <tr>
+        <th class="text-left text-black font-weight-bold">#</th>
         <th class="text-left text-black font-weight-bold">Name</th>
-        <th class="text-left text-black font-weight-bold">Calories</th>
+        <th class="text-left text-black font-weight-bold">Category</th>
         <th class="text-left text-black font-weight-bold">Description</th>
         <th class="text-left text-black font-weight-bold">Quantity</th>
-        <th class="text-left text-black font-weight-bold">Action</th>
+        <th class="text-left text-black font-weight-bold" style="width: 30px;">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="product in props.products" :key="product.name">
+      <tr v-for="(product, index) in props.products" :key="product.product_id">
+        <td>{{ index + 1 }}</td>
         <td>{{ product.name }}</td>
-        <td>{{ product.calories }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ 30 }}</td>
-        <td > 
-          <v-icon icon="mdi-square-edit-outline" color="blue" class="mr-3"></v-icon>
-          <v-icon icon="mdi-delete" color="red"></v-icon>
+        <td>{{ product.category }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ getQuantity(product) }}</td>
+        <td>
+          <div class="d-flex">
+            <div class="d-flex align-center">
+              <v-icon
+                icon="mdi-square-edit-outline"
+                color="blue"
+                class="mr-3"
+              ></v-icon>
+              <v-icon icon="mdi-delete" color="red"></v-icon>
+            </div>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -29,9 +39,18 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 
-const props = defineProps(['products']);
+// Variables
+const props = defineProps(["products"]);
+
+// Methods
+const getQuantity = (product) => {
+  const sumQuantity = ref(0);
+  for (let customize of product.product_customize) {
+    sumQuantity.value += customize.quantity;
+  }
+  return sumQuantity.value;
+};
 
 </script>
-
