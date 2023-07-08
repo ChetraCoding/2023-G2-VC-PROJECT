@@ -40,7 +40,7 @@
         ></category-list-table>
         
         <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any product.</h4>
+          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any category.</h4>
         </div>
       </v-main>
     </v-layout>
