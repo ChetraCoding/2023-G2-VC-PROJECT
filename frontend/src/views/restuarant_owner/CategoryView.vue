@@ -1,5 +1,17 @@
 <template>
-   
+  <v-snackbar
+    rounded="xl"
+    v-model="categoryStore.success"
+    :timeout="2000"
+    location="top"
+    color="orange-darken-4"
+  >
+    <div class="orange-darken-4 d-flex justify-center align-center">
+      <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+      <h6 class="mt-1">Category created successfully!</h6>
+    </div>
+  </v-snackbar>
+
   <v-card>
     <v-layout>
       <side-bar />
@@ -28,41 +40,28 @@
       </v-main>
     </v-layout>
   </v-card>
-  <category-form :isShowForm="isShowForm" @closeForm="closeForm" @createCate='createCategory' />
-
+  <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
 import { useCategoryStore } from "@/stores/category";
 
+// Variables
 const categoryStore = useCategoryStore();
-// let categories= ref([])
 const isShowForm = ref(false);
-let items = ref([10, 15, 20, 25, 30, 35, 40]);
+const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
+// Methods
 const closeForm = () => {
   isShowForm.value = false;
-}
+};
 
-const createCategory = (value) => {
-  let name = {name: value};
-   categoryStore.categories.push(name)
-  .then((response) => {
-    
-    console.log(response);
-  })
-}
+// Lifecycle hook
 onMounted(() => {
-  categoryStore.getCategories();
+  categoryStore.getData();
 });
 </script>
 
 <style>
-.glyphicon-edit,
-.glyphicon-trash,
-.glyphicon-plus {
-  font-size: x-large;
-  cursor: pointer;
-}
 </style>
