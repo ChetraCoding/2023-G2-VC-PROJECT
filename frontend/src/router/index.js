@@ -28,6 +28,8 @@ const routes = [
     name: 'product',
     component: ProductView,
   },
+  
+  
 ];
 
 const router = createRouter({

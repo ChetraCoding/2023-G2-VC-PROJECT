@@ -10,6 +10,7 @@ import SideBar from '@/components/aside/SideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
 import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
+import CreateProduct from '@/components/form/CreateProduct';
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -20,8 +21,10 @@ app.component('header-component', HeaderComponent);
 // Restaurant owner component
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
+app.component('create-product', CreateProduct)
 
 // Login component
 app.component('login-form', LoginForm);
+
 
 app.use(router).use(vuetify).use(pinia).mount('#app')

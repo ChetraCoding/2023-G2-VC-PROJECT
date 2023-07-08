@@ -10,7 +10,6 @@
     @click="rail = false"
   >
     <v-list-item
-   
       class="text-orange-darken-4 mt-1"
       prepend-icon="mdi-account-star"
       title="Administration"
@@ -30,7 +29,7 @@
         prepend-icon="mdi-view-dashboard"
         title="Dashboard"
         value="dashboard"
-        class="text-orange-darken-4 "
+        class="text-orange-darken-4"
         to="/"
         style="text-decoration: none"
       >
