@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import CategoryView from '@/views/CategoryView.vue'
-import LoginView from "@/views/LoginView.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import CategoryView from "@/views/CategoryView";
+import LoginView from "@/views/LoginView";
 import HomeView from "@/views/HomeView";
 import ProductView from "@/views/restuarant_owner/ProductView";
+import OrdersView from "@/views/cashier/OrdersView";
 
 const routes = [
   {
@@ -19,14 +20,19 @@ const routes = [
     component: LoginView,
   },
   {
-    path: '/category',
-    name: 'cateView',
+    path: "/category",
+    name: "cateView",
     component: CategoryView,
   },
   {
-    path: '/product',
-    name: 'product',
+    path: "/product",
+    name: "product",
     component: ProductView,
+  },
+  {
+    path: "/orders",
+    name: "orders",
+    component: OrdersView,
   },
 ];
 
