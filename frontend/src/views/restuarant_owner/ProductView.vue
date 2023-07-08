@@ -188,6 +188,7 @@ import { ref } from "vue";
 // Variables
 const dialog = ref(true);
 
+
 let products = ref([
   {
     name: "Frozen Yogurt",
