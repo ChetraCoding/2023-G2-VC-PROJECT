@@ -35,8 +35,13 @@
         </v-card>
 
         <category-list-table
+        v-if="categoryStore.categories.length > 0"
           :categories="categoryStore.categories"
         ></category-list-table>
+        
+        <div class="h-screen" v-else>
+          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any product.</h4>
+        </div>
       </v-main>
     </v-layout>
   </v-card>
