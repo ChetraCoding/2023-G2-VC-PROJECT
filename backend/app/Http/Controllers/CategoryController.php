@@ -19,7 +19,6 @@ class CategoryController extends Controller
         $categories = Auth::user()->store->categories;
         $listCategory = CategoryResource::collection($categories);
         return response()->json(["success"=>true, "data"=>$listCategory ,"message" => "Get all categories success."],200);
-       
     }
 
     /**

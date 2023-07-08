@@ -1,44 +1,33 @@
+// Reference : https://vuetifyjs.com/en/components/tables/
+
 <template>
-  <v-table class="table table-hover">
+<!-- Create table of list products -->
+  <v-table >
     <thead>
       <tr>
-        <th style="width: 100px" >N</th>
-        <th scope="col">Name</th>
-        <th style="width: 100px"></th>
+        <th class="text-left text-black font-weight-bold" style="width: 100px">#</th>
+        <th class="text-left text-black font-weight-bold">Name</th>
+        <th class="text-left text-black font-weight-bold" style="width: 100px">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(cate,index) in categories" :key="cate" class="">
+      <tr v-for="(category, index) in props.categories" :key="category.id">
         <td>{{ index + 1 }}</td>
-        <td>{{ cate.name }}</td>
-        <td class="text-right">
-          <span
-            class="mr-4 glyphicon text-info glyphicon-edit hover-cursor-pointer;-"
-          ></span>
-          <span class="glyphicon text-danger glyphicon-trash"></span>
+        <td>{{ category.name }}</td>
+        <td > 
+          <v-icon icon="mdi-square-edit-outline" color="blue" class="mr-3"></v-icon>
+          <v-icon icon="mdi-delete" color="red"></v-icon>
         </td>
       </tr>
     </tbody>
   </v-table>
+  <!-- Close -->
 </template>
 
 <script setup>
 import { defineProps } from "vue";
 
-defineProps(["categories"]);
+const props = defineProps(['categories']);
+
 </script>
 
-<style>
-td th {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-tr th {
-  background: rgb(198, 196, 196);
-}
-tr:hover {
-  border-collapse: collapse;
-  background-color: gainsboro;
-}
-</style>
