@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,5 +37,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/orders/completed/{is_complete}', [OrderController::class, 'getByCompelted']);
     Route::get('/orders/paid/{is_paid}', [OrderController::class, 'getByPaid']);
+
+    // table ------------------//
+    Route::resource('tables', TableController::class);
+
 });
 Route::post('/login',[UserController::class,'login']);  

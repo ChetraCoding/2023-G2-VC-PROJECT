@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TableResource;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TableController extends Controller
 {
@@ -12,7 +14,8 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $tables = Auth::user()->store->tables;
+        return response()->json(["success" => true, "data" => TableResource::collection($tables), "message" => "Get all table are successfully."], 200);
     }
 
     /**
