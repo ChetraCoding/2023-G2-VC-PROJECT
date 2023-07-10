@@ -35,6 +35,6 @@ class UserController extends Controller
         // The user is logged in, delete their tokens
         $request->user()->tokens()->delete();
         // Return a success JSON response
-        return response()->json(['message' => 'Logged out successfully.'], 200);
+        return response()->json(['message' => 'Logout out is successfully.'], 200);
     }
 }

@@ -7,6 +7,7 @@ import OrderDetailsView from "@/views/waiter/OrderDetailsView";
 import ProductView from "@/views/restuarant_owner/ProductView";
 import TableView from "@/views/restuarant_owner/TableView";
 import ListStaffView from "@/views/staff/ListStaffView";
+import OrdersView from "@/views/cashier/OrdersView";
 
 const routes = [
   {

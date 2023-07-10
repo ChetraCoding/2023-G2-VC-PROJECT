@@ -17,6 +17,8 @@ import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import ListStaffTable from "@/components/table/ListStaffTable";
+import BaseSideBar from "@/components/aside/BaseSideBar";
+import OrderListTable from "@/components/table/OrderListTable";
 
 const app = createApp(App);
 const pinia = createPinia();

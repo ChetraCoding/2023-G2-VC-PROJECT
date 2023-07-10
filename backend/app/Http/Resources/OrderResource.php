@@ -19,7 +19,8 @@ class OrderResource extends JsonResource
             'store'=>new StoreResource($this->store),
             'table_number'=>$this->table->table_number,
             'datetime'=>$this->datetime,
-            'is_complete'=>$this->is_complete,
+            'is_completed'=>$this->is_completed,
+            'is_paid'=>$this->is_paid,
             'order_details'=>OrderDetailResource::collection($this->orderDetails)
         ];
     }

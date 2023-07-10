@@ -14,8 +14,8 @@ class OrderTableSeeder extends Seeder
     public function run(): void
     {
         $orders = [
-            ['store_id'=>1,'table_id'=>1, 'datetime'=>"2023-7-10 9:00:00", 'is_complete'=> false],
-            ['store_id'=>1,'table_id'=>2,'datetime'=>"2023-7-10 10:00:00", 'is_complete'=> false]        ];
+            ['store_id'=>1,'table_id'=>1, 'datetime'=>"2023-7-10 9:00:00", 'is_completed'=> false, 'is_paid'=> false],
+            ['store_id'=>1,'table_id'=>2,'datetime'=>"2023-7-10 10:00:00", 'is_completed'=> false, 'is_paid'=> false]];
         foreach ($orders as $order){
             Order::create($order);
         }
