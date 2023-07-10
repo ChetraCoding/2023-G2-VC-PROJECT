@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import CategoryView from "@/views/CategoryView";
+import CategoryView from "@/views/restuarant_owner/CategoryView";
 import LoginView from "@/views/LoginView";
 import HomeView from "@/views/HomeView";
 import WaiterView from "@/views/waiter/WaiterView";

@@ -41,12 +41,12 @@
           ></v-icon>
         </td>
       </tr>
-    </tbody>    
+    </tbody>
   </v-table>
 
   <!-- Dialog of confirm order -->
   <v-dialog v-model="dialog" width="600">
-      <v-card class="rounded-xl">
+    <v-card class="rounded-xl">
       <v-card-title class="bg-orange-darken-4 text-center"
         >Confirm Orders</v-card-title
       >
@@ -106,12 +106,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="white bg-danger rounded-pill px-3"
-          @click="dialog = false"
-        >
-          Close
-        </v-btn>
+        <danger-button @click="dialog = false">Close</danger-button>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -134,4 +129,3 @@ const getTotalPrice = (order) => {
   return sum.value;
 };
 </script>
-
