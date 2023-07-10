@@ -17,8 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Auth::user()->store->categories;
-        $listCategory = CategoryResource::collection($categories);
-        return response()->json(["success"=>true, "data"=>$listCategory ,"message" => "Get all categories success."],200);
+        return response()->json(["success"=>true, "data"=>CategoryResource::collection($categories) ,"message" => "Get all categories successfully."],200);
     }
 
     /**
@@ -40,7 +39,7 @@ class CategoryController extends Controller
         $newCategory = ['store_id'=>$storeId,"name"=> $nameCategory];
         $category = Category::create($newCategory);
         $category = new CategoryResource($category);
-        return response()->json(['success'=>true, 'data' => $category, 'message'=>"You have created new category.", 'status' => 200]);
+        return response()->json(['success'=>true, 'data' => $category, 'message'=>"You have created new category successfully.", 'status' => 200]);
 
     }
 

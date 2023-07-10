@@ -15,7 +15,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Auth::user()->store->orders;
-        return response(OrderResource::collection($orders));
+        return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Get all orders successfully."], 200);
     }
 
     /**
