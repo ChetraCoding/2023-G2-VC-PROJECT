@@ -3,8 +3,9 @@
         <!-- Nav -->
         <nav-waiter-component @profile-clicked="drawer = !drawer"></nav-waiter-component>
 
-        <v-select class="text-orange-darken-4 bg-white w-25" hide-details="auto" clearable label="Select table"
-            :items="['01', '02', '03', '04', '05', '06']"></v-select>
+        <!-- <v-select outlined v-model="table" :items="tables" :item-title="'name'" :item-value="'id'" label="Area"></v-select> -->
+        <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected" :item-title="'name'" :item-value="'table'" 
+            class="text-orange-darken-4 bg-white w-25" hide-details="auto" clearable label="Select table"></v-select>
 
         <header class="text-center text-orange-darken-4 text-h5 font-weight-bold">PRODUCTS</header>
 
@@ -72,26 +73,29 @@
 
         <!-- Order summary -->
         <v-layout class="overflow-visible">
-            <v-bottom-navigation class="bg-black rounded-t-xl">
+            <v-bottom-navigation class="bg-grey-darken-4 rounded-t-xl">
                 <div @click="isCart = !isCart, isCustomize = false"
                     class="d-flex align-center bg-orange-darken-4 rounded-pill px-4" style="cursor: pointer">
                     <div>
-                        <v-icon class="text-h4" icon="mdi-cart"></v-icon>
-                        <span v-if="myCart.length > 0" class="text-subtitle-1 font-weight-bold">{{ totalFoods }}</span>
+                        <v-icon class="text-h4 mt-3" icon="mdi-cart"></v-icon>
+                        <v-avatar class="mb-2 text-h6 text-white font-weight-bold" color="grey-darken-4">
+                            {{ totalFoods }}
+                        </v-avatar>     
+                        <!-- <span v-if="myCart.length > 0" class="text-subtitle-1 font-weight-bold">{{ totalFoods }}</span> -->
                     </div>
                     <h4 class="ml-4 mt-2">Total: <span class="font-weight-bold">{{ totalPrice }}</span></h4>
                 </div>
 
                 <v-spacer></v-spacer>
 
-                <v-btn class="h-full rounded-pill text-h6 bg-orange-darken-4">
+                <v-btn @click="onOrder" class="h-full rounded-pill text-h6 bg-orange-darken-4">
                     Order Now
                 </v-btn>
             </v-bottom-navigation>
         </v-layout>
 
         <!-- My cart -->
-        <v-card v-if="myCart" class="overflow-visible">
+        <v-card v-if="myCart.length > 0" class="overflow-visible">
             <v-layout>
                 <v-navigation-drawer style="margin-bottom: 56px;" class="h-auto rounded-t-xl" v-model="isCart" temporary
                     location="bottom">
@@ -145,20 +149,18 @@
 
         <!-- Dialog remove customize -->
         <v-dialog v-model="isRemoveCustom" transition="dialog-top-transition" width="auto">
-            <!-- <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">From the top</v-btn>
-            </template> -->
-            <!-- <template v-slot:default="{ isActive }"> -->
-                <v-card>
-                    <v-toolbar color="primary" title="Opening from the top"></v-toolbar>
+            <v-card class="rounded-xl">
+                <v-toolbar class="text-h4 text-center" color="orange-darken-4" title="Tips"></v-toolbar>
+                <div class="p-3">
                     <v-card-text>
-                        <div class="text-h2 pa-12">Hello world!</div>
+                        <div class="text-h6 pa-5">Are you sure you don't want it?</div>
                     </v-card-text>
-                    <v-card-actions class="justify-end">
-                        <v-btn variant="text" @click="isRemoveCustom = false">Close</v-btn>
+                    <v-card-actions class="justify-space-between">
+                        <danger-button @click="isRemoveCustom = false">Cancel</danger-button>
+                        <primary-button @click="removeCustomize(deleteCustomId)">Confirm</primary-button>
                     </v-card-actions>
-                </v-card>
-            <!-- </template> -->
+                </div>
+            </v-card>
         </v-dialog>
 
         <!-- Slide bar -->
@@ -179,6 +181,18 @@
                 </v-navigation-drawer>
             </v-layout>
         </v-card>
+
+        <!-- Alert please selecet table -->
+        <base-alert v-model="tableAlert">
+            <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+            <h5 class="mt-2">Please select table!</h5>
+        </base-alert>
+
+        <!-- Alert please selecet food -->
+        <base-alert v-model="foodAlert">
+            <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+            <h5 class="mt-2">Please select food!</h5>
+        </base-alert>
     </main>
 </template>
 
@@ -187,18 +201,31 @@
 import { computed, onMounted, ref } from "vue";
 import { useCookieStore } from "@/stores/cookie";
 import { useProductStore } from "@/stores/product";
+import { useRouter } from "vue-router";
 
 // Variables
 const productStore = useProductStore();
 const cookieStore = useCookieStore();
 const user = cookieStore.user;
+const router = useRouter();
 
 const drawer = ref(false);
 const isCustomize = ref(false);
-const isRemoveCustom = ref(true);
+const isRemoveCustom = ref(false);
+const deleteCustomId = ref(null);
 const productCustomize = ref(null);
 const isCart = ref(false);
 const myCart = localStorage.getItem('customizes_selectd') ? ref(JSON.parse(localStorage.getItem('customizes_selectd'))) : ref([]);
+
+const tableAlert = ref(false);
+const foodAlert = ref(false);
+
+const table = localStorage.getItem('table_selectd') ? ref(JSON.parse(localStorage.getItem('table_selectd'))) : ref(null);
+const tables = ref([
+    { id: 1, name: '01' },
+    { id: 2, name: '02' },
+    { id: 3, name: '03' },
+]);
 
 // Methods
 const onCustomize = (product) => {
@@ -250,12 +277,32 @@ const minusCustomize = (custom_id) => {
     let findCustomIndex = customizes.findIndex((custom) => custom.id === custom_id);
     if (customizes[findCustomIndex]) {
         customizes[findCustomIndex].quantity -= 1;
-        if (customizes[findCustomIndex].quantity === 0) {
-            customizes.splice(findCustomIndex, 1);
+        if (customizes[findCustomIndex].quantity < 1) {
+            customizes[findCustomIndex].quantity = 1;
+            isRemoveCustom.value = true;
+            deleteCustomId.value = findCustomIndex;
         }
     }
     myCart.value = customizes;
     localStorage.setItem('customizes_selectd', JSON.stringify(customizes));
+}
+
+const removeCustomize = (custom_id) => {
+    const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
+    customizes.splice(custom_id, 1);
+    isRemoveCustom.value = false;
+    myCart.value = customizes;
+    localStorage.setItem('customizes_selectd', JSON.stringify(customizes));
+}
+
+const tableSelected = () => {
+    localStorage.setItem('table_selectd', JSON.stringify(table.value));
+}
+
+const onOrder = () => {
+    if (myCart.value.length === 0) return foodAlert.value = true;
+    if (!table.value) return tableAlert.value = true;
+    router.push('/order-details')
 }
 
 // Lifecycle hook

@@ -14,6 +14,7 @@ import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import BaseAlert from '@/components/widget/alert/BaseAlert';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -26,6 +27,9 @@ app.component('product-card', ProductCard);
 // Buttons
 app.component('primary-button', PrimaryButton);
 app.component('danger-button', DangerButton);
+
+// Alert
+app.component('base-alert', BaseAlert);
 
 // Restaurant owner component
 app.component('category-form', CategoryForm)
