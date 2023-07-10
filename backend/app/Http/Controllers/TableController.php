@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTableRequest;
 use App\Http\Resources\TableResource;
 use App\Models\Table;
 use Illuminate\Http\Request;
@@ -21,32 +22,33 @@ class TableController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateTableRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Table $table)
-    {
-        //
+        $checkTable = Auth::user()->store->tables->contains('table_number', $request->table_number);
+        if ($checkTable) return response()->json(['success' => false, 'message' => ["table" => "The table number already exists."]], 409);
+        return Response()->json(['success' => true, 'message' => 'Create a new table is successfully.', 'data'=> new TableResource(Table::storeTable($request)) ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Table $table)
+    public function update(CreateTableRequest $request, string $id)
     {
-        //
+        $contains = Auth::user()->store->tables->contains('id', $id);
+        if (!$contains) return Response()->json(['success' => false, 'message' => ['table'=> 'The table id is not found.']], 404);
+        $checkTable = Auth::user()->store->tables->contains('table_number', $request->table_number);
+        if ($checkTable) return response()->json(['success' => false, 'message' => ["table" => "The table number already exists."]], 409);
+        return Response()->json(['success' => true, 'message' => 'Update the table is successfully.', 'data'=> new TableResource(Table::storeTable($request, $id)) ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Table $table)
+    public function destroy(string $id)
     {
-        //
+        $contains = Auth::user()->store->tables->contains('id', $id);
+        if (!$contains) return Response()->json(['success' => false, 'message' => ['table'=> 'The table id is not found.']], 404);
+        Table::find($id)->delete();
+        return Response()->json(['success' => true, 'message' => 'Delete the table is successfully.'], 200);
     }
 }
