@@ -14,6 +14,7 @@ import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import ListStaffTable from "@/components/table/ListStaffTable";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -38,5 +39,8 @@ app.component('nav-waiter-component', NavWaiterComponent);
 
 // Login component
 app.component('login-form', LoginForm);
+
+// List staff
+app.component('list-staff-table', ListStaffTable )
 
 app.use(router).use(vuetify).use(pinia).mount('#app')

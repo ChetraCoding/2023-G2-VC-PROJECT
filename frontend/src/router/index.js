@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView";
 import WaiterView from "@/views/waiter/WaiterView";
 import ProductView from "@/views/restuarant_owner/ProductView";
+import ListStaffView from "@/views/staff/ListStaffView";
 
 const routes = [
   {
@@ -33,7 +34,12 @@ const routes = [
     path: '/product',
     name: 'product',
     component: ProductView,
-  }
+  },
+  {
+    path: '/staff',
+    name: 'staff',
+    component: ListStaffView,
+  },
 ];
 
 const router = createRouter({
