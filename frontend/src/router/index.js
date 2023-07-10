@@ -5,6 +5,7 @@ import HomeView from "@/views/HomeView";
 import WaiterView from "@/views/waiter/WaiterView";
 import ProductView from "@/views/restuarant_owner/ProductView";
 import TableView from "@/views/restuarant_owner/TableView";
+import ListStaffView from "@/views/staff/ListStaffView";
 
 const routes = [
   {
@@ -39,7 +40,12 @@ const routes = [
     path: '/table',
     name: 'table',
     component: TableView,
-  }
+  },
+  {
+    path: '/staff',
+    name: 'staff',
+    component: ListStaffView,
+  },
 ];
 
 const router = createRouter({
