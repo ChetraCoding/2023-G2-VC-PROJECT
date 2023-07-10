@@ -13,9 +13,11 @@ class Category extends Model
         'store_id',
         'name'
     ];
+    
     public function store():BelongsTo{
         return $this->belongsTo(Store::class);
     }
+
     public function products():HasMany{
         return $this->hasMany(Product::class);
     }

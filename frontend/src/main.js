@@ -5,17 +5,20 @@ import router from './router';
 import vuetify from './plugins/vuetify'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
-import LoginForm from '@/components/form/LoginForm.vue'
-import SideBar from '@/components/aside/SideBar';
-import BaseSideBar from '@/components/aside/BaseSideBar';
-import HeaderComponent from '@/components/widget/header/HeaderComponent';
-import CategoryListTable from '@/components/table/CategoryListTable';
-import ProductListTable from '@/components/table/ProductListTable';
-import OrderListTable from '@/components/table/OrderListTable';
-import ProductCard from '@/components/widget/card/ProductCard';
-import CategoryForm from '@/components/form/CategoryForm';	
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import BaseAlert from '@/components/widget/alert/BaseAlert';
+import SideBar from '@/components/aside/SideBar';
+import HeaderComponent from '@/components/widget/header/HeaderComponent';
+import LoginForm from '@/components/form/LoginForm.vue'
+import CategoryListTable from '@/components/table/CategoryListTable';
+import ProductListTable from '@/components/table/ProductListTable';
+import TableListTable from '@/components/table/TableListTable';
+import ProductCard from '@/components/widget/card/ProductCard';
+import CategoryForm from '@/components/form/CategoryForm';	
+import ListStaffTable from "@/components/table/ListStaffTable";
+import BaseSideBar from "@/components/aside/BaseSideBar";
+import OrderListTable from "@/components/table/OrderListTable";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -30,10 +33,14 @@ app.component('product-card', ProductCard);
 app.component('primary-button', PrimaryButton);
 app.component('danger-button', DangerButton);
 
+// Alert
+app.component('base-alert', BaseAlert);
+
 // Restaurant owner component
 app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
+app.component('table-list-table', TableListTable)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
@@ -43,5 +50,8 @@ app.component('nav-waiter-component', NavWaiterComponent);
 
 // Login component
 app.component('login-form', LoginForm);
+
+// List staff
+app.component('list-staff-table', ListStaffTable )
 
 app.use(router).use(vuetify).use(pinia).mount('#app')

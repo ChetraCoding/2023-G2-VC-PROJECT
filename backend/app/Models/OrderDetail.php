@@ -15,6 +15,13 @@ class OrderDetail extends Model
         'price'
     ];
 
+    public static function storeOrderDetail($request, $id = null)
+    {
+        $orderDetails = self::updateOrCreate(['id' => $id], $request);
+
+        return $orderDetails;
+    }
+
     public function order():BelongsTo{
         return $this->belongsTo(Order::class);
     }

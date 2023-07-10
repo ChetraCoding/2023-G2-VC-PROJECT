@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -13,8 +14,19 @@ class Order extends Model
         'store_id',
         'table_id',
         'datetime',
-        'is_complete'
+        'is_completed',
+        'is_paid',
     ];
+
+    public static function storeOrder($request, $id = null)
+    {
+        $order = $request->only(['table_id', 'datetime', 'is_completed', 'is_paid']);
+        $order['store_id'] = Auth::user()->store->id;
+        
+        $order = self::updateOrCreate(['id' => $id], $order);
+
+        return $order;
+    }
 
     public function store():BelongsTo{
         return $this->belongsTo(Store::class);
