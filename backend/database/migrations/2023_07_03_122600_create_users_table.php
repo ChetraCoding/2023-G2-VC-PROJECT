@@ -29,7 +29,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('stores')
                 ->onDelete('cascade');
-            $table->boolean('is_active');
             $table->rememberToken();
             $table->timestamps();
         });

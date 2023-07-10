@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -29,5 +30,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // prouduct ------------------//
     Route::resource('products', ProductController::class);
+
+    // order ------------------//
+    Route::resource('orders', OrderController::class);
 });
 Route::post('/login',[UserController::class,'login']);  

@@ -21,6 +21,7 @@ const app = createApp(App);
 const pinia = createPinia();
 
 // Components
+app.component('base-side-bar', BaseSideBar);
 app.component('side-bar', SideBar);
 app.component('header-component', HeaderComponent);
 app.component('product-card', ProductCard);
@@ -35,6 +36,8 @@ app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 app.component('table-list-table', TableListTable)
 
+// Cashier component
+app.component('order-list-table', OrderListTable)
 // Waiter component
 import NavWaiterComponent from './components/nav/NavWaiterComponent.vue';
 app.component('nav-waiter-component', NavWaiterComponent);
