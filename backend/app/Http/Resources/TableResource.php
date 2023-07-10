@@ -16,7 +16,7 @@ class TableResource extends JsonResource
     {
         return [
             'table_id'=>$this->id,
-            'name'=>$this->table_number
+            'table_number'=>$this->table_number
         ];
     }
 }
