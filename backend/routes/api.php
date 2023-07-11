@@ -24,6 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware(['auth:sanctum'])->group(function () {
+    // register by admin ----------
+    Route::post('/register',[UserController::class,'register']);
+
+    // register by restaurant ower ----------
+    Route::post('/create_account',[UserController::class,'createAccount']);
+
+    // get user already login ----------
+    Route::get('/user',[UserController::class,'getUser']);
+
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
 
@@ -45,4 +54,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // role ------------------//
     Route::resource('roles', RoleController::class);
 });
+
 Route::post('/login',[UserController::class,'login']);  

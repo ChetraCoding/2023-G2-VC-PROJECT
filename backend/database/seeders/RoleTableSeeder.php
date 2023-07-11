@@ -18,7 +18,7 @@ class RoleTableSeeder extends Seeder
             ['name'=> "waiter"],
             ['name'=> "chef"],
             ['name'=> "cashier"],
-            ['name'=> "restaurantOwner"]
+            ['name'=> "restaurant_owner"]
         ];
         foreach ($roles as $role){
             Role::create($role);
