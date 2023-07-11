@@ -6,7 +6,7 @@
 <script setup>
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 const cookieStore = useCookieStore();
@@ -20,9 +20,8 @@ const login = async (credentials) => {
   if (errors.value.email == null && errors.value.password == null) {
     try {
       const res = await http.post("login", credentials);
-      cookieStore.setCookie("user_info", JSON.stringify(res.data.user), 30);
       cookieStore.setCookie("user_token", res.data.token, 30);
-      router.push('/');
+      router.push("/");
     } catch (err) {
       errors.value.password = "Incorrect your passwod.";
     }
