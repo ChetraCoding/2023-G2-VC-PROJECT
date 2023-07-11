@@ -12,6 +12,7 @@
             size="40"
             class="rounded-lg"
             color="orange-darken-4"
+            @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
           <v-text-field
@@ -26,10 +27,21 @@
       </v-main>
     </v-layout>
   </v-card>
+
+  <create-staff-form :isShowForm="isShowForm" @closeForm="closeForm" />
+  
 </template>
 
 <script setup>
 import { ref } from "vue";
+
+// Dialog of staff
+const isShowForm = ref(false);
+const closeForm = () => {
+  isShowForm.value = false;
+};
+
+// Staff
 const staff = ref([
   {
     first_name: "sreypich",

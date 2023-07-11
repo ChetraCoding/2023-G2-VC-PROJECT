@@ -16,6 +16,7 @@ import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import ListStaffTable from "@/components/table/ListStaffTable";
+import CreateStaffForm from "@/components/form/CreateStaffForm";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -34,6 +35,7 @@ app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 app.component('table-list-table', TableListTable)
+app.component('create-staff-form', CreateStaffForm);
 
 // Waiter component
 import NavWaiterComponent from './components/nav/NavWaiterComponent.vue';
