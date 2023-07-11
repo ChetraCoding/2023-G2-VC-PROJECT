@@ -22,7 +22,7 @@
           density="compact"
           label="Search"
           append-inner-icon="mdi-magnify"
-          hide-details="auto"
+          
         ></v-text-field>
       </v-card>
 
@@ -46,8 +46,8 @@
               class="mb-3"
               density="compact"
               label="Name"
-              clearable
-              hide-details="auto"
+              :rules="numberRule"
+              clearable             
             ></v-text-field>
             <!-- Input field -->
             <v-text-field
@@ -55,16 +55,16 @@
               density="compact"
               label="Barcode"
               clearable
-              hide-details="auto"
+              :rules="numberRule"              
             ></v-text-field>
 
             <!-- Select field -->
             <v-select
               class="mb-3"
               label="Category"
+              :rules="numberRule"
               :items="['Apple', 'orange', 'Mango', 'Banana']"
-              density="compact"
-              hide-details="auto"
+              density="compact"             
               clearable
             >
             </v-select>
@@ -74,8 +74,8 @@
               class="mb-3"
               cols="2"
               density="compact"
-              label="Description"
-              hide-details="auto"
+              :rules="numberRule"
+              label="Description"             
               clearable
               rows="1"
             ></v-textarea>
@@ -91,7 +91,7 @@
               <v-text-field
                 density="compact"
                 label="Size"
-                hide-details="auto"
+                :rules="numberRule"               
                 clearable
               ></v-text-field>
 
@@ -99,7 +99,7 @@
               <v-text-field
                 density="compact"
                 label="Price"
-                hide-details="auto"
+                :rules="numberRule"                
                 clearable
               ></v-text-field>
 
@@ -144,16 +144,16 @@
             <v-img
               :width="238"
               :height="175"
-              class="rounded-lg"
+              class="rounded-lg mb-3"
               aspect-ratio="16/9"
               cover
               v-if="item.imageUrl"
               :src="item.imageUrl"
             ></v-img>
             <v-file-input
-              class="mt-3"
               density="compact"
               label="File input"
+              :rules="numberRule"
               prepend-icon="mdi-file-image"
               @change="onChange"
             ></v-file-input>
@@ -191,6 +191,10 @@ import { ref } from "vue";
 
 // Variables
 const dialog = ref(true);
+
+const numberRule = ref([
+  (v) => !!v || "Field is required",
+]);
 
 const item = ref({
   image: null,
