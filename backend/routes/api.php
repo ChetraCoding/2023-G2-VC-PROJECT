@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // get user already login ----------
     Route::get('/user',[UserController::class,'getUser']);
 
+    // get staff by restaurant owner ----------
+    Route::get('/staff',[UserController::class,'getSaff']);
+
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
 
