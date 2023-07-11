@@ -103,40 +103,34 @@
                 clearable
               ></v-text-field>
 
-              <!--Input field-->
-              <v-text-field
-                density="compact"
-                label="Quantity"
-                hide-details="auto"
-                clearable
-              ></v-text-field>
-
               <!-- Icon -->
               <v-icon
                 icon="mdi-plus"
                 color="white"
                 size="30"
-                class="ml-2 justify-center bg-orange-darken-4 rounded-pill">
+                class="ml-2 justify-center bg-orange-darken-4 rounded-pill"
+              >
               </v-icon>
             </div>
             <!-- Card -->
-            <div class="mt-3 ">
-              <v-card class="d-flex border-1 pa-3">
-                <span class="mr-15 pr-10">Small</span>
-                <span class="mr-15 pr-10">3</span>
-                <span class="mr-15 pr-10">40</span>
+            <div class="mt-3">
+              <v-card class="d-flex border-1 pa-3 justify-space-between">
+                <span class="ml-4 mr-15 pr-15">Small</span>
+                <span class="mr-15 pr-15">3</span>
                 <div>
                   <v-icon
                     icon="mdi-square-edit-outline"
                     color="blue"
                     size="23"
-                    class="ml-2 justify-center">
+                    class="mr-3 justify-center"
+                  >
                   </v-icon>
                   <v-icon
                     icon="mdi-delete"
                     color="red"
                     size="23"
-                    class="ml-2 justify-center">
+                    class="justify-center"
+                  >
                   </v-icon>
                 </div>
               </v-card>
@@ -153,30 +147,40 @@
               class="rounded-lg"
               aspect-ratio="16/9"
               cover
-              src="https://www.boss-pizza.co.uk/site/assets/images/uploads/2_3_5c232a9d83be_o.jpg"
+              v-if="item.imageUrl"
+              :src="item.imageUrl"
             ></v-img>
             <v-file-input
               class="mt-3"
               density="compact"
               label="File input"
               prepend-icon="mdi-file-image"
+              @change="onChange"
             ></v-file-input>
           </div>
+
           <!------------>
         </v-container>
 
         <!-- Action -->
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
-          <v-btn color="bg-danger text-white" variant="text" @click="dialog = false">
+          <v-btn
+            color="bg-danger text-white"
+            variant="text"
+            @click="dialog = false"
+          >
             Close
           </v-btn>
-          <v-btn class="bg-orange-darken-4" variant="text" @click="dialog = false">
+          <v-btn
+            class="bg-orange-darken-4"
+            variant="text"
+            @click="dialog = false"
+          >
             Save
           </v-btn>
         </v-card-actions>
         <!--------->
-
       </v-card>
     </v-dialog>
   </div>
@@ -188,6 +192,16 @@ import { ref } from "vue";
 // Variables
 const dialog = ref(true);
 
+const item = ref({
+  image: null,
+  imageUrl: null,
+});
+
+const onChange = (e) => {
+  const file = e.target.files[0];
+  item.value.image = file;
+  item.value.imageUrl = URL.createObjectURL(file);
+};
 
 let products = ref([
   {
@@ -197,50 +211,6 @@ let products = ref([
   {
     name: "Ice cream sandwich",
     calories: 237,
-  },
-  {
-    name: "Eclair",
-    calories: 262,
-  },
-  {
-    name: "Cupcake",
-    calories: 305,
-  },
-  {
-    name: "Gingerbread",
-    calories: 356,
-  },
-  {
-    name: "Jelly bean",
-    calories: 375,
-  },
-  {
-    name: "Lollipop",
-    calories: 392,
-  },
-  {
-    name: "Honeycomb",
-    calories: 408,
-  },
-  {
-    name: "Donut",
-    calories: 452,
-  },
-  {
-    name: "KitKat",
-    calories: 518,
-  },
-  {
-    name: "KitKat",
-    calories: 518,
-  },
-  {
-    name: "KitKat",
-    calories: 518,
-  },
-  {
-    name: "KitKat",
-    calories: 518,
   },
 ]);
 </script>
