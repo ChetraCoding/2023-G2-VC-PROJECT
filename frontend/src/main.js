@@ -48,4 +48,4 @@ app.component('login-form', LoginForm);
 // List staff
 app.component('list-staff-table', ListStaffTable )
 
-app.use(router).use(vuetify).use(pinia).mount('#app')
+app.use(pinia).use(vuetify).use(router).mount('#app')
