@@ -16,6 +16,7 @@ class StoreTableSeeder extends Seeder
         $stores = [
             ['name'=> "Let's Eat",'street'=>"271",'city'=>"Phnom Penh"],
             ['name'=> "Fast Food",'street'=>"371",'city'=>"Phnom Penh"],
+            ['name'=> "Eat Eat",'street'=>"321",'city'=>"Siem Reap"],
           
         ];
         foreach ($stores as $store){

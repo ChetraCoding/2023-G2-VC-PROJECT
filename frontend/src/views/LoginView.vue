@@ -21,7 +21,12 @@ const login = async (credentials) => {
     try {
       const res = await http.post("login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
-      router.push("/");
+      cookieStore.getCookie("user_token");
+      if (res.data.user.role === "restaurant_owner") {
+        router.push("/");
+      } else {
+        router.push(`/${res.data.user.role}`);
+      }
     } catch (err) {
       errors.value.password = "Incorrect your passwod.";
     }

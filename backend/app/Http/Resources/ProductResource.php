@@ -16,14 +16,13 @@ class ProductResource extends JsonResource
     {
         return [
             'product_id'=>$this->id,
-            'store_id'=> new StoreResource($this->store_id),
-            'category_id'=> new CategoryResource($this->category_id),
+            'category'=> $this->category->name,
             'name'=>$this->name,
             'barcode'=>$this->barcode,
             'description'=>$this->description,
             'image'=>$this->image,
-            'quantity'=>$this->quantity,
-            'is_active'=>$this->is_active
+            'is_active'=>$this->is_active,
+            'product_customize'=> ProductCustomizeResource::collection($this->productCustomize)
         ];
     }
 }

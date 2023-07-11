@@ -21,7 +21,6 @@ class ProductTableSeeder extends Seeder
                 'barcode'=>"PZ123",
                 'description'=>"Seafood Pizza",
                 'image'=>"https://www.bacinos.com/wp-content/uploads/2021/05/30-Seafood-Pizza-Recipes-500x375.jpg",
-                'quantity'=>1,
                 'is_active'=>true
             ],
             [
@@ -31,7 +30,6 @@ class ProductTableSeeder extends Seeder
                 'barcode'=>"HG123",
                 'description'=>"Seafood Hamburger",
                 'image'=>"https://www.kamaboko.com/en/wp-content/uploads/surimi_15_008-1024x683.jpeg",
-                'quantity'=>1,
                 'is_active'=>true
             ],
         ];

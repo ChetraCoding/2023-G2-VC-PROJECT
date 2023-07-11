@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('barcode');
             $table->string('description');
             $table->string('image');
-            $table->integer('quantity');
             $table->boolean('is_active');
             $table->timestamps();
         });

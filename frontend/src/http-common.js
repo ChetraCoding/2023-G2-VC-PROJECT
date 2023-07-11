@@ -1,4 +1,5 @@
-// import axios from "axios";
+// Reference from: https://stackoverflow.com/questions/66891025/how-to-retreive-json-web-token-with-axios-in-vue
+
 import axios from "axios";
 import { useCookieStore } from "@/stores/cookie";
 
@@ -8,12 +9,12 @@ const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  const cookieStore = useCookieStore();
-  const token = cookieStore.getCookie("user_token");
+  const { getCookie } = useCookieStore();
+  const token = getCookie("user_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-    config.headers["Content-Type"] = "application/json";
   }
+  config.headers["Content-Type"] = "application/json";
   return config;
 });
 

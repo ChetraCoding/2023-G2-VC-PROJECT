@@ -1,3 +1,10 @@
 <template>
-    <h1>My Home</h1>
+  <v-layout>
+    <side-bar />
+    <header-component title="Dashbord" />
+
+    <v-main style="height: auto">
+
+    </v-main>
+  </v-layout>
 </template>

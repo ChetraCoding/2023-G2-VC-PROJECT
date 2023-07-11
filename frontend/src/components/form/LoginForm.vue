@@ -12,6 +12,7 @@
           label="Email"
           placeholder="example@gmail.com"
           type="email"
+          clearable
           hide-details="auto"
         >
         </v-text-field>
@@ -25,6 +26,7 @@
           label="Password"
           placeholder="**********"
           type="password"
+          clearable
           hide-details="auto"
         >
         </v-text-field>
