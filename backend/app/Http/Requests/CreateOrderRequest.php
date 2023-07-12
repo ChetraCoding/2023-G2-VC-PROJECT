@@ -32,7 +32,7 @@ class CreateOrderRequest extends FormRequest
             'table_id' => 'required|numeric',
             'datetime' => 'required',
             'product_customizes' => 'required|array',
-            'product_customizes.*.id' => 'required|numeric',
+            'product_customizes.*.product_customize_id' => 'required|numeric',
             'product_customizes.*.quantity' => 'required|numeric',
         ];
     }
