@@ -10,16 +10,6 @@ export const useTableStore = defineStore("table", {
     };
   },
   actions: {
-    async storeTable(table) {
-      try {
-        await http.post("tables", table);
-        this.error = null;
-        this.success = true;
-        this.getData();
-      } catch (err) {
-        this.error = err.response.data.message;
-      }
-    },
     async getTables() {
       try {
         const res = await http.get("tables");
@@ -27,6 +17,16 @@ export const useTableStore = defineStore("table", {
           this.tables = res.data.data;
         }
       } catch (err) { return err }
-    }
+    },
+    async storeTable(table) {
+      try {
+          const res = await http.post('tables', table);
+          if (res.data.success){
+            this.success = true;
+          }
+      } catch (err) {
+        this.error = err.response.data.message.table;
+      }
+  }
   },
 });

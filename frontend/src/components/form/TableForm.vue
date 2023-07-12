@@ -11,12 +11,19 @@
               v-model="tableNumber"
               label="Number"
               hide-details="auto"
+              @keyup="
+                !tableNumber
+                  ? (error = 'Please enter a table number.')
+                  : (error = null)
+              "
             ></v-text-field>
-            <span class="ml-4 text-caption text-red">{{}}</span>
+            <span class="ml-4 text-caption text-red">{{ error }}</span>
           </v-col>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <danger-button @click="$emit('closeForm'), (tableNumber = '')">
+            <danger-button
+              @click="$emit('closeForm'), (error = null), (tableNumber = '')"
+            >
               CLOSE
             </danger-button>
             <primary-button @click="add"> SAVE </primary-button>
@@ -28,52 +35,30 @@
 </template>
 
 <script setup>
-// ===========front-end================================
-import { computed, defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, computed, ref } from "vue";
+import { useTableStore } from "@/stores/table";
+import { storeToRefs } from "pinia";
 
 // Variables
-const props = defineProps(["isShowForm"]);
+const { storeTable, getTables } = useTableStore();
+const { error } = storeToRefs(useTableStore());
 const emit = defineEmits(["closeForm"]);
+const props = defineProps(["isShowForm"]);
 const tableNumber = ref("");
 
-// methods
-const add = () => {
-  if (tableNumber.value != "") {
-    const newtable = { table_number: tableNumber.value };
+// method
+let add = async () => {
+  if (!tableNumber.value) return (error.value = "Please enter a table number.");
+  await storeTable({ table_number: tableNumber.value });
+  if (!error.value) {
+    getTables();
+    tableNumber.value = "";
     emit("closeForm");
-    emit("sendData", newtable);
   }
 };
+
+// computed
 const dialog = computed(() => {
   return props.isShowForm;
 });
-
-// =============back-end-create-table==========================
-
-// import { defineProps, defineEmits, computed, ref } from "vue";
-// import { useTableStore } from "@/stores/table";
-
-// Variables
-// const emit = defineEmits(["closeForm"]);
-// const props = defineProps(["isShowForm"]);
-// const tableStore = useTableStore();
-// const tableNumber = ref("");
-
-// method
-// let add = async () => {
-//   if (tableNumber.value) {
-//     await tableStore.storeData({ table_number: tableNumber.value });
-//     if (tableStore.error === null) {
-//       tableNumber.value = "";
-//       emit("closeForm");
-//     }
-//   } else {
-//     tableStore.error = "Please enter a table number.";
-//   }
-// };
-
-// computed
-// const dialog = computed(() => {
-//   return props.isShowForm;
-// });
 </script>

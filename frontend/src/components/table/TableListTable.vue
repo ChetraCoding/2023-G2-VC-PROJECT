@@ -11,17 +11,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- ======back-end================================ -->
-      <!-- <tr v-for="(table, index) in props.tables" :key="table.id">
-        <td>{{ index + 1 }}</td>
-        <td>{{ table.number }}</td>
-        <td > 
-          <v-icon icon="mdi-square-edit-outline" color="blue" class="mr-3"></v-icon>
-          <v-icon icon="mdi-delete" color="red"></v-icon>
-        </td>
-      </tr> -->
-
-      <!-- =============frontend================== -->
       <tr v-for="(table, index) in props.tables" :key="table.id">
         <td>{{ index + 1 }}</td>
         <td>{{ table.table_number }}</td>
@@ -30,7 +19,6 @@
           <v-icon icon="mdi-delete" color="red"></v-icon>
         </td>
       </tr>
-      <!-- =============frontend================== -->
     </tbody>
   </v-table>
   <!-- Close -->
