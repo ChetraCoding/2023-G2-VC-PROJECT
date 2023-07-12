@@ -33,7 +33,7 @@
 
   <!-- Form create product -->
   <div>
-    <v-dialog v-model="dialog" width="1000">
+    <v-dialog v-model="dialog" width="800">
       <v-card class="rounded-3">
         <v-card-title class="bg-orange-darken-4 text-center"
           >Add Product</v-card-title
@@ -46,7 +46,7 @@
               class="mb-3"
               density="compact"
               label="Name"
-              :rules="numberRule"
+              :rules="fieldRule"
               clearable             
             ></v-text-field>
             <!-- Input field -->
@@ -55,14 +55,14 @@
               density="compact"
               label="Barcode"
               clearable
-              :rules="numberRule"              
+              :rules="fieldRule"              
             ></v-text-field>
 
             <!-- Select field -->
             <v-select
               class="mb-3"
               label="Category"
-              :rules="numberRule"
+              :rules="fieldRule"
               :items="['Apple', 'orange', 'Mango', 'Banana']"
               density="compact"             
               clearable
@@ -74,14 +74,18 @@
               class="mb-3"
               cols="2"
               density="compact"
-              :rules="numberRule"
+              :rules="fieldRule"
               label="Description"             
               clearable
               rows="1"
             ></v-textarea>
 
             <!-- Switch -->
-            <v-switch color="orange-darken-4" label="Active"></v-switch>
+            <v-switch 
+            color="orange-darken-4" 
+            label="Active"
+            hide-details="auto"
+            ></v-switch>
           </div>
 
           <!--Card-center-->
@@ -91,7 +95,7 @@
               <v-text-field
                 density="compact"
                 label="Size"
-                :rules="numberRule"               
+                :rules="fieldRule"               
                 clearable
               ></v-text-field>
 
@@ -99,7 +103,7 @@
               <v-text-field
                 density="compact"
                 label="Price"
-                :rules="numberRule"                
+                :rules="fieldRule"                
                 clearable
               ></v-text-field>
 
@@ -108,15 +112,15 @@
                 icon="mdi-plus"
                 color="white"
                 size="30"
-                class="ml-2 justify-center bg-orange-darken-4 rounded-pill"
+                class="ml-2 mb-3 justify-center bg-orange-darken-4 rounded-pill"
               >
               </v-icon>
             </div>
             <!-- Card -->
             <div class="mt-3">
-              <v-card class="d-flex border-1 pa-3 justify-space-between">
-                <span class="ml-4 mr-15 pr-15">Small</span>
-                <span class="mr-15 pr-15">3</span>
+              <v-card class="d-flex border-1 pa-2 justify-space-between" width="300px">
+                <span class="mr-10 pr-10">Small</span>
+                <span class="mr-10 pr-10">3</span>
                 <div>
                   <v-icon
                     icon="mdi-square-edit-outline"
@@ -140,7 +144,7 @@
           <!----------->
 
           <!-- Card-right -->
-          <div style="width: 20%">
+          <div style="width: 30%">
             <v-img
               :width="238"
               :height="175"
@@ -153,7 +157,7 @@
             <v-file-input
               density="compact"
               label="File input"
-              :rules="numberRule"
+              :rules="fieldRule"
               prepend-icon="mdi-file-image"
               @change="onChange"
             ></v-file-input>
@@ -190,12 +194,15 @@
 import { ref } from "vue";
 
 // Variables
+
 const dialog = ref(true);
 
-const numberRule = ref([
-  (v) => !!v || "Field is required",
+// Validation
+const fieldRule = ref([
+  (v) => !!v || "Field is required!",
 ]);
 
+// 
 const item = ref({
   image: null,
   imageUrl: null,
