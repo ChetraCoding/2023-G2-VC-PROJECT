@@ -1,3 +1,5 @@
+// References: https://vuetifyjs.com/en/components/navigation-drawers/
+
 <template>
   <!-- Sidebar -->
   <v-navigation-drawer
@@ -10,7 +12,7 @@
     <v-list-item
       class="text-orange-darken-4 mt-1"
       prepend-icon="mdi-account-star"
-      :title="title"
+      :title="props.title"
     >
       <template v-slot:append>
         <v-btn
@@ -23,16 +25,20 @@
     <v-divider class="mt-1"></v-divider>
 
     <v-list density="compact" nav>
-      <slot></slot>
+
+      <slot name="menu"></slot>
+
     </v-list>
   </v-navigation-drawer>
+  <!--  -->
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
-
-defineProps(["title"]);
-
+import {  defineProps, ref } from "vue";
+const props = defineProps(['title'])
 let rail = ref(true);
 let drawer = ref(true);
 </script>
+
+
+
