@@ -21,8 +21,7 @@ class ProductResource extends JsonResource
             'barcode'=>$this->barcode,
             'description'=>$this->description,
             'image'=>$this->image,
-            'is_active'=>$this->is_active,
-            'product_customize'=> ProductCustomizeResource::collection($this->productCustomize)
+            'is_active'=>$this->is_active
         ];
     }
 }

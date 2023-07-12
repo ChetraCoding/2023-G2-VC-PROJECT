@@ -19,7 +19,6 @@ return new class extends Migration
                 ->on('products')
                 ->onDelete('cascade');
             $table->string('size');
-            $table->integer('quantity');
             $table->decimal('price');
             $table->timestamps();
         });
