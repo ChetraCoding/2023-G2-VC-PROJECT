@@ -23,7 +23,6 @@ class UserResource extends JsonResource
             'last_name'=>$this->last_name,
             'email'=>$this->email,  
             'image'=>$this->image,
-            'is_active'=>$this->is_active
         ];
     }
 }

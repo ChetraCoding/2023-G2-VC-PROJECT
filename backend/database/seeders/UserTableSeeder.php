@@ -21,7 +21,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'sreyka@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>1,
@@ -31,7 +30,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'chhilin@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>1,
@@ -41,7 +39,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'phannit@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>1,
@@ -51,7 +48,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'sreypich@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>1,
@@ -61,7 +57,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'chetra@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>2,
@@ -71,7 +66,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'kaka@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
             [
                 'store_id'=>3,
@@ -81,7 +75,6 @@ class UserTableSeeder extends Seeder
                 'email'=>'lala@gmail.com',
                 'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
                 'password'=>'12345678',
-                'is_active'=>true
             ],
         ];
         foreach ($users as $user){

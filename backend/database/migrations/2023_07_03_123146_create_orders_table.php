@@ -24,6 +24,8 @@ return new class extends Migration
                 ->on('tables')
                 ->onDelete('cascade');
             $table->dateTime('datetime');
+            $table->boolean('is_completed');
+            $table->boolean('is_paid');
             $table->timestamps();
         });
     }
