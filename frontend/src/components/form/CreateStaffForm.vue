@@ -78,8 +78,25 @@ const last_name = ref('');
 const gender = ref('');
 const role = ref('');
 
-// Validate
+let add = ()=>{
+  let errors = {};
+  if(firs_name.value == ''){
+    errors.firs_name = "Please enter a first name";
+  }
 
+  if(last_name.value == ''){
+    errors.last_name = "Please enter a last name";
+  }
+
+  if(gender.value == ''){
+    errors.gender = "Please enter a gender";
+  }
+
+  if(role.value == ''){
+    errors.role = "Please select a role";
+  }
+  
+}
 
 
 
