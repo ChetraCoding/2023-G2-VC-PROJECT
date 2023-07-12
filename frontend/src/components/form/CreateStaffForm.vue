@@ -1,6 +1,6 @@
 <template>
-  <v-form>
-    <v-dialog v-model="dialog" persistent width="600" @submit.prevent="submit">
+  <v-form @submit.prevent="submit">
+    <v-dialog v-model="dialog" persistent width="600">
       <v-card class="rounded-xl">
         <v-card-title class="text-center bg-orange-darken-4">
           <span class="text-h6">Create New Staff</span>
@@ -58,7 +58,7 @@
           <v-card-actions class="ml-10">
             <v-spacer></v-spacer>
             <danger-button @click="$emit('closeForm')"> CLOSE </danger-button>
-            <primary-button @click="add"> SAVE </primary-button>
+            <primary-button type="submit" @click="add"> SAVE </primary-button>
           </v-card-actions>
         </div>
       </v-card>
@@ -78,25 +78,8 @@ const last_name = ref('');
 const gender = ref('');
 const role = ref('');
 
-let add = ()=>{
-  let errors = {};
-  if(firs_name.value == ''){
-    errors.firs_name = "Please enter a first name";
-  }
+// Validate
 
-  if(last_name.value == ''){
-    errors.last_name = "Please enter a last name";
-  }
-
-  if(gender.value == ''){
-    errors.gender = "Please enter a gender";
-  }
-
-  if(role.value == ''){
-    errors.role = "Please select a role";
-  }
-  
-}
 
 
 
