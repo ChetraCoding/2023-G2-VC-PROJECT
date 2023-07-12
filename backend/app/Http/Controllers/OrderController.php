@@ -49,7 +49,7 @@ class OrderController extends Controller
         $request['is_paid'] = false;
         $newOrder = Order::storeOrder($request);
         foreach ($request->product_customizes as $product_customize) {
-            $proCustomId = $product_customize['id'];
+            $proCustomId = $product_customize['product_customize_id'];
             $quantity = $product_customize['quantity'];
             $price = ProductCustomize::find($proCustomId)->price;
             OrderDetail::storeOrderDetail([

@@ -6,13 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CreateOrderRequest extends FormRequest
+class CreateAccountRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
     }
-
+    
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -29,11 +29,11 @@ class CreateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => 'required|numeric',
-            'datetime' => 'required',
-            'product_customizes' => 'required|array',
-            'product_customizes.*.product_customize_id' => 'required|numeric',
-            'product_customizes.*.quantity' => 'required|numeric',
+            'role_id'=>'required|numeric|exists:roles,id',
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'email'=>'required|email|unique:users',
+            'password'=>'required|min:8'
         ];
     }
 }

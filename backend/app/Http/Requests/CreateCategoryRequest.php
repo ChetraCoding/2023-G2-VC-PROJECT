@@ -14,6 +14,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return true;
     }
+    
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
