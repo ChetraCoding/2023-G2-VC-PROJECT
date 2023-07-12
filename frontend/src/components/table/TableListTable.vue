@@ -24,7 +24,7 @@
       <!-- =============frontend================== -->
       <tr v-for="(table, index) in props.tables" :key="table.id">
         <td>{{ index + 1 }}</td>
-        <td>{{ table.number }}</td>
+        <td>{{ table.table_number }}</td>
         <td> 
           <v-icon icon="mdi-square-edit-outline" color="blue" class="mr-3"></v-icon>
           <v-icon icon="mdi-delete" color="red"></v-icon>
