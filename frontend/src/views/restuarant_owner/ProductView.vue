@@ -71,7 +71,9 @@
               required
               class="mb-3"
               label="Category"
-              :items="['Apple', 'orange', 'Mango', 'Banana']"
+              :items="categories"
+              :item-title="'name'"
+              :item-value="'id'"
               density="compact"
               clearable
               :error-messages="vp$.category_id.$errors.map((e) => e.$message)"
@@ -244,22 +246,25 @@
 // Import
 import { onMounted, reactive, ref } from "vue";
 import { useProductStore } from "@/stores/product";
+import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 // Variables
-const { storeProduct, getProducts } = useProductStore();
+const { getProducts } = useProductStore();
 const { products } = storeToRefs(useProductStore());
+const { getCategory } = useCategoryStore();
+const { categories } = storeToRefs(useCategoryStore());
 const dialog = ref(true);
 
 // Form: https://vuetifyjs.com/en/components/forms/
 // Validation Product
 const initialProduct = {
-  name: null,
-  barcode: null,
-  category_id: null,
-  description: null,
+  name: 'Noodel',
+  barcode: '007',
+  category_id: 2,
+  description: 'hello world',
   is_active: false,
   image: null,
 };
@@ -315,6 +320,7 @@ const image = ref({
 // Method
 const imageUpload = (e) => {
   const file = e.target.files[0];
+  console.log(file);
   image.value.image = file;
   image.value.imageUrl = URL.createObjectURL(file);
 };
@@ -342,21 +348,36 @@ const editCustom = (index) => {
   customize.price = customizes.value[index].price;
 };
 
-const addProduct = async () => {
-  // vc$.value.price.$errors[0].$message = "Product";
-  if (customizes.value.length === 0) return vc$.value.$touch();
+// const imageConverter = (file) => {
+//   let reader = new FileReader();
+//   let imageURL = '';
+//   reader.onloadend = () => {
+//      imageURL = reader.result;
+//      console.log(reader.result);
+//   }
+//   reader.readAsDataURL(file);
+//   return imageURL;
+// }
 
-  if (vp$.value.$errors.length === 0) {
-    product.product_customizes = customizes.value;
-    await storeProduct(product);
-    dialog.value = false;
-    clearPruduct();
-    clearCustomize();
-  }
+const addProduct = async () => {
+  // product.image = 'dsad';
+  console.log(initialProduct);
+
+  // vc$.value.price.$errors[0].$message = "Product";
+  // if (customizes.value.length === 0) return vc$.value.$touch();
+
+  // if (vp$.value.$errors.length === 0) {
+  //   product.product_customizes = customizes.value;
+  //   await storeProduct(product);
+  //   dialog.value = false;
+  //   clearPruduct();
+  //   clearCustomize();
+  // }
 };
 
 // Lifecycle hook
 onMounted(() => {
   getProducts();
+  getCategory();
 });
 </script>
