@@ -5,8 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class CreateCategoryRequest extends FormRequest
+
+class CreateOrderRequest extends FormRequest
 {
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -14,11 +20,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return true;
     }
-    
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
-    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,7 +29,11 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'table_id' => 'required|numeric',
+            'datetime' => 'required',
+            'product_customizes' => 'required|array',
+            'product_customizes.*.product_customize_id' => 'required|numeric',
+            'product_customizes.*.quantity' => 'required|numeric',
         ];
     }
 }
