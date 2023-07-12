@@ -2,7 +2,7 @@
   <v-card class="rounded-xl mx-auto px-8 py-10 login-form">
     <v-form @submit.prevent="onSubmit">
       <div class="d-flex justify-center pb-4">
-        <img class="w-50" src="../../assets/login-logo.png" alt="login" />
+        <img class="w-50" :src="require('../../assets/login-logo.png')" alt="login" />
       </div>
       <div>
         <v-text-field
@@ -12,6 +12,7 @@
           label="Email"
           placeholder="example@gmail.com"
           type="email"
+          clearable
           hide-details="auto"
         >
         </v-text-field>
@@ -25,6 +26,7 @@
           label="Password"
           placeholder="**********"
           type="password"
+          clearable
           hide-details="auto"
         >
         </v-text-field>

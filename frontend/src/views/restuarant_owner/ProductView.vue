@@ -22,7 +22,6 @@
           density="compact"
           label="Search"
           append-inner-icon="mdi-magnify"
-          
         ></v-text-field>
       </v-card>
 
@@ -32,7 +31,7 @@
   </v-layout>
 
   <!-- Form create product -->
-  <div>
+  <v-form>
     <v-dialog v-model="dialog" width="800">
       <v-card class="rounded-3">
         <v-card-title class="bg-orange-darken-4 text-center"
@@ -43,48 +42,69 @@
           <div class="mr-3" style="width: 30%">
             <!-- Input field -->
             <v-text-field
+              v-model="product.name"
+              required
               class="mb-3"
               density="compact"
               label="Name"
-              :rules="fieldRule"
-              clearable             
+              clearable
+              :error-messages="vp$.name.$errors.map((e) => e.$message)"
+              @input="vp$.name.$touch"
+              @blur="vp$.name.$touch"
             ></v-text-field>
             <!-- Input field -->
             <v-text-field
+              v-model="product.barcode"
+              required
               class="mb-3"
               density="compact"
               label="Barcode"
               clearable
-              :rules="fieldRule"              
+              :error-messages="vp$.barcode.$errors.map((e) => e.$message)"
+              @input="vp$.barcode.$touch"
+              @blur="vp$.barcode.$touch"
             ></v-text-field>
 
             <!-- Select field -->
             <v-select
+              v-model="product.category_id"
+              required
               class="mb-3"
               label="Category"
-              :rules="fieldRule"
               :items="['Apple', 'orange', 'Mango', 'Banana']"
-              density="compact"             
+              density="compact"
               clearable
+              :error-messages="vp$.category_id.$errors.map((e) => e.$message)"
+              @change="vp$.category_id.$touch"
+              @blur="vp$.category_id.$touch"
             >
             </v-select>
 
             <!--Textarea -->
             <v-textarea
+              v-model="product.description"
+              required
               class="mb-3"
               cols="2"
               density="compact"
-              :rules="fieldRule"
-              label="Description"             
+              label="Description"
               clearable
               rows="1"
+              :error-messages="vp$.description.$errors.map((e) => e.$message)"
+              @input="vp$.description.$touch"
+              @blur="vp$.description.$touch"
             ></v-textarea>
 
             <!-- Switch -->
-            <v-switch 
-            color="orange-darken-4" 
-            label="Active"
-            hide-details="auto"
+            <v-switch
+              v-model="product.is_active"
+              required
+              color="orange-darken-4"
+              label="Active"
+              hide-details="auto"
+              :error-messages="vp$.is_active.$errors.map((e) => e.$message)"
+              @change="vp$.is_active.$touch"
+              @blur="vp$.is_active.$touch"
             ></v-switch>
           </div>
 
@@ -93,22 +113,34 @@
             <div class="d-flex align-center">
               <!--Input field-->
               <v-text-field
+                v-model="customize.size"
                 density="compact"
                 label="Size"
-                :rules="fieldRule"               
+                class="w-50"
                 clearable
+                :error-messages="vc$.size.$errors.map((e) => e.$message)"
+                @input="vc$.size.$touch"
+                @blur="vc$.size.$touch"
               ></v-text-field>
 
               <!--Input field-->
               <v-text-field
+                v-model="customize.price"
                 density="compact"
                 label="Price"
-                :rules="fieldRule"                
-                clearable
+                type="number"
+                class="w-50"
+                :error-messages="vc$.price.$errors.map((e) => e.$message)"
+                @input="vc$.price.$touch"
+                @blur="vc$.price.$touch"
               ></v-text-field>
 
               <!-- Icon -->
               <v-icon
+                @click="
+                  vc$.$validate();
+                  addCustom(findCustIndex);
+                "
                 icon="mdi-plus"
                 color="white"
                 size="30"
@@ -118,18 +150,30 @@
             </div>
             <!-- Card -->
             <div class="mt-3">
-              <v-card class="d-flex border-1 pa-2 justify-space-between" width="300px">
-                <span class="mr-10 pr-10">Small</span>
-                <span class="mr-10 pr-10">3</span>
+              <div
+                v-for="(customize, index) in customizes"
+                :key="index"
+                class="d-flex justify-space-between border-1 pa-2 mb-2"
+                style="border-bottom: 1px solid black"
+                width="300px"
+              >
+                <div>
+                  <span>{{ customize.size }}</span>
+                </div>
+                <div>
+                  <span>${{ customize.price }}</span>
+                </div>
                 <div>
                   <v-icon
+                    @click="editCustom(index)"
                     icon="mdi-square-edit-outline"
                     color="blue"
                     size="23"
-                    class="mr-3 justify-center"
+                    class="mr-1 justify-center"
                   >
                   </v-icon>
                   <v-icon
+                    @click="deleteCustom(index)"
                     icon="mdi-delete"
                     color="red"
                     size="23"
@@ -137,7 +181,7 @@
                   >
                   </v-icon>
                 </div>
-              </v-card>
+              </div>
             </div>
             <!--------->
           </div>
@@ -145,22 +189,28 @@
 
           <!-- Card-right -->
           <div style="width: 30%">
+            <v-file-input
+              v-model="product.image"
+              required
+              density="compact"
+              label="File input"
+              prepend-icon="mdi-file-image"
+              :error-messages="vp$.image.$errors.map((e) => e.$message)"
+              @change="
+                vp$.image.$touch;
+                imageUpload($event);
+              "
+              @blur="vp$.image.$touch"
+            ></v-file-input>
             <v-img
               :width="238"
               :height="175"
               class="rounded-lg mb-3"
               aspect-ratio="16/9"
               cover
-              v-if="item.imageUrl"
-              :src="item.imageUrl"
+              v-if="image.imageUrl"
+              :src="image.imageUrl"
             ></v-img>
-            <v-file-input
-              density="compact"
-              label="File input"
-              :rules="fieldRule"
-              prepend-icon="mdi-file-image"
-              @change="onChange"
-            ></v-file-input>
           </div>
 
           <!------------>
@@ -169,59 +219,144 @@
         <!-- Action -->
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
-          <v-btn
-            color="bg-danger text-white"
-            variant="text"
-            @click="dialog = false"
+          <danger-button
+            @click="
+              clearPruduct();
+              dialog = false;
+            "
+            >Close</danger-button
           >
-            Close
-          </v-btn>
-          <v-btn
-            class="bg-orange-darken-4"
-            variant="text"
-            @click="dialog = false"
+          <primary-button
+            @click="
+              vp$.$validate();
+              addProduct();
+            "
+            >Save</primary-button
           >
-            Save
-          </v-btn>
         </v-card-actions>
         <!--------->
       </v-card>
     </v-dialog>
-  </div>
+  </v-form>
 </template>
 
 <script setup>
-import { ref } from "vue";
+// Import
+import { onMounted, reactive, ref } from "vue";
+import { useProductStore } from "@/stores/product";
+import { storeToRefs } from "pinia";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 // Variables
-
+const { storeProduct, getProducts } = useProductStore();
+const { products } = storeToRefs(useProductStore());
 const dialog = ref(true);
 
-// Validation
-const fieldRule = ref([
-  (v) => !!v || "Field is required!",
-]);
+// Form: https://vuetifyjs.com/en/components/forms/
+// Validation Product
+const initialProduct = {
+  name: null,
+  barcode: null,
+  category_id: null,
+  description: null,
+  is_active: false,
+  image: null,
+};
+const product = reactive({
+  ...initialProduct,
+});
+const vp$ = useVuelidate(
+  {
+    name: { required },
+    barcode: { required },
+    category_id: { required },
+    description: { required },
+    is_active: { required },
+    image: { required },
+  },
+  product
+);
+const clearPruduct = () => {
+  vp$.value.$reset();
+  for (const [key, value] of Object.entries(initialProduct)) {
+    product[key] = value;
+  }
+};
 
-// 
-const item = ref({
+// Validation Customize
+const findCustIndex = ref(null);
+const initialCustomize = {
+  size: null,
+  price: null,
+};
+const customize = reactive({
+  ...initialCustomize,
+});
+const vc$ = useVuelidate(
+  {
+    size: { required },
+    price: { required },
+  },
+  customize
+);
+const clearCustomize = () => {
+  vc$.value.$reset();
+  for (const [key, value] of Object.entries(initialCustomize)) {
+    customize[key] = value;
+  }
+};
+
+const image = ref({
   image: null,
   imageUrl: null,
 });
 
-const onChange = (e) => {
+// Method
+const imageUpload = (e) => {
   const file = e.target.files[0];
-  item.value.image = file;
-  item.value.imageUrl = URL.createObjectURL(file);
+  image.value.image = file;
+  image.value.imageUrl = URL.createObjectURL(file);
 };
 
-let products = ref([
-  {
-    name: "Frozen Yogurt",
-    calories: 159,
-  },
-  {
-    name: "Ice cream sandwich",
-    calories: 237,
-  },
-]);
+// Add customizes
+const customizes = ref([]);
+const addCustom = (custIndex) => {
+  if (vc$.value.$errors.length === 0) {
+    if (custIndex !== null) {
+      customizes.value[custIndex].size = customize.size;
+      customizes.value[custIndex].price = customize.price;
+    } else {
+      customizes.value.push({ ...customize });
+    }
+    findCustIndex.value = null;
+    clearCustomize();
+  }
+};
+const deleteCustom = (index) => {
+  customizes.value.splice(index, 1);
+};
+const editCustom = (index) => {
+  findCustIndex.value = index;
+  customize.size = customizes.value[index].size;
+  customize.price = customizes.value[index].price;
+};
+
+const addProduct = async () => {
+  // vc$.value.price.$errors[0].$message = "Product";
+  if (customizes.value.length === 0) return vc$.value.$touch();
+
+  if (vp$.value.$errors.length === 0) {
+    product.product_customizes = customizes.value;
+    await storeProduct(product);
+    dialog.value = false;
+    clearPruduct();
+    clearCustomize();
+  }
+};
+
+// Lifecycle hook
+onMounted(() => {
+  getProducts();
+});
 </script>

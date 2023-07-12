@@ -5,21 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderDetail extends Model
 {
     protected $fillable = [
-        'product_id',
+        'product_customize_id',
         'order_id',
         'quantity',
         'price'
     ];
-    public function orders():HasMany{
-        return $this->hasMany(Order::class);
+
+    public static function storeOrderDetail($request, $id = null)
+    {
+        $orderDetails = self::updateOrCreate(['id' => $id], $request);
+
+        return $orderDetails;
     }
-    public function products():HasMany{
-        return $this->hasMany(Product::class);
+
+    public function order():BelongsTo{
+        return $this->belongsTo(Order::class);
     }
-   
+
+    public function productCustomize():BelongsTo{
+        return $this->belongsTo(ProductCustomize::class);
+    }
+
 }

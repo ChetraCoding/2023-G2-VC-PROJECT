@@ -64,6 +64,17 @@
       </v-list-item>
 
       <v-list-item
+        prepend-icon="mdi-account-group"
+        title="Staff"
+        name="ListStaffTable"
+        value="staff"
+        class="text-orange-darken-4"
+        style="text-decoration: none"
+        to="/staff"
+      >
+      </v-list-item>
+
+      <v-list-item
         prepend-icon="mdi-file-document"
         title="Reports"
         value="reports"

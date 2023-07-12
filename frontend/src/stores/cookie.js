@@ -1,5 +1,4 @@
 // Reference from: https://seb-l.github.io/pinia-plugin-persist/advanced/custom-storage.html
-
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
 
