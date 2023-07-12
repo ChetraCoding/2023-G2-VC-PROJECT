@@ -3,6 +3,7 @@ import CategoryView from '@/views/restuarant_owner/CategoryView.vue'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView";
 import WaiterView from "@/views/waiter/WaiterView";
+import ChefView from "@/views/chef/ChefView";
 import ProductView from "@/views/restuarant_owner/ProductView";
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: '/product',
     name: 'product',
     component: ProductView,
+  },
+  {
+    path: '/chef/order',
+    name: 'chef',
+    component: ChefView,
   }
 ];
 

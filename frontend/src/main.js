@@ -11,17 +11,21 @@ import HeaderComponent from '@/components/widget/header/HeaderComponent';
 import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
+import ChefOrderCard from '@/components/widget/card/ChefOrderCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import BaseSideBar from '@/components/aside/BaseSideBar';
 
 const app = createApp(App);
 const pinia = createPinia();
 
 // Components
 app.component('side-bar', SideBar);
+app.component('base-side-bar', BaseSideBar);
 app.component('header-component', HeaderComponent);
 app.component('product-card', ProductCard);
+app.component('chef-order-card', ChefOrderCard);
 
 // Buttons
 app.component('primary-button', PrimaryButton);
