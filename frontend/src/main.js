@@ -19,6 +19,7 @@ import CategoryForm from '@/components/form/CategoryForm';
 import ListStaffTable from "@/components/table/ListStaffTable";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
+import BaseDialog from '@/components/widget/dialog/BaseDialog';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -36,6 +37,9 @@ app.component('danger-button', DangerButton);
 // Alert
 app.component('base-alert', BaseAlert);
 
+// Dislog
+app.component('base-dialog', BaseDialog);
+
 // Restaurant owner component
 app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
@@ -44,9 +48,6 @@ app.component('table-list-table', TableListTable)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
-// Waiter component
-import NavWaiterComponent from './components/nav/NavWaiterComponent.vue';
-app.component('nav-waiter-component', NavWaiterComponent);
 
 // Login component
 app.component('login-form', LoginForm);
