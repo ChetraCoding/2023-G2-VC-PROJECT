@@ -47,7 +47,7 @@ const props = defineProps(["products"]);
 // Methods
 const getQuantity = (product) => {
   const sumQuantity = ref(0);
-  for (let customize of product.product_customize) {
+  for (let customize of product.product_customizes) {
     sumQuantity.value += customize.quantity;
   }
   return sumQuantity.value;

@@ -22,8 +22,8 @@
         </v-card>
 
         <product-list-table 
-        v-if="productStore.products.length > 0"
-        :products="productStore.products" 
+        v-if="products.length > 0"
+        :products="products" 
         />
 
         <div class="h-screen" v-else>
@@ -40,12 +40,14 @@
 // Import
 import { onMounted } from "vue";
 import { useProductStore } from "@/stores/product";
+import { storeToRefs } from "pinia";
 
 // Variables
-const productStore = useProductStore();
+const { getProducts } = useProductStore();
+const { products } = storeToRefs(useProductStore());
 
 // Lifecycle hook
 onMounted(() => {
-  productStore.getData();
+  getProducts();
 });
 </script>
