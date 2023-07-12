@@ -9,6 +9,8 @@
           Last Name
         </th>
         <th class="bg-white text-left text-black font-weight-bold">Gender</th>
+        <th class="bg-white text-left text-black font-weight-bold">Gmail</th>
+        <th class="bg-white text-left text-black font-weight-bold">Password</th>
         <th class="bg-white text-left text-black font-weight-bold">
           Possition
         </th>
@@ -21,6 +23,8 @@
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
         <td>{{ person.gender }}</td>
+        <td>{{ person.gmail }}</td>
+        <td>{{ person.password }}</td>
         <td>{{ person.possition }}</td>
 
         <td>

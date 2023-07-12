@@ -29,11 +29,11 @@
   </v-card>
 
   <create-staff-form :isShowForm="isShowForm" @closeForm="closeForm" />
-  
 </template>
 
 <script setup>
 import { ref } from "vue";
+import CreateStaffForm from "@/components/form/CreateStaffForm.vue";
 
 // Dialog of staff
 const isShowForm = ref(false);
@@ -44,28 +44,12 @@ const closeForm = () => {
 // Staff
 const staff = ref([
   {
-    first_name: "sreypich",
+    first_name: "pich",
     last_name: "thun",
-    gender: "Female",
-    possition: "Chef",
-  },
-  {
-    first_name: "sreyka",
-    last_name: "thor",
-    gender: "Female",
-    possition: "Waiter",
-  },
-  {
-    first_name: "Liminhoo",
-    last_name: "Jun",
-    gender: "male",
-    possition: "Cashier",
-  },
-  {
-    first_name: "Linyi",
-    last_name: "Love",
-    gender: "male",
-    possition: "Cashier",
+    possition: "too crazy",
+    gender: "female",
+    gmail: "crazy@gmail.com",
+    password: "******",
   },
 ]);
 </script>

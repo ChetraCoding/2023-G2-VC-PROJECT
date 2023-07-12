@@ -1,55 +1,81 @@
 <template>
-  <v-form @submit.prevent="submit">
-    <v-dialog v-model="dialog" persistent width="600">
-      <v-card class="rounded-xl">
+  <v-form @submit.prevent="add">
+    <v-dialog v-model="dialog" persistent width="750" no-padding>
+      <v-card
+        class="rounded-xl"
+        style="max-width: 100%; max-height: 100vh; overflow-y: auto"
+      >
         <v-card-title class="text-center bg-orange-darken-4">
           <span class="text-h6">Create New Staff</span>
         </v-card-title>
-        <div class="p-3">
+        <div class="p-60">
           <v-card-text>
-            <v-container>
+            <v-container size="small">
               <v-row class="justify-center">
-                <v-col cols="12">
+                <v-col cols="12" md="4">
                   <v-text-field
                     label="first name*"
-                    v-model="firs_name"
-                    :rules="requireName"
+                    v-model="staff.first_name"
                     density="compact"
                     hide-details="auto"
-                    required
-                    :error-messages="firs_name === '' ? ['Please enter a first name'] : []"
+                    :error-messages="v$.first_name.$errors.map((e) => e.$message)"
+                    @input="v$.first_name.$touch"
+                    @blur="v$.first_name.$touch"
                   ></v-text-field>
-                  <!-- <span class="text-red" v-if="firs_name == ''">first Name</span> -->
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" md="4">
                   <v-text-field
                     label="last name*"
-                    v-model="last_name"
+                    v-model="staff.last_name"
                     density="compact"
                     hide-details="auto"
-                    required
-                    :error-messages="last_name === '' ? ['Please enter a last name'] : []"
+                    :error-messages="v$.last_name.$errors.map((e) => e.$message)"
+                    @input="v$.last_name.$touch"
+                    @blur="v$.last_name.$touch"
                   ></v-text-field>
-                  <!-- <span class="text-red" v-if="last_name == ''">Please input last name</span> -->
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    label="Gender*"
+                    v-model="staff.gender"
+                    density="compact"
+                    hide-details="auto"
+                    :error-messages="v$.gender.$errors.map((e) => e.$message)"
+                    @input="v$.gender.$touch"
+                    @blur="v$.gender.$touch"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Gender*"
-                    v-model="gender"
+                    label="Gmail*"
+                    v-model="staff.gmail"
                     density="compact"
                     hide-details="auto"
-                    required
-                    :error-messages="gender === '' ? ['Please enter a gender'] : []"
+                    :error-messages="v$.gmail.$errors.map((e) => e.$message)"
+                    @input="v$.gmail.$touch"
+                    @blur="v$.gmail.$touch"
                   ></v-text-field>
-                  <!-- <span class="text-red" v-if="gender == ''" >Please input gender</span> -->
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Password*"
+                    v-model="staff.password"
+                    density="compact"
+                    hide-details="auto"
+                    :error-messages="v$.password.$errors.map((e) => e.$message)"
+                    @input="v$.password.$touch"
+                    @blur="v$.password.$touch"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-select
                     label="Role*"
+                    v-model="staff.role"
                     :items="items"
-                    v-model="role"
                     density="compact"
-                    :error-messages="role === '' ? ['Please select a role'] : []"
+                    :error-messages="v$.role.$errors.map((e) => e.$message)"
+                    @input="v$.role.$touch"
+                    @blur="v$.role.$touch"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -57,8 +83,15 @@
           </v-card-text>
           <v-card-actions class="ml-10">
             <v-spacer></v-spacer>
-            <danger-button @click="$emit('closeForm')"> CLOSE </danger-button>
-            <primary-button type="submit" @click="add"> SAVE </primary-button>
+            <danger-button
+              @click="
+                clear();
+                $emit('closeForm');
+              "
+            >
+              CLOSE
+            </danger-button>
+            <danger-button type="submit" @click="add"> SAVE </danger-button>
           </v-card-actions>
         </div>
       </v-card>
@@ -67,40 +100,57 @@
 </template>
 
 <script setup>
+import { reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
 import { defineProps, computed, defineEmits, ref } from "vue";
 
 // Variables
 defineEmits(["closeForm"]);
 const props = defineProps(["isShowForm"]);
-const items = ref(['Chef', 'Waiter', 'Cashier', 'Admin']);
-const firs_name = ref('');
-const last_name = ref('');
-const gender = ref('');
-const role = ref('');
+const items = ref(["Chef", "Waiter", "Cashier", "Admin"]);
+const inFoStaff = {
+  first_name: "",
+  last_name: "",
+  gender: null,
+  gmail: null,
+  password: null,
+  role: null,
+};
 
-let add = ()=>{
-  let errors = {};
-  if(firs_name.value == ''){
-    errors.firs_name = "Please enter a first name";
-  }
+const staff = reactive({
+  ...inFoStaff,
+});
 
-  if(last_name.value == ''){
-    errors.last_name = "Please enter a last name";
-  }
+const rules = {
+  first_name: { required },
+  last_name: { required },
+  gender: { required },
+  gmail: { required, email },
+  password: { required },
+  role: { required },
+};
 
-  if(gender.value == ''){
-    errors.gender = "Please enter a gender";
-  }
+const v$ = useVuelidate(rules, staff);
 
-  if(role.value == ''){
-    errors.role = "Please select a role";
+// Method
+function clear() {
+  v$.value.$reset();
+  for (const [key, value] of Object.entries(inFoStaff)) {
+    staff[key] = value;
   }
-  
 }
 
-
-
-
+function add() {
+  if (typeof inFoStaff !== "undefined") {
+    for (const field in inFoStaff) {
+      const fieldValue = inFoStaff[field];
+      if (!fieldValue) {
+        rules.value[field] = `Please fill in ${field.replace('_', ' ')}`;
+      }
+    }
+  }
+}
 
 // Computed
 let dialog = computed(() => {
