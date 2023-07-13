@@ -55,7 +55,7 @@ class UserTableSeeder extends Seeder
                 'first_name'=>"Chectra",
                 'last_name'=>"Hong",
                 'email'=>'chetra@gmail.com',
-                'image'=>"https://i.pinimg.com/originals/76/1e/25/761e2551d2c973aae0ddf9043ff5d8ca.jpg",
+                'image'=>"https://avatars.githubusercontent.com/u/123075709?v=4",
                 'password'=>'12345678',
             ],
             [

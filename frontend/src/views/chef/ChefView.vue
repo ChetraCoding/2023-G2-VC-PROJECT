@@ -20,7 +20,7 @@
       <!-- Alert message -->
       <base-alert v-model="success">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h6 class="mt-2">You have completed this order!</h6>
+        <h6 class="mt-2">Completed order successfully!</h6>
       </base-alert>
       <!-- No order -->
       <div class="d-flex flex-wrap justify-content-center gap-3">

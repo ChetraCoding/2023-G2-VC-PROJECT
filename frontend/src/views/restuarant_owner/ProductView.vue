@@ -32,10 +32,10 @@
 
   <!-- Form create product -->
   <v-form>
-    <v-dialog v-model="dialog" width="800">
-      <v-card class="rounded-3">
+    <v-dialog v-model="dialog" persistent width="800">
+      <v-card class="rounded-lg">
         <v-card-title class="bg-orange-darken-4 text-center"
-          >Add Product</v-card-title
+          >Create New Product</v-card-title
         >
         <!-- Card-left -->
         <v-container class="w-100 d-flex">
@@ -60,11 +60,15 @@
               density="compact"
               label="Barcode"
               clearable
-              :error-messages="vp$.barcode.$errors.map((e) => e.$message)"
-              @input="vp$.barcode.$touch"
+              :error-messages="`${vp$.barcode.$errors.map(
+                (e) => e.$message
+              )}${err_barcode}`"
+              @input="
+                vp$.barcode.$touch;
+                err_barcode = '';
+              "
               @blur="vp$.barcode.$touch"
             ></v-text-field>
-
             <!-- Select field -->
             <v-select
               v-model="product.category_id"
@@ -192,8 +196,8 @@
           <!-- Card-right -->
           <div style="width: 30%">
             <v-file-input
-              v-model="product.image"
               required
+              :clearable="false"
               density="compact"
               label="File input"
               prepend-icon="mdi-file-image"
@@ -210,8 +214,11 @@
               class="rounded-lg mb-3"
               aspect-ratio="16/9"
               cover
-              v-if="image.imageUrl"
-              :src="image.imageUrl"
+              :src="
+                imgPreview
+                  ? imgPreview
+                  : require('../../assets/select_product.png')
+              "
             ></v-img>
           </div>
 
@@ -221,30 +228,31 @@
         <!-- Action -->
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
-          <danger-button
-            @click="
-              clearPruduct();
-              dialog = false;
-            "
-            >Close</danger-button
-          >
+          <danger-button @click="clearPruduct()">CLOSE</danger-button>
           <primary-button
             @click="
               vp$.$validate();
               addProduct();
             "
-            >Save</primary-button
+            >SAVE</primary-button
           >
         </v-card-actions>
         <!--------->
       </v-card>
     </v-dialog>
   </v-form>
+
+  <!-- Create new product success -->
+  <base-alert v-model="success">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Created product succeefully!</h5>
+  </base-alert>
 </template>
 
 <script setup>
 // Import
-import { onMounted, reactive, ref } from "vue";
+import firebase from "firebase";
+import { onMounted, ref } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
@@ -252,23 +260,26 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 // Variables
-const { getProducts } = useProductStore();
-const { products } = storeToRefs(useProductStore());
+const { getProducts, storeProduct } = useProductStore();
+const { products, success, err_barcode } = storeToRefs(useProductStore());
 const { getCategory } = useCategoryStore();
 const { categories } = storeToRefs(useCategoryStore());
-const dialog = ref(true);
+const customizes = ref([]);
+const dialog = ref(false);
+const imageData = ref(null);
+const imgPreview = ref(null);
 
 // Form: https://vuetifyjs.com/en/components/forms/
 // Validation Product
 const initialProduct = {
-  name: 'Noodel',
-  barcode: '007',
-  category_id: 2,
-  description: 'hello world',
+  name: null,
+  barcode: null,
+  category_id: null,
+  description: null,
   is_active: false,
   image: null,
 };
-const product = reactive({
+const product = ref({
   ...initialProduct,
 });
 const vp$ = useVuelidate(
@@ -283,9 +294,14 @@ const vp$ = useVuelidate(
   product
 );
 const clearPruduct = () => {
+  clearCustomize();
+  err_barcode.value = "";
+  dialog.value = false;
+  imgPreview.value = null;
+  customizes.value = [];
   vp$.value.$reset();
   for (const [key, value] of Object.entries(initialProduct)) {
-    product[key] = value;
+    product.value[key] = value;
   }
 };
 
@@ -295,7 +311,7 @@ const initialCustomize = {
   size: null,
   price: null,
 };
-const customize = reactive({
+const customize = ref({
   ...initialCustomize,
 });
 const vc$ = useVuelidate(
@@ -308,71 +324,76 @@ const vc$ = useVuelidate(
 const clearCustomize = () => {
   vc$.value.$reset();
   for (const [key, value] of Object.entries(initialCustomize)) {
-    customize[key] = value;
+    customize.value[key] = value;
   }
 };
-
-const image = ref({
-  image: null,
-  imageUrl: null,
-});
 
 // Method
 const imageUpload = (e) => {
   const file = e.target.files[0];
-  console.log(file);
-  image.value.image = file;
-  image.value.imageUrl = URL.createObjectURL(file);
+  if (file) {
+    imageData.value = file;
+    product.value.image = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      imgPreview.value = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
 };
 
 // Add customizes
-const customizes = ref([]);
 const addCustom = (custIndex) => {
   if (vc$.value.$errors.length === 0) {
     if (custIndex !== null) {
-      customizes.value[custIndex].size = customize.size;
-      customizes.value[custIndex].price = customize.price;
+      customizes.value[custIndex].size = customize.value.size;
+      customizes.value[custIndex].price = customize.value.price;
     } else {
-      customizes.value.push({ ...customize });
+      customizes.value.push({ ...customize.value });
+      clearCustomize();
     }
     findCustIndex.value = null;
-    clearCustomize();
   }
+  console.log(customizes.value);
 };
 const deleteCustom = (index) => {
   customizes.value.splice(index, 1);
 };
 const editCustom = (index) => {
   findCustIndex.value = index;
-  customize.size = customizes.value[index].size;
-  customize.price = customizes.value[index].price;
+  customize.value.size = customizes.value[index].size;
+  customize.value.price = customizes.value[index].price;
 };
 
-// const imageConverter = (file) => {
-//   let reader = new FileReader();
-//   let imageURL = '';
-//   reader.onloadend = () => {
-//      imageURL = reader.result;
-//      console.log(reader.result);
-//   }
-//   reader.readAsDataURL(file);
-//   return imageURL;
-// }
-
-const addProduct = async () => {
-  // product.image = 'dsad';
-  console.log(initialProduct);
-
-  // vc$.value.price.$errors[0].$message = "Product";
-  // if (customizes.value.length === 0) return vc$.value.$touch();
-
-  // if (vp$.value.$errors.length === 0) {
-  //   product.product_customizes = customizes.value;
-  //   await storeProduct(product);
-  //   dialog.value = false;
-  //   clearPruduct();
-  //   clearCustomize();
-  // }
+const addProduct = () => {
+  if (customizes.value.length === 0) vc$.value.$touch();
+  product.value.product_customizes = customizes.value;
+  if (vp$.value.$errors.length === 0 && customizes.value.length > 0) {
+    const storageRef = firebase
+      .storage()
+      .ref(`${imageData.value.name}`)
+      .put(imageData.value);
+    storageRef.on(
+      `state_changed`,
+      (snapshot) => {
+        console.log(snapshot);
+      },
+      (error) => {
+        console.log(error.message);
+      },
+      () => {
+        storageRef.snapshot.ref.getDownloadURL().then(async (url) => {
+          product.value.image = url;
+          await storeProduct(product.value);
+          if (!err_barcode.value) {
+            clearPruduct();
+            clearCustomize();
+            dialog.value = false;
+          }
+        });
+      }
+    );
+  }
 };
 
 // Lifecycle hook

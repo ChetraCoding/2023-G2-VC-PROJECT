@@ -12,6 +12,7 @@
             size="40"
             class="rounded-lg"
             color="orange-darken-4"
+            @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
           <v-text-field
@@ -26,19 +27,26 @@
       </v-main>
     </v-layout>
   </v-card>
+
+  <create-staff-form :isShowForm="isShowForm" @closeForm="closeForm" />
 </template>
 
 <script setup>
+import { ref } from "vue";
+import CreateStaffForm from "@/components/form/CreateStaffForm.vue";
 import { onMounted } from "vue";
-
-
 import {useUserStore} from "@/stores/user";
 import { storeToRefs } from "pinia";
+
+// Dialog of staff
+const isShowForm = ref(false);
+const closeForm = () => {
+  isShowForm.value = false;
+};
 
 // Variable
 const {getStaff} = useUserStore();
 const { staff } = storeToRefs(useUserStore());
-
 
 // LifeCycle hook
 onMounted(() => {
