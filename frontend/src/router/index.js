@@ -91,7 +91,15 @@ const routes = [
     name: 'order-details',
     component: () => import('@/views/waiter/OrderDetailsView'),
     beforeEnter: [loginRequired, roleRequired('waiter')]
+  },
+  // Chef =======================================================
+  {
+    path: '/chef',
+    name: '/chef',
+    component: () => import('@/views/chef/ChefView'),
+    beforeEnter: [loginRequired, roleRequired('chef')]
   }
+
 ];
 
 const router = createRouter({
