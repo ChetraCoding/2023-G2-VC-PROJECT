@@ -1,63 +1,112 @@
+// Reference from: https://router.vuejs.org/guide/advanced/navigation-guards.html
 import { createRouter, createWebHistory } from "vue-router";
-import CategoryView from "@/views/restuarant_owner/CategoryView";
-import LoginView from "@/views/LoginView";
-import HomeView from "@/views/HomeView";
-import WaiterView from "@/views/waiter/WaiterView";
-import OrderDetailsView from "@/views/waiter/OrderDetailsView";
-import ProductView from "@/views/restuarant_owner/ProductView";
-import TableView from "@/views/restuarant_owner/TableView";
-import ListStaffView from "@/views/staff/ListStaffView";
-import OrdersView from "@/views/cashier/OrdersView";
+import { useCookieStore } from "@/stores/cookie";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+
+const loginRequired = async (to, from, next) => {
+  const { getCookie } = useCookieStore();
+  const { getUser } = useUserStore();
+  const { user } = storeToRefs(useUserStore());
+  await getUser();
+  if (user.value && getCookie("user_token")) {
+    next();
+  } else {
+    next("/login");
+  }
+}
+
+const roleRequired = (role) => 
+  async (to, from, next) => {
+    const { getUser } = useUserStore();
+    const { user } = storeToRefs(useUserStore());
+    await getUser();
+    if (user.value.role === role) {
+      next();
+    } else {
+      next("/404");
+    }
+  
+};
 
 const routes = [
   {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/LoginView"),
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "page_not_found",
+    component: () => import("@/views/404/PageNotFoundView"),
+  },
+  {
+    path: "/404",
+    name: "page_not_found",
+    component: () => import("@/views/404/PageNotFoundView"),
+  },
+  // product owner ==============================================
+  {
     path: "/",
     name: "home",
-    component: HomeView,
+    component: () => import("@/views/HomeView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
     meta: {
       isRequiredAuth: true,
     },
   },
   {
-    path: "/login",
-    name: "login",
-    component: LoginView,
-  },
-  {
     path: "/category",
-    name: "cateView",
-    component: CategoryView,
+    name: "category",
+    component: () => import("@/views/restuarant_owner/CategoryView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
   {
     path: "/product",
     name: "product",
-    component: ProductView,
+    component: () => import("@/views/restuarant_owner/ProductView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
   {
-    path: "/orders",
-    name: "orders",
-    component: OrdersView,
+    path: "/table",
+    name: "table",
+    component: () => import("@/views/restuarant_owner/TableView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
   {
-    path: '/waiter',
-    name: 'waiter',
-    component: WaiterView,
+    path: "/staff",
+    name: "staff",
+    component: () => import("@/views/staff/ListStaffView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
+  },
+  // waiter =====================================================
+  {
+    path: "/waiter",
+    name: "waiter",
+    component: () => import("@/views/waiter/WaiterView"),
+    beforeEnter: [loginRequired, roleRequired('waiter')],
   },
   {
     path: '/order-details',
     name: 'order-details',
-    component: OrderDetailsView
+    component: () => import('@/views/waiter/OrderDetailsView'),
+    beforeEnter: [loginRequired, roleRequired('waiter')]
   },
+  // Chef =======================================================
   {
-    path: '/table',
-    name: 'table',
-    component: TableView,
+    path: '/chef',
+    name: '/chef',
+    component: () => import('@/views/chef/ChefView'),
+    beforeEnter: [loginRequired, roleRequired('chef')]
   },
+  // Cashier =======================================================
   {
-    path: '/staff',
-    name: 'staff',
-    component: ListStaffView,
-  },
+    path: '/cashier',
+    name: '/cashier',
+    component: () => import('@/views/cashier/OrdersView'),
+    beforeEnter: [loginRequired, roleRequired('cashier')]
+  }
+
 ];
 
 const router = createRouter({

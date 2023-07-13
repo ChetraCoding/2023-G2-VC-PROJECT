@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CreateOrderRequest extends FormRequest
+class CreateTableRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
@@ -29,11 +29,7 @@ class CreateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => 'required|numeric',
-            'datetime' => 'required',
-            'product_customizes' => 'required|array',
-            'product_customizes.*.product_customize_id' => 'required|numeric',
-            'product_customizes.*.quantity' => 'required|numeric',
+            'table_number'=> 'required'
         ];
     }
 }

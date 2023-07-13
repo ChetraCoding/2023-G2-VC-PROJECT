@@ -1,8 +1,8 @@
 <template>
     <v-card class="mb-3 rounded-b-xl">
-        <v-toolbar class="bg-white nav py-3">
+        <v-toolbar v-if="user" class="bg-white nav py-3">
 
-            <v-toolbar-title class="text-h5 text-orange-darken-4 font-weight-bold">{{ user.store_id.name }}</v-toolbar-title>
+            <v-toolbar-title class="text-h5 text-orange-darken-4 font-weight-bold">{{ user.store.name }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
@@ -13,9 +13,8 @@
 </template>
 
 <script setup>
-import { useCookieStore } from "@/stores/cookie";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
-const cookieStore = useCookieStore();
-const user = cookieStore.user;
-
+const { user } = storeToRefs(useUserStore());
 </script>

@@ -29,171 +29,31 @@
             append-inner-icon="mdi-magnify"
           ></v-text-field>
         </v-card>
-
-        <order-list-table :orders="orders" />
+        <!-- If no order -->
+        <div class="h-screen" v-if="notPaidOrders.length == 0">
+          <h4 class="text-center mt-5 text-orange-darken-4">
+            Don't have any order.
+          </h4>
+        </div>
+        <!-- If have some orders -->
+        <order-list-table v-else :orders="notPaidOrders" />
       </v-main>
     </v-layout>
   </v-card>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {useOrderStore} from "@/stores/order";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
-const orders = ref([
-  {
-    id: 1,
-    table_number: "017",
-    datetime: "2023-7-7 9:00:00",
-    order_details: [
-      {
-        id: 1,
-        order_id: 1,
-        quantity: 5,
-        product_customize: {
-          id: 1,
-          size: "small",
-          price: 3,
-          quantity: 100,
-          product: {
-            id: 1,
-            name: "Pizza",
-            barcode: "117",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-      {
-        id: 2,
-        order_id: 1,
-        quantity: 3,
-        product_customize: {
-          id: 2,
-          size: "large",
-          price: 5,
-          quantity: 40,
-          product: {
-            id: 2,
-            name: "Noodle",
-            barcode: "118",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-    ],
-  },
-  {
-    id: 2,
-    table_number: "019",
-    datetime: "2023-7-7 9:30:00",
-    order_details: [
-      {
-        id: 3,
-        order_id: 2,
-        quantity: 10,
-        product_customize: {
-          id: 1,
-          size: "small",
-          price: 3,
-          quantity: 100,
-          product: {
-            id: 1,
-            name: "Pizza",
-            barcode: "117",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-      {
-        id: 4,
-        order_id: 2,
-        quantity: 10,
-        product_customize: {
-          id: 2,
-          size: "large",
-          price: 5,
-          quantity: 40,
-          product: {
-            id: 2,
-            name: "Noodle",
-            barcode: "118",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-      {
-        id: 5,
-        order_id: 2,
-        quantity: 10,
-        product_customize: {
-          id: 2,
-          size: "large",
-          price: 5,
-          quantity: 40,
-          product: {
-            id: 2,
-            name: "Noodle",
-            barcode: "118",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-    ],
-  },
-  {
-    id: 3,
-    table_number: "020",
-    datetime: "2023-8-7 10:30:00",
-    order_details: [
-      {
-        id: 6,
-        order_id: 3,
-        quantity: 5,
-        product_customize: {
-          id: 1,
-          size: "small",
-          price: 3,
-          quantity: 100,
-          product: {
-            id: 1,
-            name: "Pizza",
-            barcode: "117",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-      {
-        id: 7,
-        order_id: 3,
-        quantity: 6,
-        product_customize: {
-          id: 3,
-          size: "large",
-          price: 5,
-          quantity: 40,
-          product: {
-            id: 2,
-            name: "Noodle",
-            barcode: "118",
-            description: "this is description.",
-            image: "qwertyuil",
-            is_active: true,
-          },
-        },
-      },
-    ],
-  },
-]);
+// Variable
+const {getOrder} = useOrderStore();
+const {notPaidOrders} = storeToRefs(useOrderStore()); 
+
+// Lifecycle hook
+onMounted(()=>{
+  getOrder();
+})
 
 </script>

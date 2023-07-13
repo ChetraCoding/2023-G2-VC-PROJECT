@@ -3,16 +3,15 @@
         <!-- Nav -->
         <nav-waiter-component @profile-clicked="drawer = !drawer"></nav-waiter-component>
 
-        <!-- <v-select outlined v-model="table" :items="tables" :item-title="'name'" :item-value="'id'" label="Area"></v-select> -->
-        <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected" :item-title="'name'" :item-value="'table'" 
+        <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected" :item-title="'table_number'" :item-value="'table'" 
             class="text-orange-darken-4 bg-white w-25" hide-details="auto" clearable label="Select table"></v-select>
 
         <header class="text-center text-orange-darken-4 text-h5 font-weight-bold">PRODUCTS</header>
 
         <!-- List products -->
-        <v-container v-if="productStore.products.length > 0">
+        <v-container v-if="products.length > 0">
             <v-row>
-                <v-col v-for="product in productStore.products" :key="product.id" cols="5" sm="4">
+                <v-col v-for="product in products" :key="product.id" cols="5" sm="4">
                     <product-card :product="product" @on-customize="onCustomize"></product-card>
                 </v-col>
             </v-row>
@@ -55,7 +54,7 @@
                                 </div>
                             </v-list-item>
 
-                            <v-list-item v-for="customize in productCustomize.product_customize" :key="customize.id"
+                            <v-list-item v-for="customize in productCustomize.product_customizes" :key="customize.id"
                                 class="text-orange-darken-4">
                                 <div class="d-flex align-center">
                                     <span class="font-weight-bold">{{ customize.size }}</span>
@@ -118,7 +117,7 @@
                         </v-card-item>
 
                         <v-list>
-                            <v-list-item v-for="customize in myCart" :key="customize.id" class="text-orange-darken-4">
+                            <v-list-item v-for="customize in myCart" :key="customize.product_customize_id" class="text-orange-darken-4">
                                 <div class="d-flex align-center">
                                     <div class="d-flex align-center">
                                         <div>
@@ -133,7 +132,7 @@
                                     </div>
                                     <v-spacer></v-spacer>
                                     <div class="d-flex align-center">
-                                        <v-icon @click="minusCustomize(customize.id)" class="text-h4"
+                                        <v-icon @click="minusCustomize(customize.product_customize_id)" class="text-h4"
                                             color="orange-darken-4" icon="mdi-minus-circle-outline"></v-icon>
                                         <h4 class="text-black mx-3 mt-2 font-weight-bold">{{ customize.quantity }}</h4>
                                         <v-icon @click="addCustomize(customize.product, customize)" class="text-h4"
@@ -167,7 +166,7 @@
         <v-card class="overflow-visible">
             <v-layout>
                 <v-navigation-drawer class="rounded-xl" v-model="drawer" temporary location="right">
-                    <v-list-item :prepend-avatar="user.image" class="mt-2 text-orange-darken-4"
+                    <v-list-item v-if="user" :prepend-avatar="user.image" class="mt-2 text-orange-darken-4"
                         :title="`${user.first_name} ${user.last_name}`"></v-list-item>
 
                     <v-divider></v-divider>
@@ -199,14 +198,18 @@
 <script setup>
 // Import
 import { computed, onMounted, ref } from "vue";
-import { useCookieStore } from "@/stores/cookie";
 import { useProductStore } from "@/stores/product";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { useTableStore } from "@/stores/table"
+import { storeToRefs } from "pinia";
 
 // Variables
-const productStore = useProductStore();
-const cookieStore = useCookieStore();
-const user = cookieStore.user;
+const { getProducts } = useProductStore();
+const { getTables } = useTableStore();
+const { user } = storeToRefs(useUserStore());
+const { tables } = storeToRefs(useTableStore());
+const { products } = storeToRefs(useProductStore());
 const router = useRouter();
 
 const drawer = ref(false);
@@ -221,11 +224,11 @@ const tableAlert = ref(false);
 const foodAlert = ref(false);
 
 const table = localStorage.getItem('table_selectd') ? ref(JSON.parse(localStorage.getItem('table_selectd'))) : ref(null);
-const tables = ref([
-    { id: 1, name: '01' },
-    { id: 2, name: '02' },
-    { id: 3, name: '03' },
-]);
+// const tables = ref([
+//     { id: 1, name: '01' },
+//     { id: 2, name: '02' },
+//     { id: 3, name: '03' },
+// ]);
 
 // Methods
 const onCustomize = (product) => {
@@ -252,12 +255,12 @@ const totalFoods = computed(() => {
 
 const addCustomize = (product, customize) => {
     const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
-    let findCustomIndex = customizes.findIndex((custom) => custom.id === customize.id);
+    let findCustomIndex = customizes.findIndex((custom) => custom.product_customize_id === customize.product_customize_id);
     if (customizes[findCustomIndex]) {
         customizes[findCustomIndex].quantity += 1;
     } else {
         customizes.push({
-            id: customize.id,
+            product_customize_id: customize.product_customize_id,
             size: customize.size,
             quantity: 1,
             price: customize.price,
@@ -274,7 +277,7 @@ const addCustomize = (product, customize) => {
 
 const minusCustomize = (custom_id) => {
     const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
-    let findCustomIndex = customizes.findIndex((custom) => custom.id === custom_id);
+    let findCustomIndex = customizes.findIndex((custom) => custom.product_customize_id === custom_id);
     if (customizes[findCustomIndex]) {
         customizes[findCustomIndex].quantity -= 1;
         if (customizes[findCustomIndex].quantity < 1) {
@@ -307,7 +310,8 @@ const onOrder = () => {
 
 // Lifecycle hook
 onMounted(() => {
-    productStore.getData();
+    getProducts();
+    getTables();
 });
 
 </script>
