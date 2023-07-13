@@ -3,6 +3,9 @@
     <thead>
       <tr>
         <th class="bg-white text-left text-black font-weight-bold">
+          #
+        </th>
+        <th class="bg-white text-left text-black font-weight-bold">
           First Name
         </th>
         <th class="bg-white text-left text-black font-weight-bold">
@@ -18,7 +21,8 @@
     </thead>
 
     <tbody>
-      <tr v-for="person in props.staff" :key="person">
+      <tr v-for="(person, index) in props.staff" :key="person">
+        <td>{{ index + 1 }}</td>
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
         <td>{{ person.gender }}</td>

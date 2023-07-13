@@ -2,7 +2,7 @@
 
 <template>
   <v-navigation-drawer :class="rail ? '' : 'slide'" v-model="drawer" :rail="rail" permanent @click="rail = false">
-    <v-list-item class="text-orange-darken-4 mt-1" prepend-icon="mdi-account-star" title="Administration">
+    <v-list-item class="text-orange-darken-4 mt-1" prepend-icon="mdi-account-star" title="Owner">
       <template v-slot:append>
         <v-btn variant="text" icon="mdi-chevron-left" @click.stop="rail = !rail"></v-btn>
       </template>

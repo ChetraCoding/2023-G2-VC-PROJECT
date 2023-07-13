@@ -32,10 +32,10 @@
 
   <!-- Form create product -->
   <v-form>
-    <v-dialog v-model="dialog" width="800">
-      <v-card class="rounded-xl">
+    <v-dialog v-model="dialog" persistent width="800">
+      <v-card class="rounded-lg">
         <v-card-title class="bg-orange-darken-4 text-center"
-          >Add Product</v-card-title
+          >Create New Product</v-card-title
         >
         <!-- Card-left -->
         <v-container class="w-100 d-flex">
@@ -228,13 +228,13 @@
         <!-- Action -->
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
-          <danger-button @click="clearPruduct()">Close</danger-button>
+          <danger-button @click="clearPruduct()">CLOSE</danger-button>
           <primary-button
             @click="
               vp$.$validate();
               addProduct();
             "
-            >Save</primary-button
+            >SAVE</primary-button
           >
         </v-card-actions>
         <!--------->

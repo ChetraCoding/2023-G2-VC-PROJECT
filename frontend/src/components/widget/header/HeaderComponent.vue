@@ -38,10 +38,8 @@
   </v-app-bar>
 
   <base-dialog v-model="isLogout" title="Log out" ms="Are you sure you want to log out?">
-    <v-card-actions class="justify-space-between">
-      <danger-button @click="isLogout = false">Cancel</danger-button>
-      <primary-button @click="logout">Confirm</primary-button>
-    </v-card-actions>
+    <danger-button @click="isLogout = false">Cancel</danger-button>
+    <primary-button @click="logout">Confirm</primary-button>
   </base-dialog>
 </template>
 

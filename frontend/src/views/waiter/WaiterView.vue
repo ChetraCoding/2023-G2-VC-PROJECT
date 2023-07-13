@@ -149,10 +149,8 @@
 
     <!-- Dialog remove customize -->
     <base-dialog v-model="isRemoveCustom" title="Tips" ms="Are you sure you don't want it?">
-        <v-card-actions class="justify-space-between">
-            <danger-button @click="isRemoveCustom = false">Cancel</danger-button>
-            <primary-button @click="removeCustomize(deleteCustomId)">Confirm</primary-button>
-        </v-card-actions>
+        <danger-button @click="isRemoveCustom = false">Cancel</danger-button>
+        <primary-button @click="removeCustomize(deleteCustomId)">Confirm</primary-button>
     </base-dialog>
 
     <!-- Alert please selecet table -->

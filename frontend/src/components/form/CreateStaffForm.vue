@@ -2,9 +2,9 @@
 <!-- Dialog for form create staff -->
 <template>
   <v-form @submit.prevent="add">
-    <v-dialog v-model="dialog" persistent width="750" no-padding>
+    <v-dialog v-model="dialog" persistent width="800" no-padding>
       <v-card
-        class="rounded-xl"
+        class="rounded-lg"
         style="max-width: 100%; max-height: 100vh; overflow-y: auto"
       >
         <v-card-title class="text-center bg-orange-darken-4">
@@ -70,9 +70,9 @@
                     label="Password*"
                     v-model="staff.password"
                     density="compact"
-                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="showPassword ? 'text' : 'password'"
-                    @click:append="showPassword = !showPassword"
+                    @click:append-inner="showPassword = !showPassword"
                     hide-details="auto"
                     :error-messages="v$.password.$errors.map((e) => e.$message)"
                     @input="v$.password.$touch"
@@ -95,7 +95,7 @@
               </v-row>
             </v-container>
           </v-card-text>
-          <v-card-actions class="ml-10">
+          <v-card-actions class="bg-grey-lighten-2">
             <v-spacer></v-spacer>
             <danger-button
               @click="
