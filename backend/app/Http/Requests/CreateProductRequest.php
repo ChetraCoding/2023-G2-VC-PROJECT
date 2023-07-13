@@ -35,7 +35,7 @@ class CreateProductRequest extends FormRequest
             'is_active' => 'required',
             'product_customizes' => 'required|array',
             'product_customizes.*.size' => 'required',
-            'product_customizes.*.price' => 'required'
+            'product_customizes.*.price' => 'required',
         ];
     }
 

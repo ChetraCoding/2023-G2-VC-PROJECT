@@ -13,6 +13,7 @@ import HeaderComponent from '@/components/widget/header/HeaderComponent';
 import LoginForm from '@/components/form/LoginForm.vue'
 import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
+import CreateProduct from '@/components/form/CreateProduct';
 import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
@@ -44,6 +45,7 @@ app.component('base-alert', BaseAlert);
 app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
+app.component('create-product', CreateProduct)
 app.component('table-list-table', TableListTable)
 app.component('table-form', TableForm)
 
