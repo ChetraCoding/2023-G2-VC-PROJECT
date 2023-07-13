@@ -21,8 +21,16 @@
             append-inner-icon="mdi-magnify"
           ></v-text-field>
         </v-card>
-
-        <list-staff-table :staff="staff" />
+        <!-- No staff -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <div class="h-screen" v-if="staff.length == 0">
+            <h4 class="text-center mt-5 text-orange-darken-4">
+              Don't have any staff.
+            </h4>
+          </div>
+          <!--Staff table -->
+          <list-staff-table v-else :staff="staff" />
+        </div>
       </v-main>
     </v-layout>
   </v-card>
@@ -30,20 +38,15 @@
 
 <script setup>
 import { onMounted } from "vue";
-
-
-import {useUserStore} from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
 // Variable
-const {getStaff} = useUserStore();
+const { getStaff } = useUserStore();
 const { staff } = storeToRefs(useUserStore());
-
 
 // LifeCycle hook
 onMounted(() => {
   getStaff();
 });
 </script>
-
-
