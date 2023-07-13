@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="px-3 rounded-xl mt-1">
+  <v-app-bar class="px-3 rounded-lg mt-1">
     <div class="w-50">
       <span class="text-orange-darken-4 font-weight-bold">{{ props.title }}</span>
     </div>
@@ -14,10 +14,10 @@
               </v-avatar>
             </v-btn>
           </template>
-          <v-card class="rounded-xl mt-3 px-5 py-2">
+          <v-card class="rounded-lg mt-3 px-5 py-2">
             <v-card-text>
               <div class="mx-auto text-center">
-                <v-avatar color="orange-darken-4">
+                <v-avatar color="orange-darken-4" size="72">
                   <v-img v-if="user.image" :src="user.image" :alt="user.first_name"></v-img>
                   <span v-else class="text-h5">{{ initials }}</span>
                 </v-avatar>

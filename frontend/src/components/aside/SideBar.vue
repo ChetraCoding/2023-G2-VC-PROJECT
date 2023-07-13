@@ -43,7 +43,7 @@ let drawer = ref(true);
 
 <style scoped>
 .slide {
-  border-radius: 10px 40px 40px 10px;
+  border-radius: 0px 15px 15px 0px;
 }
 
 </style>
