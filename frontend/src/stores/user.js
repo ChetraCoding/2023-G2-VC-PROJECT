@@ -6,6 +6,7 @@ export const useUserStore = defineStore("user", {
   state: () => {
     return {
       user: null,
+      staff:[],
     };
   },
   actions: {
@@ -22,5 +23,16 @@ export const useUserStore = defineStore("user", {
         this.user = null;
       }
     },
+    // List staff
+    async getStaff(){
+      try{
+        const res = await http.get("staff");
+        if(res.data.success){
+          this.staff = res.data.data
+        }
+      }catch(err) {
+        return err;
+      }
+    }
   },
 });

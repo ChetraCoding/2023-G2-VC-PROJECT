@@ -38,7 +38,7 @@ class ProductController extends Controller
       $newProduct = Product::storeProduct($request);
 
       // Create product_customize for product ---------
-      $productCustomizes = $request->product_customize;
+      $productCustomizes = $request->product_customizes;
       foreach ($productCustomizes as $productCustomize) {
         $productCustomize['product_id'] = $newProduct['id'];
         ProductCustomize::store($productCustomize);

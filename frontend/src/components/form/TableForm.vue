@@ -3,17 +3,17 @@
     <v-dialog v-model="dialog" persistent width="1024">
       <v-card class="rounded-xl">
         <v-card-title class="text-center bg-orange-darken-4">
-          <span class="text-h6">Create New Category</span>
+          <span class="text-h6">Create New Table</span>
         </v-card-title>
         <div class="p-3">
           <v-col class="mt-2" cols="12">
             <v-text-field
-              v-model="categoryName"
-              label="Name"
+              v-model="tableNumber"
+              label="Number"
               hide-details="auto"
               @keyup="
-                !categoryName
-                  ? (error = 'Please enter a category name.')
+                !tableNumber
+                  ? (error = 'Please enter a table number.')
                   : (error = null)
               "
             ></v-text-field>
@@ -22,7 +22,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <danger-button
-              @click="$emit('closeForm'), (error = null), (categoryName = '')"
+              @click="$emit('closeForm'), (error = null), (tableNumber = '')"
             >
               CLOSE
             </danger-button>
@@ -36,30 +36,29 @@
 
 <script setup>
 import { defineProps, defineEmits, computed, ref } from "vue";
-import { useCategoryStore } from "@/stores/category";
+import { useTableStore } from "@/stores/table";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { storeCategory, getCategory } = useCategoryStore();
-const { error } = storeToRefs(useCategoryStore());
+const { storeTable, getTables } = useTableStore();
+const { error } = storeToRefs(useTableStore());
 const emit = defineEmits(["closeForm"]);
 const props = defineProps(["isShowForm"]);
-const categoryName = ref("");
+const tableNumber = ref("");
 
-// methods
+// method
 let add = async () => {
-  if (!categoryName.value) {
-    return (error.value = "Please enter a category name.");
-  }
-  await storeCategory({ name: categoryName.value });
+  if (!tableNumber.value) return (error.value = "Please enter a table number.");
+  await storeTable({ table_number: tableNumber.value });
   if (!error.value) {
-    getCategory();
-    categoryName.value = "";
+    getTables();
+    tableNumber.value = "";
     emit("closeForm");
   }
 };
-// Computed
-let dialog = computed(() => {
+
+// computed
+const dialog = computed(() => {
   return props.isShowForm;
 });
 </script>

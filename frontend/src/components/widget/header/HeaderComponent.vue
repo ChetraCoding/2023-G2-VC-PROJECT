@@ -1,7 +1,7 @@
 <template>
-  <v-app-bar class="px-3 bg-orange-darken-4 rounded-pill mt-1">
+  <v-app-bar class="px-3 rounded-xl mt-1">
     <div class="w-50">
-      <span class="font-weight-bold">{{ props.title }}</span>
+      <span class="text-orange-darken-4 font-weight-bold">{{ props.title }}</span>
     </div>
     <v-container fluid>
       <v-row class="d-flex justify-end">
