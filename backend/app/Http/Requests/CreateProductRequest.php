@@ -27,26 +27,23 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'store_id',
             'category_id' => 'required',
             'name' => 'required',
             'barcode' => 'required',
             'description' => 'required',
             'image' => 'required',
             'is_active' => 'required',
-            'product_customize' => 'required|array',
-            'product_customize.*.size' => 'required',
-            'product_customize.*.price' => 'required',
-            'product_customize.*.quantity' => 'required',
+            'product_customizes' => 'required|array',
+            'product_customizes.*.size' => 'required',
+            'product_customizes.*.price' => 'required',
         ];
     }
 
     public function messages()
     {
         return[
-            'product_customize.*.size.required' => 'The size field is required.',
-            'product_customize.*.price.required' => 'The price field is required.',
-            'product_customize.*.quantity.required' => 'The quantity field is required.',
+            'product_customizes.*.size.required' => 'The size field is required.',
+            'product_customizes.*.price.required' => 'The price field is required.',
         ];
     }
 
