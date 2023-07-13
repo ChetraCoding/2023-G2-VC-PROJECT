@@ -81,9 +81,9 @@
                   <v-select
                     label="Role*"
                     v-model="staff.role"
-                    :items="items"
-                    :item-title="'text'"
-                    item-value="value"
+                    :items="roles"
+                    :item-title="'name'"
+                    item-value="role_id"
                     density="compact"
                     :error-messages="v$.role.$errors.map((e) => e.$message)"
                     @input="v$.role.$touch"
@@ -103,7 +103,7 @@
             >
               CLOSE
             </danger-button>
-            <danger-button
+            <primary-button
               type="submit"
               @click="
                 () => {
@@ -111,8 +111,7 @@
                   add();
                 }
               "
-              >SAVE</danger-button
-            >
+              >SAVE</primary-button>
           </v-card-actions>
         </div>
       </v-card>
@@ -127,25 +126,28 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { defineProps, computed, defineEmits, ref } from "vue";
 import { useUserStore } from "@/stores/user";
+import { useRoleStore } from "@/stores/role";
 import { storeToRefs } from "pinia";
 
 // Variables
 const { addStaff } = useUserStore();
+const { getRoles } = useRoleStore();
 const { err_email, success } = storeToRefs(useUserStore());
+const { roles } = storeToRefs(useRoleStore());
 const emit = defineEmits(["closeForm"]);
 const props = defineProps(["isShowForm"]);
 const showPassword = ref(false);
 
-const items = ref([
-  { text: "Chef", value: 3 },
-  { text: "Waiter", value: 2 },
-  { text: "Cashier", value: 4 },
-]);
+// const items = ref([
+//   { text: "Chef", value: 3 },
+//   { text: "Waiter", value: 2 },
+//   { text: "Cashier", value: 4 },
+// ]);
 const inFoStaff = {
   first_name: "",
   last_name: "",
@@ -201,5 +203,9 @@ const add = async () => {
 // Computed
 let dialog = computed(() => {
   return props.isShowForm;
+});
+
+onMounted(() => {
+  getRoles();
 });
 </script>
