@@ -98,6 +98,13 @@ const routes = [
     name: '/chef',
     component: () => import('@/views/chef/ChefView'),
     beforeEnter: [loginRequired, roleRequired('chef')]
+  },
+  // Cashier =======================================================
+  {
+    path: '/cashier',
+    name: '/cashier',
+    component: () => import('@/views/cashier/OrdersView'),
+    beforeEnter: [loginRequired, roleRequired('cashier')]
   }
 
 ];

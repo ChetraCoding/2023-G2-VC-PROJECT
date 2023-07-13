@@ -6,7 +6,8 @@ export const useOrderStore = defineStore("order", {
         return {
             error: null,
             success: false,
-            orders: []
+            orders: [],
+            notPaidOrders:[],
         };
     },
     actions: {
@@ -38,6 +39,18 @@ export const useOrderStore = defineStore("order", {
                     this.success = true;
                 }
             } catch (err) {return err;}
+        },
+        // Get order for cashier
+        async getOrder(){
+            try{
+                const res =  await http.get('orders/paid/0');
+                if(res.data.success){
+                    this.notPaidOrders = res.data.data
+                }
+            }catch(err){
+                return err;
+            }
         }
+
     },
 });
