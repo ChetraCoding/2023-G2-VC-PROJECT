@@ -42,8 +42,8 @@ class CreateProductRequest extends FormRequest
     public function messages()
     {
         return[
-            'product_customize.*.size.required' => 'The size field is required.',
-            'product_customize.*.price.required' => 'The price field is required.',
+            'product_customizes.*.size.required' => 'The size field is required.',
+            'product_customizes.*.price.required' => 'The price field is required.',
         ];
     }
 
