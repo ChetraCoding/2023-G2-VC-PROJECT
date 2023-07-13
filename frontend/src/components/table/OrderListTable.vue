@@ -79,6 +79,7 @@
             :key="order_detail.id"
           >
             <div>
+              <!-- <h1>{{ order_detail }}</h1> -->
               <span>{{ order_detail.product_customize.product.name }}</span
               ><br />
               <span>size / {{ order_detail.product_customize.size }}</span>
