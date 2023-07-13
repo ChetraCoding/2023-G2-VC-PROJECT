@@ -12,9 +12,9 @@
       <tr>
         <th class="text-left text-black font-weight-bold">#</th>
         <th class="text-left text-black font-weight-bold">Name</th>
+        <th class="text-left text-black font-weight-bold">Barcode</th>
         <th class="text-left text-black font-weight-bold">Category</th>
         <th class="text-left text-black font-weight-bold">Description</th>
-        <th class="text-left text-black font-weight-bold">Quantity</th>
         <th class="text-left text-black font-weight-bold" style="width: 30px;">Action</th>
       </tr>
     </thead>
@@ -22,9 +22,9 @@
       <tr v-for="(product, index) in props.products" :key="product.product_id">
         <td>{{ index + 1 }}</td>
         <td>{{ product.name }}</td>
+        <td>{{ product.barcode}}</td>
         <td>{{ product.category }}</td>
-        <td>{{ product.description }}</td>
-        <td>{{ getQuantity(product) }}</td>
+        <td>{{ product.description }}</td>   
         <td>
           <div class="d-flex">
             <div class="d-flex align-center">
@@ -44,18 +44,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps} from "vue";
 
 // Variables
 const props = defineProps(["products"]);
-
-// Methods
-const getQuantity = (product) => {
-  const sumQuantity = ref(0);
-  for (let customize of product.product_customizes) {
-    sumQuantity.value += customize.quantity;
-  }
-  return sumQuantity.value;
-};
 
 </script>

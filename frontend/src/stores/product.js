@@ -4,6 +4,8 @@ import http from "../http-common";
 export const useProductStore = defineStore("product", {
   state: () => {
     return {
+      success: false,
+      err_barcode: '',
       products: []
     };
   },
@@ -22,11 +24,14 @@ export const useProductStore = defineStore("product", {
       try {
         const res = await http.post('products', product);
         if (res.data.success) {
-          console.log(res.data);
+          this.success = true;
+          this.err_barcode = '';
           this.getProducts();
         }
       } catch (err) {
-        console.log(err);
+        if (err.response.data.message.barcode) {
+          this.err_barcode = 'Barcode already exists.';
+        }
       }
     }
   },

@@ -23,10 +23,7 @@
             label="Row Number"
           ></v-select>
         </v-card>
-        <category-list-table
-          v-if="categories.length > 0"
-          :categories="categories"
-        ></category-list-table>
+        <category-list-table v-if="categories.length > 0" :categories="categories"></category-list-table>
         <div class="h-screen" v-else>
           <h4 class="text-center mt-5 text-orange-darken-4">
             Don't have any category.
