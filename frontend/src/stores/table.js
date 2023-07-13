@@ -4,6 +4,8 @@ import http from "../http-common";
 export const useTableStore = defineStore("table", {
   state: () => {
     return {
+      error: null,
+      success: false,
       tables: []
     };
   },
@@ -15,6 +17,16 @@ export const useTableStore = defineStore("table", {
           this.tables = res.data.data;
         }
       } catch (err) { return err }
-    }
+    },
+    async storeTable(table) {
+      try {
+          const res = await http.post('tables', table);
+          if (res.data.success){
+            this.success = true;
+          }
+      } catch (err) {
+        this.error = err.response.data.message.table;
+      }
+  }
   },
 });

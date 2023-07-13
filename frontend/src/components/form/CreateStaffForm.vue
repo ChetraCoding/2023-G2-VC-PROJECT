@@ -14,46 +14,53 @@
               <v-row class="justify-center">
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="first name*"
+                    label="First name*"
                     v-model="staff.first_name"
                     density="compact"
                     hide-details="auto"
-                    :error-messages="v$.first_name.$errors.map((e) => e.$message)"
+                    :error-messages="
+                      v$.first_name.$errors.map((e) => e.$message)
+                    "
                     @input="v$.first_name.$touch"
                     @blur="v$.first_name.$touch"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="last name*"
+                    label="Last name*"
                     v-model="staff.last_name"
                     density="compact"
                     hide-details="auto"
-                    :error-messages="v$.last_name.$errors.map((e) => e.$message)"
+                    :error-messages="
+                      v$.last_name.$errors.map((e) => e.$message)
+                    "
                     @input="v$.last_name.$touch"
                     @blur="v$.last_name.$touch"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
-                  <v-text-field
+                  <v-select
                     label="Gender*"
                     v-model="staff.gender"
+                    :items="['Male', 'Female', 'Other']"
                     density="compact"
                     hide-details="auto"
                     :error-messages="v$.gender.$errors.map((e) => e.$message)"
                     @input="v$.gender.$touch"
                     @blur="v$.gender.$touch"
-                  ></v-text-field>
+                  ></v-select>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Gmail*"
-                    v-model="staff.gmail"
+                    label="Email*"
+                    v-model="staff.email"
                     density="compact"
                     hide-details="auto"
-                    :error-messages="v$.gmail.$errors.map((e) => e.$message)"
-                    @input="v$.gmail.$touch"
-                    @blur="v$.gmail.$touch"
+                    :error-messages="`${v$.email.$errors.map(
+                      (e) => e.$message
+                    )}${err_email}`"
+                    @input="v$.email.$touch"
+                    @blur="v$.email.$touch"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -61,6 +68,9 @@
                     label="Password*"
                     v-model="staff.password"
                     density="compact"
+                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    :type="showPassword ? 'text' : 'password'"
+                    @click:append="showPassword = !showPassword"
                     hide-details="auto"
                     :error-messages="v$.password.$errors.map((e) => e.$message)"
                     @input="v$.password.$touch"
@@ -72,6 +82,8 @@
                     label="Role*"
                     v-model="staff.role"
                     :items="items"
+                    :item-title="'text'"
+                    item-value="value"
                     density="compact"
                     :error-messages="v$.role.$errors.map((e) => e.$message)"
                     @input="v$.role.$touch"
@@ -91,29 +103,54 @@
             >
               CLOSE
             </danger-button>
-            <danger-button type="submit" @click="add"> SAVE </danger-button>
+            <danger-button
+              type="submit"
+              @click="
+                () => {
+                  v$.$validate();
+                  add();
+                }
+              "
+              >SAVE</danger-button
+            >
           </v-card-actions>
         </div>
       </v-card>
     </v-dialog>
   </v-form>
+
+  <!-- Alert success -->
+  <base-alert v-model="success">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Order succeefully!</h5>
+  </base-alert>
 </template>
 
 <script setup>
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, minLength } from "@vuelidate/validators";
 import { defineProps, computed, defineEmits, ref } from "vue";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // Variables
-defineEmits(["closeForm"]);
+const { addStaff } = useUserStore();
+const { err_email, success } = storeToRefs(useUserStore());
+const emit = defineEmits(["closeForm"]);
 const props = defineProps(["isShowForm"]);
-const items = ref(["Chef", "Waiter", "Cashier", "Admin"]);
+const showPassword = ref(false);
+
+const items = ref([
+  { text: "Chef", value: 3 },
+  { text: "Waiter", value: 2 },
+  { text: "Cashier", value: 4 },
+]);
 const inFoStaff = {
   first_name: "",
   last_name: "",
   gender: null,
-  gmail: null,
+  email: null,
   password: null,
   role: null,
 };
@@ -126,31 +163,40 @@ const rules = {
   first_name: { required },
   last_name: { required },
   gender: { required },
-  gmail: { required, email },
-  password: { required },
+  email: { required, email },
+  password: { required, minLength: minLength(8) },
   role: { required },
 };
 
 const v$ = useVuelidate(rules, staff);
 
 // Method
-function clear() {
+const clear = () => {
+  emit("closeForm");
+  err_email.value = "";
   v$.value.$reset();
   for (const [key, value] of Object.entries(inFoStaff)) {
     staff[key] = value;
   }
-}
+};
 
-function add() {
-  if (typeof inFoStaff !== "undefined") {
-    for (const field in inFoStaff) {
-      const fieldValue = inFoStaff[field];
-      if (!fieldValue) {
-        rules.value[field] = `Please fill in ${field.replace('_', ' ')}`;
-      }
+const add = async () => {
+  if (v$.value.$errors.length === 0) {
+    const newStaff = {
+      role_id: staff.role,
+      first_name: staff.first_name,
+      last_name: staff.last_name,
+      email: staff.email,
+      password: staff.password,
+    };
+    await addStaff(newStaff);
+    console.log(err_email);
+    if (!err_email.value) {
+      success.value = true;
+      clear();
     }
   }
-}
+};
 
 // Computed
 let dialog = computed(() => {

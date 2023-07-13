@@ -16,7 +16,7 @@ class TableController extends Controller
     public function index()
     {
         $tables = Auth::user()->store->tables;
-        return response()->json(["success" => true, "data" => TableResource::collection($tables), "message" => "Get all table are successfully."], 200);
+        return response()->json(["success" => true, "data" => TableResource::collection($tables), "message" => "Get all tables are successfully."], 200);
     }
 
     /**

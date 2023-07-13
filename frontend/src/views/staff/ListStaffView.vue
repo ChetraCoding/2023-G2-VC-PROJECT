@@ -34,6 +34,9 @@
 <script setup>
 import { ref } from "vue";
 import CreateStaffForm from "@/components/form/CreateStaffForm.vue";
+import { onMounted } from "vue";
+import {useUserStore} from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // Dialog of staff
 const isShowForm = ref(false);
@@ -41,17 +44,14 @@ const closeForm = () => {
   isShowForm.value = false;
 };
 
-// Staff
-const staff = ref([
-  {
-    first_name: "pich",
-    last_name: "thun",
-    possition: "too crazy",
-    gender: "female",
-    gmail: "crazy@gmail.com",
-    password: "******",
-  },
-]);
+// Variable
+const {getStaff} = useUserStore();
+const { staff } = storeToRefs(useUserStore());
+
+// LifeCycle hook
+onMounted(() => {
+  getStaff();
+});
 </script>
 
-<style></style>
+
