@@ -60,6 +60,7 @@
         prepend-icon="mdi-table"
         title="Tables"
         value="tables"
+        to="table"
         class="text-orange-darken-4"
       >
       </v-list-item>

@@ -16,9 +16,11 @@ import ProductListTable from '@/components/table/ProductListTable';
 import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
+import TableForm from '@/components/form/TableForm';
 import ListStaffTable from "@/components/table/ListStaffTable";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
+import ChefOrderCard from "@/components/widget/card/ChefOrderCard";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -26,8 +28,10 @@ const pinia = createPinia();
 // Components
 app.component('base-side-bar', BaseSideBar);
 app.component('side-bar', SideBar);
+app.component('base-side-bar', BaseSideBar);
 app.component('header-component', HeaderComponent);
 app.component('product-card', ProductCard);
+app.component('chef-order-card', ChefOrderCard);
 
 // Buttons
 app.component('primary-button', PrimaryButton);
@@ -41,6 +45,7 @@ app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 app.component('table-list-table', TableListTable)
+app.component('table-form', TableForm)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
@@ -53,5 +58,7 @@ app.component('login-form', LoginForm);
 
 // List staff
 app.component('list-staff-table', ListStaffTable )
+// List Order Compoment
+app.component('chef-order-card',ChefOrderCard)
 
-app.use(router).use(vuetify).use(pinia).mount('#app')
+app.use(pinia).use(vuetify).use(router).mount('#app')

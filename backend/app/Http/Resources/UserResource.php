@@ -17,7 +17,7 @@ class UserResource extends JsonResource
     {
         return [
             'user_id'=>$this->id,
-            'store_id'=> new StoreResource($this->store),
+            'store'=> new StoreResource($this->store),
             'role'=> $this->role->name,
             'first_name'=>$this->first_name,
             'last_name'=>$this->last_name,

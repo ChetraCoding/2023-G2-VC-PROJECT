@@ -29,33 +29,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const staff = ref([
-  {
-    first_name: "sreypich",
-    last_name: "thun",
-    gender: "Female",
-    possition: "Chef",
-  },
-  {
-    first_name: "sreyka",
-    last_name: "thor",
-    gender: "Female",
-    possition: "Waiter",
-  },
-  {
-    first_name: "Liminhoo",
-    last_name: "Jun",
-    gender: "male",
-    possition: "Cashier",
-  },
-  {
-    first_name: "Linyi",
-    last_name: "Love",
-    gender: "male",
-    possition: "Cashier",
-  },
-]);
+import { onMounted } from "vue";
+
+
+import {useUserStore} from "@/stores/user";
+import { storeToRefs } from "pinia";
+
+// Variable
+const {getStaff} = useUserStore();
+const { staff } = storeToRefs(useUserStore());
+
+
+// LifeCycle hook
+onMounted(() => {
+  getStaff();
+});
 </script>
 
-<style></style>
+

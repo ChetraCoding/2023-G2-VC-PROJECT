@@ -21,7 +21,7 @@
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
         <td>{{ person.gender }}</td>
-        <td>{{ person.possition }}</td>
+        <td>{{ person.role }}</td>
 
         <td>
           <v-icon
