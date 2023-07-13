@@ -1,3 +1,5 @@
+<!-- Referemce: https://play.vuetifyjs.com/#eNqVVUtv2zAM/iuCUSAJENvbWmBAkGYZsB122Q4Ddkly8INp1MiSJ8leiyL/fZTkZ+q8Lq1M8iP5faKY1Zv3Nc+DsgBv5s01ZDmLNCzWnJD5VsjMnvBc+hpetL+lwFJnIqT0M5ECe1x7SiMo4FEGa6/2zkBKIf0MlIqeQGFUeWdDgjvrUUEW5WMgjwuCpips0sEnouAaJAI/fmjNLIptyZ+9YhL+FlRC09qS8rzQ3ZpaFMmuBSxjVpjUw/7FPOwSRhFukAGyiLILOtiYK4WoGX/3+4nPca7ynyY9FHCGtQIGiT7FuPK2lCkOkmFq/1+QwoFv1OIHJj6jRLKL+BP085/WYjDCiuE8XSGSHST7WLyckqLxnyddh91I+5sgr6Ig0ZME+HIl/7bUaQVOxFgNal9XhVhzkrBIGTYZ+A9rD2symuxdursyYjRFOdbegqgizqgmJhXC2n1icjSghEEkTbQ99ILnYbWH5mFnPeGnSiTNNVGgi9xG0iwXUpM31CNKNC2BHMhWioyMcL2NehGFgj8FuCabqCWGOVOYCHmEsA9m2kg9BKpY43Ui1IATwZUmlFNNI/bbzAd5JG9OAbN1ZmQ0mrpPm77z7SZvRnjBWGWqL6JjPHTr2AHEAjX7cVUpCIJuCw446XVonikiVyPzrsjH0ZS406fmdN+cHkabLlYWDAy2R8tcQa1Tn2DrmTpTE1AzHsDa/gY9rSbvnD1tyjtssXvpY9v31IlWibEtOAonzGjjEI4nNSecaLzaAl+mBJy2cRWOACHJ2BVY7eF1SmzYhogt+RU/m50CXEsKaty9gEmTGEkbg8FusD+Ldh5s3v6Zh27Kcb69qcco36vgWQmOP9Y2B74chQt2RlYOt/Z2WudqFoZJyjESVxMtZcBBhzzPQpxVTbevy/vgPvgcplTp2uTjilGBTWYy4RUfsKCbfvzdyY+qOoetXHHBh4/N4/eFFsx7CSX+slNcHKnIbC8PrpeOOQCV+bEU/xRITLL2qgu3ZUzDV5S6xBZLvEsdYr0SpC+BpyABd9J1jI5gXVZHrrPM/BQyeh01GxoyGocUE78EWS/X0S67kkYH4Xp3qd8JNbj0bqvR4oYqVeN/8A5Tz0qJw2iv0dv8B32+fuE= -->
+<!-- Dialog for form create staff -->
 <template>
   <v-form @submit.prevent="add">
     <v-dialog v-model="dialog" persistent width="750" no-padding>
@@ -111,7 +113,8 @@
                   add();
                 }
               "
-              >SAVE</primary-button>
+              >SAVE</primary-button
+            >
           </v-card-actions>
         </div>
       </v-card>
@@ -121,7 +124,7 @@
   <!-- Alert success -->
   <base-alert v-model="success">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Order succeefully!</h5>
+    <h5 class="mt-2">Added staff succeefully!</h5>
   </base-alert>
 </template>
 
@@ -142,12 +145,6 @@ const { roles } = storeToRefs(useRoleStore());
 const emit = defineEmits(["closeForm"]);
 const props = defineProps(["isShowForm"]);
 const showPassword = ref(false);
-
-// const items = ref([
-//   { text: "Chef", value: 3 },
-//   { text: "Waiter", value: 2 },
-//   { text: "Cashier", value: 4 },
-// ]);
 const inFoStaff = {
   first_name: "",
   last_name: "",
@@ -172,7 +169,7 @@ const rules = {
 
 const v$ = useVuelidate(rules, staff);
 
-// Method
+// Methods
 const clear = () => {
   emit("closeForm");
   err_email.value = "";
@@ -205,6 +202,7 @@ let dialog = computed(() => {
   return props.isShowForm;
 });
 
+// Lifecycle hook
 onMounted(() => {
   getRoles();
 });
