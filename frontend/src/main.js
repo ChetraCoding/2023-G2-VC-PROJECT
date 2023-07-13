@@ -23,6 +23,7 @@ import ListStaffTable from "@/components/table/ListStaffTable";
 import CreateStaffForm from "@/components/form/CreateStaffForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
+import BaseDialog from '@/components/widget/dialog/BaseDialog';
 import ChefOrderCard from "@/components/widget/card/ChefOrderCard";
 
 const app = createApp(App);
@@ -43,6 +44,9 @@ app.component('danger-button', DangerButton);
 // Alert
 app.component('base-alert', BaseAlert);
 
+// Dislog
+app.component('base-dialog', BaseDialog);
+
 // Restaurant owner component
 app.component('category-form', CategoryForm)
 app.component('category-list-table', CategoryListTable)
@@ -54,9 +58,6 @@ app.component('table-form', TableForm)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
-// Waiter component
-import NavWaiterComponent from './components/nav/NavWaiterComponent.vue';
-app.component('nav-waiter-component', NavWaiterComponent);
 
 // Login component
 app.component('login-form', LoginForm);
