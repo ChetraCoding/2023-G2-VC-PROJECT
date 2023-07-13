@@ -16,7 +16,7 @@ class CategoryController extends Controller
     // list category --------------
     public function index()
     {
-        $categories = Auth::user()->store->categories;
+        $categories = Auth::user()->store->categories->sortByDesc('id');
         return response()->json(["success"=>true, "data"=>CategoryResource::collection($categories) ,"message" => "Get all categories successfully."],200);
     }
 
