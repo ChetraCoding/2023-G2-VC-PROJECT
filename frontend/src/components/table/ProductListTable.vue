@@ -1,8 +1,13 @@
 // Reference : https://vuetifyjs.com/en/components/tables/
 
 <template>
+
+  <!--Don't have project-->
+  <div class="h-screen" v-if="products.length===0">
+          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any product.</h4>
+        </div>
   <!-- Create table of list products -->
-  <v-table>
+  <v-table v-else>
     <thead>
       <tr>
         <th class="text-left text-black font-weight-bold">#</th>
