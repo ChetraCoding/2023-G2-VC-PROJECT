@@ -51,17 +51,17 @@
         >Confirm Orders</v-card-title
       >
       <v-card-text>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Table:</h6>
           <h6 class="ml-2 font-weight-bold">{{ orderInfo.table_number }}</h6>
         </div>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Date:</h6>
           <h6 class="ml-2 font-weight-bold">
             {{ new Date(orderInfo.datetime).toDateString() }}
           </h6>
         </div>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Time:</h6>
           <h6 class="ml-2 font-weight-bold">
             {{ new Date(orderInfo.datetime).toLocaleTimeString() }}
@@ -69,9 +69,7 @@
         </div>
 
         <!-- Card of list -->
-        <h6 class="text-orange-darken-4 font-weight-bold mt-3">
-          Summary Orders
-        </h6>
+        <h6 class="text-darken-4 font-weight-bold mt-3">Summary Orders</h6>
         <v-list>
           <div
             v-list-item
@@ -79,7 +77,6 @@
             :key="order_detail.id"
           >
             <div>
-              <!-- <h1>{{ order_detail }}</h1> -->
               <span>{{ order_detail.product_customize.product.name }}</span
               ><br />
               <span>size / {{ order_detail.product_customize.size }}</span>
@@ -98,9 +95,9 @@
         </v-list>
 
         <div class="d-flex">
-          <h6 class="text-orange-darken-4 font-weight-bold">Total:</h6>
+          <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
-          <h6 class="font-weight-bold text-orange-darken-4">
+          <h6 class="font-weight-bold text-darken-4">
             ${{ getTotalPrice(orderInfo) }}
           </h6>
         </div>
