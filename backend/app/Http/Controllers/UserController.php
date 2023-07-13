@@ -38,6 +38,14 @@ class UserController extends Controller
         return response()->json(["success" => true, "data" => new UserResource(Auth::user()), "message" => "Get user login is successfully."], 200);
     }
 
+    // Get staff by restaurant owner ----------------
+    public function getSaff()
+    {
+        if (Auth::user()->role->name !== 'restaurant_owner') return response()->json(['success' => false, 'message' => ["roles" => "You don't have permission to access this route."]], 403);
+        $users = Auth::user()->store->users->where('id', '!==', Auth::user()->id);
+        return response()->json(["success" => true, "data" => UserResource::collection($users), "message" => "Get all staff are successfully."], 200);
+    }
+
     // User login ----------------
     public function login(LoginUserRequest $request)
     {

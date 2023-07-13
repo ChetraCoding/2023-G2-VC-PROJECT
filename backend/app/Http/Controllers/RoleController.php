@@ -14,6 +14,6 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::where('name', '!=', 'admin')->get();
-        return response()->json(["success" => true, "data" => RoleResource::collection($roles), "message" => "Get all table are successfully."], 200);
+        return response()->json(["success" => true, "data" => RoleResource::collection($roles), "message" => "Get all roles are successfully."], 200);
     }
 }
