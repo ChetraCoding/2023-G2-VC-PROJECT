@@ -2,24 +2,11 @@
 
 <template>
   <!-- Sidebar -->
-  <v-navigation-drawer
-    v-model="drawer"
-    :rail="rail"
-    color="white"
-    permanent
-    @click="rail = false"
-  >
-    <v-list-item
-      class="text-orange-darken-4 mt-1"
-      prepend-icon="mdi-account-star"
-      :title="props.title"
-    >
+  <v-navigation-drawer v-model="drawer" :class="rail ? '' : 'slide'" :rail="rail" permanent
+    @click="rail = false">
+    <v-list-item class="text-orange-darken-4 mt-1" prepend-icon="mdi-account-star" :title="props.title">
       <template v-slot:append>
-        <v-btn
-          variant="text"
-          icon="mdi-chevron-left"
-          @click.stop="rail = !rail"
-        ></v-btn>
+        <v-btn variant="text" icon="mdi-chevron-left" @click.stop="rail = !rail"></v-btn>
       </template>
     </v-list-item>
     <v-divider class="mt-1"></v-divider>
@@ -34,11 +21,14 @@
 </template>
 
 <script setup>
-import {  defineProps, ref } from "vue";
+import { defineProps, ref } from "vue";
 const props = defineProps(['title'])
-let rail = ref(true);
+let rail = ref(false);
 let drawer = ref(true);
 </script>
 
-
-
+<style scoped>
+.slide {
+  border-radius: 0px 15px 15px 0px;
+}
+</style>

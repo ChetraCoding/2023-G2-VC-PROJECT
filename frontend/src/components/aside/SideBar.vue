@@ -45,5 +45,4 @@ let drawer = ref(true);
 .slide {
   border-radius: 0px 15px 15px 0px;
 }
-
 </style>
