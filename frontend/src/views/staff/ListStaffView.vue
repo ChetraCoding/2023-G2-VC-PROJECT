@@ -7,23 +7,20 @@
 
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
-          <v-icon
-            icon="mdi-plus"
-            size="40"
-            class="rounded-lg"
-            color="orange-darken-4"
-            @click="isShowForm = true"
-          ></v-icon>
+          <v-icon icon="mdi-plus" size="40" class="rounded-lg" color="orange-darken-4"
+            @click="isShowForm = true"></v-icon>
           <v-spacer></v-spacer>
-          <v-text-field
-            density="compact"
-            variant="outlined"
-            placeholder="Search staff"
-            append-inner-icon="mdi-magnify"
-          ></v-text-field>
+          <v-text-field density="compact" variant="outlined" placeholder="Search staff"
+            append-inner-icon="mdi-magnify"></v-text-field>
         </v-card>
-
-        <list-staff-table :staff="staff" />
+        <!-- No staff -->
+          <div class="h-screen" v-if="staff.length == 0">
+            <h4 class="text-center mt-5 text-orange-darken-4">
+              Don't have any staff.
+            </h4>
+          </div>
+          <!--Staff table -->
+          <list-staff-table v-else :staff="staff" />
       </v-main>
     </v-layout>
   </v-card>
@@ -35,7 +32,7 @@
 import { ref } from "vue";
 import CreateStaffForm from "@/components/form/CreateStaffForm.vue";
 import { onMounted } from "vue";
-import {useUserStore} from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
 // Dialog of staff
@@ -45,7 +42,7 @@ const closeForm = () => {
 };
 
 // Variable
-const {getStaff} = useUserStore();
+const { getStaff } = useUserStore();
 const { staff } = storeToRefs(useUserStore());
 
 // LifeCycle hook

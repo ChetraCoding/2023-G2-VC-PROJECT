@@ -6,7 +6,7 @@
     <thead>
       <tr>
         <th class="text-left text-black font-weight-bold" style="width: 100px">No.</th>
-        <th class="text-left text-black font-weight-bold">Number of Table</th>
+        <th class="text-left text-black font-weight-bold">Number</th>
         <th class="text-left text-black font-weight-bold" style="width: 100px">Action</th>
       </tr>
     </thead>
