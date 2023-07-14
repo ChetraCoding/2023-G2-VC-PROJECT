@@ -29,8 +29,6 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => 'required|numeric',
-            'datetime' => 'required',
             'is_completed' => 'required|boolean',
             'is_paid' => 'required|boolean',
         ];

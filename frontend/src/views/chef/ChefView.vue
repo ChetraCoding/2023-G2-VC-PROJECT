@@ -5,8 +5,8 @@
       <template v-slot:menu>
         <v-list-item
           prepend-icon="mdi-food"
-          title="Orders"
-          value="dashboard"
+          title="Order"
+          value="order"
           class="text-orange-darken-4"
           to="/chef"
           style="text-decoration: none"
@@ -15,12 +15,12 @@
       </template>
     </base-side-bar>
 
-    <header-component title="Orders" />
+    <header-component title="Manage order" />
     <v-main style="height: auto" class="bg-gray-lighten-3 mt-3">
       <!-- Alert message -->
       <base-alert v-model="success">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h6 class="mt-2">You have completed this order!</h6>
+        <h6 class="mt-2">Completed order successfully!</h6>
       </base-alert>
       <!-- No order -->
       <div class="d-flex flex-wrap justify-content-center gap-3">

@@ -2,9 +2,9 @@
 <!-- Dialog for form create staff -->
 <template>
   <v-form @submit.prevent="add">
-    <v-dialog v-model="dialog" persistent width="750" no-padding>
+    <v-dialog v-model="dialog" persistent width="800" no-padding>
       <v-card
-        class="rounded-xl"
+        class="rounded-lg"
         style="max-width: 100%; max-height: 100vh; overflow-y: auto"
       >
         <v-card-title class="text-center bg-orange-darken-4">
@@ -16,7 +16,7 @@
               <v-row class="justify-center">
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="First name*"
+                    label="First name"
                     v-model="staff.first_name"
                     density="compact"
                     hide-details="auto"
@@ -29,7 +29,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="Last name*"
+                    label="Last name"
                     v-model="staff.last_name"
                     density="compact"
                     hide-details="auto"
@@ -42,7 +42,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    label="Gender*"
+                    label="Gender"
                     v-model="staff.gender"
                     :items="['Male', 'Female', 'Other']"
                     density="compact"
@@ -54,7 +54,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Email*"
+                    label="Email"
                     v-model="staff.email"
                     density="compact"
                     hide-details="auto"
@@ -67,12 +67,12 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Password*"
+                    label="Password"
                     v-model="staff.password"
                     density="compact"
-                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="showPassword ? 'text' : 'password'"
-                    @click:append="showPassword = !showPassword"
+                    @click:append-inner="showPassword = !showPassword"
                     hide-details="auto"
                     :error-messages="v$.password.$errors.map((e) => e.$message)"
                     @input="v$.password.$touch"
@@ -81,7 +81,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-select
-                    label="Role*"
+                    label="Role"
                     v-model="staff.role"
                     :items="roles"
                     :item-title="'name'"
@@ -95,7 +95,7 @@
               </v-row>
             </v-container>
           </v-card-text>
-          <v-card-actions class="ml-10">
+          <v-card-actions class="bg-grey-lighten-2">
             <v-spacer></v-spacer>
             <danger-button
               @click="
@@ -185,6 +185,7 @@ const add = async () => {
       role_id: staff.role,
       first_name: staff.first_name,
       last_name: staff.last_name,
+      gender: staff.gender,
       email: staff.email,
       password: staff.password,
     };

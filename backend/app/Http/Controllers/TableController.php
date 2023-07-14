@@ -15,7 +15,7 @@ class TableController extends Controller
      */
     public function index()
     {
-        $tables = Auth::user()->store->tables;
+        $tables = Auth::user()->store->tables->sortByDesc('id');
         return response()->json(["success" => true, "data" => TableResource::collection($tables), "message" => "Get all tables are successfully."], 200);
     }
 

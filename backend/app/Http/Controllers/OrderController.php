@@ -19,13 +19,13 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Auth::user()->store->orders;
-        return response(OrderResource::collection($orders));
+        return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Get all orders successfully."], 200);
     }
     
     // Get orders by checking completed to the customer
     public function getByCompelted(bool $is_complete)
     {
-        $orders = Auth::user()->store->orders->where('is_completed', '=', $is_complete);
+        $orders = Auth::user()->store->orders->where('is_completed', '=', $is_complete)->sortByDesc('id');
         $message = 'Get orders not completed are successfully.';
         if ($is_complete) $message = 'Get orders completed are successfully.';
         return Response()->json(['success' => true, 'message' => $message, 'data'=> OrderResource::collection($orders) ], 200);
@@ -34,7 +34,7 @@ class OrderController extends Controller
     // Get orders by checking paid to the chasier
     public function getByPaid(bool $is_paid)
     {
-        $orders = Auth::user()->store->orders->where('is_paid', '=', $is_paid);
+        $orders = Auth::user()->store->orders->where('is_paid', '=', $is_paid)->sortByDesc('id');
         $message = 'Get orders not paid are successfully.';
         if ($is_paid) $message = 'Get orders paid are successfully.';
         return Response()->json(['success' => true, 'message' => $message, 'data'=> OrderResource::collection($orders) ], 200);
