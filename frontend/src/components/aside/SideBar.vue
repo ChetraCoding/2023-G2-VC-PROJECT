@@ -14,15 +14,15 @@
         class="text-orange-darken-4" style="text-decoration: none">
       </v-list-item> -->
 
-      <v-list-item to="/category" prepend-icon="mdi-food" title="Categories" value="categories"
+      <v-list-item to="/category" prepend-icon="mdi-food" title="Category" value="categories"
         class="text-orange-darken-4" style="text-decoration: none">
       </v-list-item>
 
-      <v-list-item to="/product" prepend-icon="mdi-cube" title="Products" value="products"
+      <v-list-item to="/product" prepend-icon="mdi-cube" title="Product" value="products"
         class="text-orange-darken-4" style="text-decoration: none">
       </v-list-item>
 
-      <v-list-item to="/table" prepend-icon="mdi-table" title="Tables" value="tables"
+      <v-list-item to="/table" prepend-icon="mdi-table" title="Table" value="tables"
         class="text-orange-darken-4" style="text-decoration: none">
       </v-list-item>
 

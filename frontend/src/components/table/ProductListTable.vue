@@ -10,7 +10,7 @@
   <v-table v-else>
     <thead>
       <tr>
-        <th class="text-left text-black font-weight-bold">#</th>
+        <th class="text-left text-black font-weight-bold">No.</th>
         <th class="text-left text-black font-weight-bold">Name</th>
         <th class="text-left text-black font-weight-bold">Barcode</th>
         <th class="text-left text-black font-weight-bold">Category</th>

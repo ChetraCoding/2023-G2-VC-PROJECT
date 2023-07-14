@@ -1,6 +1,6 @@
 <template>
-  <v-card width="500" class="rounded-lg px-8 py-4 login-form">
-    <v-form @submit.prevent="onSubmit" class="pb-2">
+  <v-card width="500" class="rounded-lg px-8 py-6 login-form">
+    <v-form @submit.prevent="onSubmit" class="pb-3">
       <div class="d-flex justify-center pb-4">
         <img class="w-50" :src="require('../../assets/login-logo.png')" alt="login" />
       </div>

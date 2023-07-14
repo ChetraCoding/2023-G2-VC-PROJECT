@@ -3,9 +3,20 @@
 <template>
   <!-- Alert message -->
   <base-alert v-model="paidSuccess">
-        <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h6 class="mt-2">Order have paid successfully!</h6>
-      </base-alert>
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Order have paid successfully!</h6>
+  </base-alert>
+
+  <!-- Dialog remove customize -->
+  <base-dialog
+    v-model="isComplete"
+    title="Tips"
+    ms="Are you sure you want to completed?"
+  >
+    <danger-button @click="isComplete = false">Cancel</danger-button>
+    <primary-button @click="complete()">Confirm</primary-button>
+  </base-dialog>
+
   <!-- Create table of list orders -->
   <v-table>
     <thead>
@@ -43,7 +54,10 @@
             icon="mdi-checkbox-marked-circle"
             class="ml-3"
             color="orange-darken-4"
-            @click="complete(index)"
+            @click="
+              isComplete = true;
+              orderClicked = order;
+            "
           ></v-icon>
         </td>
       </tr>
@@ -51,8 +65,8 @@
   </v-table>
 
   <!-- Dialog of confirm order -->
-  <v-dialog v-model="dialog" width="600">
-    <v-card class="rounded-xl">
+  <v-dialog v-model="dialog" persistent width="600">
+    <v-card class="rounded-lg">
       <v-card-title class="bg-orange-darken-4 text-center"
         >Confirm Orders</v-card-title
       >
@@ -108,7 +122,7 @@
           </h6>
         </div>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="bg-grey-lighten-2">
         <v-spacer></v-spacer>
         <danger-button @click="dialog = false">Close</danger-button>
       </v-card-actions>
@@ -117,15 +131,17 @@
 </template>
 
 <script setup>
-import {useOrderStore} from '@/stores/order';
-import { storeToRefs } from 'pinia';
+import { useOrderStore } from "@/stores/order";
+import { storeToRefs } from "pinia";
 import { ref, defineProps, onMounted } from "vue";
 
 // Variables
 const props = defineProps(["orders"]);
 const dialog = ref(false);
 const orderInfo = ref(null);
-const {getOrder,updateOrdersToPaid} = useOrderStore();
+const isComplete = ref(false);
+const orderClicked = ref(null);
+const { getOrder, updateOrdersToPaid } = useOrderStore();
 const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Method
@@ -136,18 +152,18 @@ const getTotalPrice = (order) => {
   }
   return sum.value;
 };
-
-const complete = (index) => {
-  const order = props.orders[index];
-  const orderId = order["order_id"];
+const complete = () => {
   const updatePaidOrde = {
-    is_completed: order["is_completed"],
+    is_completed: orderClicked.value.is_completed,
     is_paid: true,
   };
-  updateOrdersToPaid(orderId, updatePaidOrde);
-}
+  updateOrdersToPaid(orderClicked.value.order_id, updatePaidOrde);
+  isComplete.value = false;
+  orderClicked.value = null;
+};
+
 // Lifecycle hook
-onMounted(()=>{
+onMounted(() => {
   getOrder();
-})
+});
 </script>

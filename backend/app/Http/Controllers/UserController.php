@@ -42,7 +42,7 @@ class UserController extends Controller
     public function getSaff()
     {
         if (Auth::user()->role->name !== 'restaurant_owner') return response()->json(['success' => false, 'message' => ["roles" => "You don't have permission to access this route."]], 403);
-        $users = Auth::user()->store->users->where('id', '!==', Auth::user()->id);
+        $users = Auth::user()->store->users->where('id', '!==', Auth::user()->id)->sortByDesc('id');;
         return response()->json(["success" => true, "data" => UserResource::collection($users), "message" => "Get all staff are successfully."], 200);
     }
 

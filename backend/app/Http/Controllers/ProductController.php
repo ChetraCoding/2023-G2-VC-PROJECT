@@ -16,13 +16,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = Auth::user()->store->products;
-<<<<<<< HEAD
+    $products = Auth::user()->store->products->sortByDesc('id');
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products successfully."], 200);
-=======
-    $listproducts = ShowProductResource::collection($products);
-    return response()->json(["success" => true, "data" => $listproducts, "message" => "Get all products are successfully."], 200);
->>>>>>> 8df1a2b08a35842777798d85117826460bda9b9e
   }
 
   /**
@@ -72,33 +67,10 @@ class ProductController extends Controller
     $categoryContains = Auth::user()->store->categories->contains($request->input('category_id'));
     if (!$categoryContains) return response()->json(['success' => false, 'message' => ["category" => "The category id " . $request->input('category_id') . " does not exist."]], 404);
 
-<<<<<<< HEAD
-        // Update the product_customize relationship
-        $productCustomizesFromRequest = $request->product_customize;
-        if ($productCustomizesFromRequest != null) {
-          foreach ($productCustomizesFromRequest as $productCustomize) {
-            if (isset($productCustomize['id'])) {
-              $id = $productCustomize['id'];
-              $productCustomizesFromDB = $product->productCustomize;
-              if ($productCustomizesFromDB->where('id', $id)->first()) {
-                $productCustomize['product_id'] = $productId;
-                ProductCustomize::store($productCustomize, $id);
-              } else {
-                return response()->json(['success' => false, 'message' => ["product_customize" => "The product_customize id " . $id . " does not exist in product id " . $productId . '.']], 409);
-              }
-            } else {
-              $productCustomize['product_id'] = $productId;
-              ProductCustomize::store($productCustomize);
-            }
-          }
-          return response()->json(['success' => true, 'data' => new ShowProductResource($product), 'message' => ["product" => "The product has been updated sucessfully."]], 200);
-        }
-=======
     $productsInCategory = Category::find($request->input('category_id'))->products->whereNotIn('id', [$productId]);
     foreach ($productsInCategory as $productInCategory) {
       if (strtoupper($productInCategory->barcode) === strtoupper($request->input('barcode'))) {
         return response()->json(['success' => false, 'message' => ['barcode' => "The product's barcode already exists."]], 409);
->>>>>>> 8df1a2b08a35842777798d85117826460bda9b9e
       }
     }
 
