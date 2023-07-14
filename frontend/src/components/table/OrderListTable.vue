@@ -45,8 +45,8 @@
   </v-table>
 
   <!-- Dialog of confirm order -->
-  <v-dialog v-model="dialog" width="600">
-    <v-card class="rounded-xl">
+  <v-dialog v-model="dialog" persistent width="600">
+    <v-card class="rounded-lg">
       <v-card-title class="bg-orange-darken-4 text-center"
         >Confirm Orders</v-card-title
       >
@@ -102,7 +102,7 @@
           </h6>
         </div>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="bg-grey-lighten-2">
         <v-spacer></v-spacer>
         <danger-button @click="dialog = false">Close</danger-button>
       </v-card-actions>

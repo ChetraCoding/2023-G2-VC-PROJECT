@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th class="bg-white text-left text-black font-weight-bold">
-          #
+          No.
         </th>
         <th class="bg-white text-left text-black font-weight-bold">
           First Name

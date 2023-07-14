@@ -6,18 +6,18 @@
         <template v-slot:menu>
           <v-list-item
             prepend-icon="mdi-food"
-            title="Orders"
-            name="OrdersListTable"
+            title="Order"
+            name="Order"
             value="orders"
             class="text-orange-darken-4"
             style="text-decoration: none"
-            to="/orders"
+            to="/cashier"
           >
           </v-list-item>
         </template>
       </base-side-bar>
 
-      <header-component title="Order List" />
+      <header-component title="Manage order" />
 
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">

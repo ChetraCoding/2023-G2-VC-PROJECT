@@ -2,7 +2,7 @@
     <v-layout>
         <!-- Nav -->
         <header-component :title="user.store.name" />
-        <v-main class="mt-3" style="height: auto">
+        <v-main class="mt-3 mb-15">
             <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected"
                 :item-title="'table_number'" :item-value="'table'" class="text-orange-darken-4 bg-white w-25"
                 hide-details="auto" clearable label="Select table"></v-select>
@@ -121,8 +121,8 @@
                             <div class="d-flex align-center">
                                 <div class="d-flex align-center">
                                     <div>
-                                        <v-img class="bg-white rounded-xl" :width="150"
-                                            :src="customize.product.image"></v-img>
+                                        <v-img class="bg-white rounded-xl" :width="150" :height="100"
+                                            :src="customize.product.image" cover></v-img>
                                     </div>
                                     <div class="ml-3 text-black">
                                         <h6 class="font-weight-bold">{{ customize.product.name }}</h6>

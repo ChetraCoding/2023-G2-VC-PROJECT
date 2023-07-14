@@ -16,7 +16,7 @@
               <v-row class="justify-center">
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="First name*"
+                    label="First name"
                     v-model="staff.first_name"
                     density="compact"
                     hide-details="auto"
@@ -29,7 +29,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="Last name*"
+                    label="Last name"
                     v-model="staff.last_name"
                     density="compact"
                     hide-details="auto"
@@ -42,7 +42,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    label="Gender*"
+                    label="Gender"
                     v-model="staff.gender"
                     :items="['Male', 'Female', 'Other']"
                     density="compact"
@@ -54,7 +54,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Email*"
+                    label="Email"
                     v-model="staff.email"
                     density="compact"
                     hide-details="auto"
@@ -67,7 +67,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Password*"
+                    label="Password"
                     v-model="staff.password"
                     density="compact"
                     :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -81,7 +81,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-select
-                    label="Role*"
+                    label="Role"
                     v-model="staff.role"
                     :items="roles"
                     :item-title="'name'"
@@ -185,6 +185,7 @@ const add = async () => {
       role_id: staff.role,
       first_name: staff.first_name,
       last_name: staff.last_name,
+      gender: staff.gender,
       email: staff.email,
       password: staff.password,
     };
