@@ -1,6 +1,22 @@
 // Reference From : https://vuetifyjs.com/en/components/tables/
 
 <template>
+  <!-- Alert message -->
+  <base-alert v-model="paidSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Order have paid successfully!</h6>
+  </base-alert>
+
+  <!-- Dialog remove customize -->
+  <base-dialog
+    v-model="isComplete"
+    title="Tips"
+    ms="Are you sure you want to completed?"
+  >
+    <danger-button @click="isComplete = false">Cancel</danger-button>
+    <primary-button @click="complete()">Confirm</primary-button>
+  </base-dialog>
+
   <!-- Create table of list orders -->
   <v-table>
     <thead>
@@ -38,6 +54,10 @@
             icon="mdi-checkbox-marked-circle"
             class="ml-3"
             color="orange-darken-4"
+            @click="
+              isComplete = true;
+              orderClicked = order;
+            "
           ></v-icon>
         </td>
       </tr>
@@ -45,23 +65,23 @@
   </v-table>
 
   <!-- Dialog of confirm order -->
-  <v-dialog v-model="dialog" width="600">
-    <v-card class="rounded-xl">
+  <v-dialog v-model="dialog" persistent width="600">
+    <v-card class="rounded-lg">
       <v-card-title class="bg-orange-darken-4 text-center"
         >Confirm Orders</v-card-title
       >
       <v-card-text>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Table:</h6>
           <h6 class="ml-2 font-weight-bold">{{ orderInfo.table_number }}</h6>
         </div>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Date:</h6>
           <h6 class="ml-2 font-weight-bold">
             {{ new Date(orderInfo.datetime).toDateString() }}
           </h6>
         </div>
-        <div class="d-flex text-orange-darken-4">
+        <div class="d-flex text-darken-4">
           <h6>Time:</h6>
           <h6 class="ml-2 font-weight-bold">
             {{ new Date(orderInfo.datetime).toLocaleTimeString() }}
@@ -69,9 +89,7 @@
         </div>
 
         <!-- Card of list -->
-        <h6 class="text-orange-darken-4 font-weight-bold mt-3">
-          Summary Orders
-        </h6>
+        <h6 class="text-darken-4 font-weight-bold mt-3">Summary Orders</h6>
         <v-list>
           <div
             v-list-item
@@ -97,14 +115,14 @@
         </v-list>
 
         <div class="d-flex">
-          <h6 class="text-orange-darken-4 font-weight-bold">Total:</h6>
+          <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
-          <h6 class="font-weight-bold text-orange-darken-4">
+          <h6 class="font-weight-bold text-darken-4">
             ${{ getTotalPrice(orderInfo) }}
           </h6>
         </div>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="bg-grey-lighten-2">
         <v-spacer></v-spacer>
         <danger-button @click="dialog = false">Close</danger-button>
       </v-card-actions>
@@ -113,12 +131,18 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { useOrderStore } from "@/stores/order";
+import { storeToRefs } from "pinia";
+import { ref, defineProps, onMounted } from "vue";
 
 // Variables
 const props = defineProps(["orders"]);
 const dialog = ref(false);
 const orderInfo = ref(null);
+const isComplete = ref(false);
+const orderClicked = ref(null);
+const { getOrder, updateOrdersToPaid } = useOrderStore();
+const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Method
 const getTotalPrice = (order) => {
@@ -128,4 +152,18 @@ const getTotalPrice = (order) => {
   }
   return sum.value;
 };
+const complete = () => {
+  const updatePaidOrde = {
+    is_completed: orderClicked.value.is_completed,
+    is_paid: true,
+  };
+  updateOrdersToPaid(orderClicked.value.order_id, updatePaidOrde);
+  isComplete.value = false;
+  orderClicked.value = null;
+};
+
+// Lifecycle hook
+onMounted(() => {
+  getOrder();
+});
 </script>

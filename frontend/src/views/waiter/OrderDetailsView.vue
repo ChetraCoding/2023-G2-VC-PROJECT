@@ -84,6 +84,6 @@ const confirm = () => {
     success.value = true;
     localStorage.removeItem('customizes_selectd');
     localStorage.removeItem('table_selectd');
-    setTimeout(function () { router.push('/waiter') }, 200);
+    router.push('/waiter');
 }
 </script>

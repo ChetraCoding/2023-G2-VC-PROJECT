@@ -16,9 +16,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = Auth::user()->store->products;
-    $listproducts = ShowProductResource::collection($products);
-    return response()->json(["success" => true, "data" => $listproducts, "message" => "Get all products are successfully."], 200);
+    $products = Auth::user()->store->products->sortByDesc('id');
+    return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products successfully."], 200);
   }
 
   /**
@@ -44,7 +43,7 @@ class ProductController extends Controller
         $productCustomize['product_id'] = $newProduct['id'];
         ProductCustomize::store($productCustomize);
       }
-      return response()->json(['success' => true, 'data' => new ShowProductResource($newProduct), 'message' => "You have created new product."], 200);
+      return response()->json(['success' => true, 'data' => new ShowProductResource($newProduct), 'message' => "You have created new product sucessfully."], 200);
     }
     // Return error response if category not found
     return response()->json(['success' => false, 'message' => "The category id " . $request->category_id . " does not exist."], 404);

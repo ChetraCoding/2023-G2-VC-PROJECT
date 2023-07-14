@@ -32,6 +32,7 @@ class CreateAccountRequest extends FormRequest
             'role_id'=>'required|numeric|exists:roles,id',
             'first_name'=>'required',
             'last_name'=>'required',
+            'gender'=>'required',
             'email'=>'required|email|unique:users',
             'password'=>'required|min:8'
         ];

@@ -5,7 +5,7 @@
   <v-table >
     <thead>
       <tr>
-        <th class="text-left text-black font-weight-bold" style="width: 100px">#</th>
+        <th class="text-left text-black font-weight-bold" style="width: 100px">No.</th>
         <th class="text-left text-black font-weight-bold">Name</th>
         <th class="text-left text-black font-weight-bold" style="width: 100px">Action</th>
       </tr>

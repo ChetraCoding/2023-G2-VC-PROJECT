@@ -1,47 +1,27 @@
 <template>
-  <v-card class="rounded-xl mx-auto px-8 py-10 login-form">
-    <v-form @submit.prevent="onSubmit">
+  <v-card width="500" class="rounded-lg px-8 py-6 login-form">
+    <v-form @submit.prevent="onSubmit" class="pb-3">
       <div class="d-flex justify-center pb-4">
         <img class="w-50" :src="require('../../assets/login-logo.png')" alt="login" />
       </div>
       <div>
-        <v-text-field
-          v-model="email"
-          @keyup="errors.email = ''"
-          class="mb-2"
-          label="Email"
-          placeholder="example@gmail.com"
-          type="email"
-          clearable
-          hide-details="auto"
-        >
+        <v-text-field v-model="email" @keyup="errors.email = ''" class="mb-2" label="Email"
+          placeholder="example@gmail.com" type="email" hide-details="auto">
         </v-text-field>
         <span class="text-caption text-red">{{ errors.email }}</span>
       </div>
 
       <div>
-        <v-text-field
-          v-model="password"
-          @keyup="errors.password = ''"
-          label="Password"
-          placeholder="**********"
-          type="password"
-          clearable
-          hide-details="auto"
-        >
+        <v-text-field v-model="password" @keyup="errors.password = ''" label="Password" placeholder="**********"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" :type="showPassword ? 'text' : 'password'"
+          @click:append-inner="showPassword = !showPassword" hide-details="auto">
         </v-text-field>
         <span class="text-caption text-red">{{ errors.password }}</span>
       </div>
 
       <br />
 
-      <v-btn
-        class="rounded-pill font-width-bold"
-        color="orange-darken-4"
-        size="large"
-        type="medium"
-        block
-      >
+      <v-btn class="rounded-pill font-width-bold" color="orange-darken-4" size="large" type="medium" block>
         LOGIN
       </v-btn>
     </v-form>
@@ -52,6 +32,7 @@
 import { ref, defineEmits, defineProps, computed } from "vue";
 let email = ref("");
 let password = ref("");
+const showPassword = ref(false);
 const emit = defineEmits(["login"]);
 const props = defineProps(["errors"]);
 

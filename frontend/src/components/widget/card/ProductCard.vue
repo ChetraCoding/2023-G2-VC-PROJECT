@@ -16,10 +16,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn @click="$emit('on-customize', product)" class="bg-orange-darken-4 rounded-pill">
-                Customize
-            </v-btn>
-
+            <primary-button @click="$emit('on-customize', product)">CUSTOMIZE</primary-button>
         </v-card-actions>
     </v-card>
 </template>

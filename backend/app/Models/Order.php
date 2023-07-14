@@ -20,7 +20,7 @@ class Order extends Model
 
     public static function storeOrder($request, $id = null)
     {
-        $order = $request->only(['table_id', 'datetime', 'is_completed', 'is_paid']);
+        $order = ($id)? $request->only(['is_completed', 'is_paid']) : $request->only(['table_id', 'datetime', 'is_completed', 'is_paid']);
         $order['store_id'] = Auth::user()->store->id;
         
         $order = self::updateOrCreate(['id' => $id], $order);

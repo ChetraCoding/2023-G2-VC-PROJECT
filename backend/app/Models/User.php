@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role_id',
         'first_name',
         'last_name',
+        'gender',
         'email',
         'image',
         'password'
@@ -51,7 +52,7 @@ class User extends Authenticatable
     
     public static function storeUser($request, $id = null)
     {
-        $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'email', 'password', 'image']);
+        $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
         
         $user = self::updateOrCreate(['id' => $id], $user);
 

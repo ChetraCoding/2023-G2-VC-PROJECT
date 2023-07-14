@@ -6,7 +6,7 @@
   <v-card>
     <v-layout>
       <side-bar />
-      <header-component title="Table" />
+      <header-component title="Manage table" />
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
           <v-icon

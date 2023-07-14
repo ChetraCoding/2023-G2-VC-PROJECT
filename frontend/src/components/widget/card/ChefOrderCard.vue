@@ -1,7 +1,7 @@
 <template>
   <!-- list card of orders -->
   <div v-for="(order, index) in propsOrder.listOrder" :key="index">
-    <v-card v-if="order.is_completed === 0" class="rounded-xl" width="230px">
+    <v-card v-if="order.is_completed === 0" class="rounded-lg" width="230px">
       <v-card-title
         class="d-flex justify-content-center bg-orange-darken-4 p-2"
       >

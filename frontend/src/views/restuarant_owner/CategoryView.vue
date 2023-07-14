@@ -6,7 +6,7 @@
   <v-card>
     <v-layout>
       <side-bar />
-      <header-component title="Category" />
+      <header-component title="Manage category" />
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
           <v-icon
@@ -23,10 +23,7 @@
             label="Row Number"
           ></v-select>
         </v-card>
-        <category-list-table
-          v-if="categories.length > 0"
-          :categories="categories"
-        ></category-list-table>
+        <category-list-table v-if="categories.length > 0" :categories="categories"></category-list-table>
         <div class="h-screen" v-else>
           <h4 class="text-center mt-5 text-orange-darken-4">
             Don't have any category.
