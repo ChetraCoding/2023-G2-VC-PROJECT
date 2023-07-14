@@ -11,7 +11,7 @@
             value="orders"
             class="text-orange-darken-4"
             style="text-decoration: none"
-            to="/orders"
+            to="/cashier"
           >
           </v-list-item>
         </template>
