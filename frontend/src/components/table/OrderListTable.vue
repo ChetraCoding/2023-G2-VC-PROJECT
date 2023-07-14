@@ -1,6 +1,11 @@
 // Reference From : https://vuetifyjs.com/en/components/tables/
 
 <template>
+  <!-- Alert message -->
+  <base-alert v-model="paidSuccess">
+        <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+        <h6 class="mt-2">Order have paid successfully!</h6>
+      </base-alert>
   <!-- Create table of list orders -->
   <v-table>
     <thead>
@@ -38,6 +43,7 @@
             icon="mdi-checkbox-marked-circle"
             class="ml-3"
             color="orange-darken-4"
+            @click="complete(index)"
           ></v-icon>
         </td>
       </tr>
@@ -111,12 +117,16 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import {useOrderStore} from '@/stores/order';
+import { storeToRefs } from 'pinia';
+import { ref, defineProps, onMounted } from "vue";
 
 // Variables
 const props = defineProps(["orders"]);
 const dialog = ref(false);
 const orderInfo = ref(null);
+const {getOrder,updateOrdersToPaid} = useOrderStore();
+const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Method
 const getTotalPrice = (order) => {
@@ -126,4 +136,18 @@ const getTotalPrice = (order) => {
   }
   return sum.value;
 };
+
+const complete = (index) => {
+  const order = props.orders[index];
+  const orderId = order["order_id"];
+  const updatePaidOrde = {
+    is_completed: order["is_completed"],
+    is_paid: true,
+  };
+  updateOrdersToPaid(orderId, updatePaidOrde);
+}
+// Lifecycle hook
+onMounted(()=>{
+  getOrder();
+})
 </script>

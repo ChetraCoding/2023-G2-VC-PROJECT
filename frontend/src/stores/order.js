@@ -5,6 +5,7 @@ export const useOrderStore = defineStore("order", {
     state: () => {
         return {
             error: null,
+            paidSuccess: false,
             success: false,
             orders: [],
             notPaidOrders:[],
@@ -50,7 +51,18 @@ export const useOrderStore = defineStore("order", {
             }catch(err){
                 return err;
             }
-        }
+        },
+        // Update order to paid
+        async updateOrdersToPaid(orderId,order) {
+            try {
+                const res = await http.put(`orders/${orderId}`, order);
+                if (res.data.success) {
+                    this.orders = res.data.data;
+                    this.getOrder();
+                    this.paidSuccess = true;
+                }
+            } catch (err) {return err;}
+        },
 
     },
 });
