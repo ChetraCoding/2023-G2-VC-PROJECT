@@ -9,6 +9,7 @@
           Last Name
         </th>
         <th class="bg-white text-left text-black font-weight-bold">Gender</th>
+        <th class="bg-white text-left text-black font-weight-bold">Email</th>
         <th class="bg-white text-left text-black font-weight-bold">
           Possition
         </th>
@@ -21,6 +22,7 @@
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
         <td>{{ person.gender }}</td>
+        <td>{{ person.email }}</td>
         <td>{{ person.role }}</td>
 
         <td>
