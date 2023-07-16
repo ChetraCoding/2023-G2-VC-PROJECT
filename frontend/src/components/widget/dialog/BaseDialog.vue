@@ -4,7 +4,7 @@
             <v-toolbar class="text-h4 text-center pr-4" color="orange-darken-4" :title="title"></v-toolbar>
             <div>
                 <v-card-text>
-                    <div class="text-h6 pa-5">{{ ms }}</div>
+                    <div class="font-inter text-h6 pa-5">{{ ms }}</div>
                 </v-card-text>
                 <v-card-actions class="p-2 bg-grey-lighten-2 justify-space-between">
                     <slot></slot>

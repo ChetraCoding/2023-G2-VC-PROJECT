@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useCookieStore } from "@/stores/cookie";
 
-const BASE_URL = "http://172.16.0.142:8000/api/";
+const BASE_URL = "http://127.0.0.1:8000/api/";
 const http = axios.create({
   baseURL: BASE_URL,
 });

@@ -83,7 +83,7 @@
                         {{ totalFoods }}
                     </v-avatar>
                 </div>
-                <h4 class="ml-4 mt-2">Total: <span class="font-weight-bold">{{ totalPrice }}</span></h4>
+                <h4 class="ml-4 mt-2">Total: <span class="font-weight-bold">${{ totalPrice }}</span></h4>
             </div>
 
             <v-spacer></v-spacer>

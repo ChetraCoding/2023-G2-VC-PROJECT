@@ -12,7 +12,7 @@
         <v-icon icon="mdi-plus" size="40" class="rounded-lg" color="orange-darken-4" @click="dialog = true">
         </v-icon>
         <v-spacer></v-spacer>
-        <v-text-field density="compact" label="Search" append-inner-icon="mdi-magnify"></v-text-field>
+        <!-- <v-text-field density="compact" label="Search" append-inner-icon="mdi-magnify"></v-text-field> -->
       </v-card>
 
       <!-- List products -->

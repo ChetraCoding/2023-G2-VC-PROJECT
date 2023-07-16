@@ -49,7 +49,7 @@
           ></v-icon>
 
           <!-- Icon print and check-->
-          <v-icon icon="mdi-printer"></v-icon>
+          <!-- <v-icon icon="mdi-printer"></v-icon> -->
           <v-icon
             icon="mdi-checkbox-marked-circle"
             class="ml-3"

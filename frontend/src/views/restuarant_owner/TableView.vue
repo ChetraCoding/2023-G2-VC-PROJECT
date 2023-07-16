@@ -17,11 +17,11 @@
             @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
-          <v-select
+          <!-- <v-select
             :items="items"
             density="comfortable"
             label="Row Number"
-          ></v-select>
+          ></v-select> -->
         </v-card>
         <table-list-table
           v-if="tables.length > 0"
@@ -48,7 +48,7 @@ import { storeToRefs } from "pinia";
 const isShowForm = ref(false);
 const { getTables } = useTableStore();
 const { tables, success } = storeToRefs(useTableStore());
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
+// const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
 // methods
 const closeForm = () => {

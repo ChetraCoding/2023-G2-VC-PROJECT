@@ -17,11 +17,11 @@
             @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
-          <v-select
+          <!-- <v-select
             :items="items"
             density="compact"
             label="Row Number"
-          ></v-select>
+          ></v-select> -->
         </v-card>
         <category-list-table v-if="categories.length > 0" :categories="categories"></category-list-table>
         <div class="h-screen" v-else>
@@ -44,7 +44,7 @@ import { storeToRefs } from "pinia";
 const { getCategory } = useCategoryStore();
 const { categories, success } = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
+// const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
 // Methods
 const closeForm = () => {

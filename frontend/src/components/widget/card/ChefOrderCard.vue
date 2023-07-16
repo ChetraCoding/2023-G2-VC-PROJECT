@@ -29,11 +29,11 @@
             :key="order_detail"
           >
             <v-sub-title style="font-size: 14px"
-              >name :
+              >Name :
               {{ order_detail.product_customize.product.name }}</v-sub-title
             ><br />
             <v-sub-title style="font-size: 14px"
-              >size: {{ order_detail.product_customize.size }}</v-sub-title
+              >Size: {{ order_detail.product_customize.size }}</v-sub-title
             ><br />
             <v-sub-title style="font-size: 14px"
               >x {{ order_detail.quantity }}</v-sub-title

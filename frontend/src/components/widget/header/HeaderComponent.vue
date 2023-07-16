@@ -22,7 +22,7 @@
                   <span v-else class="text-h5">{{ initials }}</span>
                 </v-avatar>
                 <h3>{{ user.first_name }} {{ user.last_name }}</h3>
-                <p class="text-subtitle-1 mt-1">
+                <p class="font-inter text-subtitle-1 mt-1">
                   {{ user.email }}
                 </p>
                 <v-divider class="my-3"></v-divider>

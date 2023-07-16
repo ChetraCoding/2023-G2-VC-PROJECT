@@ -23,7 +23,7 @@ const login = async (credentials) => {
       cookieStore.setCookie("user_token", res.data.token, 30);
       cookieStore.getCookie("user_token");
       if (res.data.user.role === "restaurant_owner") {
-        router.push("/");
+        router.push("/category");
       } else {
         router.push(`/${res.data.user.role}`);
       }

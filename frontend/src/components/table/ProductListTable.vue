@@ -15,7 +15,7 @@
         <th class="text-left text-black font-weight-bold">Barcode</th>
         <th class="text-left text-black font-weight-bold">Category</th>
         <th class="text-left text-black font-weight-bold">Description</th>
-        <th class="text-left text-black font-weight-bold" style="width: 30px;">Action</th>
+        <!-- <th class="text-left text-black font-weight-bold" style="width: 30px;">Action</th> -->
       </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
         <td>{{ product.barcode}}</td>
         <td>{{ product.category }}</td>
         <td>{{ product.description }}</td>   
-        <td>
+        <!-- <td>
           <div class="d-flex">
             <div class="d-flex align-center">
               <v-icon
@@ -36,7 +36,7 @@
               <v-icon icon="mdi-delete" color="red"></v-icon>
             </div>
           </div>
-        </td>
+        </td> -->
       </tr>
     </tbody>
   </v-table>
