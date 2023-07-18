@@ -1,48 +1,70 @@
 // References: https://vuetifyjs.com/en/components/navigation-drawers/
 
 <template>
-  <v-navigation-drawer :class="rail ? '' : 'slide'" v-model="drawer" :rail="rail" permanent @click="rail = false">
-    <v-list-item class="text-orange-darken-4 mt-1" prepend-icon="mdi-account-star" title="Owner">
-      <template v-slot:append>
-        <v-btn variant="text" icon="mdi-chevron-left" @click.stop="rail = !rail"></v-btn>
-      </template>
-    </v-list-item>
-    <v-divider class="mt-1"></v-divider>
-
-    <v-list density="compact" nav>
-      <!-- <v-list-item to="/" prepend-icon="mdi-view-dashboard" title="Dashboard" value="dashboard"
-        class="text-orange-darken-4" style="text-decoration: none">
-      </v-list-item> -->
-
-      <v-list-item to="/category" prepend-icon="mdi-food" title="Category" value="categories"
-        class="text-orange-darken-4" style="text-decoration: none">
+  <v-navigation-drawer class="rounded-lg bg-grey-darken-2" width="110">
+    <div class="d-flex flex-column align-center"> 
+      <v-list-item v-for="item in menu" :key="item" :to="item.link" active-class="active" width="100px" height="80px"
+        class="menu-items text-white rounded-lg text-decoration-none">
+        <div class="d-flex flex-column align-center" width="'10px'">
+          <v-icon :icon="item.icon"></v-icon>
+          <span class="font-inter text-subtitle-2">{{ item.title }}</span>
+        </div>
       </v-list-item>
-
-      <v-list-item to="/product" prepend-icon="mdi-cube" title="Product" value="products"
-        class="text-orange-darken-4" style="text-decoration: none">
-      </v-list-item>
-
-      <v-list-item to="/table" prepend-icon="mdi-table" title="Table" value="tables"
-        class="text-orange-darken-4" style="text-decoration: none">
-      </v-list-item>
-
-      <v-list-item to="/staff" prepend-icon="mdi-account-group" title="Staff" name="ListStaffTable"
-        value="staff" class="text-orange-darken-4" style="text-decoration: none">
-      </v-list-item>
-    </v-list>
+    </div>
   </v-navigation-drawer>
 </template>
 
 <script setup>
 import { ref } from "vue";
-// Variables
-let rail = ref(false);
-let drawer = ref(true);
 
+const menu = ref([
+  {
+    link: '/',
+    title: 'Home',
+    icon: 'mdi-home'
+  },
+  {
+    link: '/product',
+    title: 'Product',
+    icon: 'mdi-cube'
+  },
+  {
+    link: '/category',
+    title: 'Category',
+    icon: 'mdi-view-grid'
+  },
+  {
+    link: '/table',
+    title: 'Table',
+    icon: 'mdi-table'
+  },
+  {
+    link: '/staff',
+    title: 'Staff',
+    icon: 'mdi-account-group'
+  },
+  {
+    link: '/sale',
+    title: 'Sale',
+    icon: 'mdi-chart-line'
+  },
+  {
+    link: '/money',
+    title: 'Money',
+    icon: 'mdi-currency-usd'
+  },
+])
 </script>
 
 <style scoped>
-.slide {
-  border-radius: 0px 15px 15px 0px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+.menu-items:hover {
+  color: white;
+}
+.active {
+  background: #F25657;
+}
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
 }
 </style>
