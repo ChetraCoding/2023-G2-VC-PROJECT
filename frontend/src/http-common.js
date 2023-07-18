@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useCookieStore } from "@/stores/cookie";
 
-const BASE_URL = "http://127.0.0.1:8000/api/";
+const BASE_URL = process.env.VUE_APP_API_URL;
 const http = axios.create({
   baseURL: BASE_URL,
 });

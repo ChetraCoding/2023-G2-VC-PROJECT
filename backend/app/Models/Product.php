@@ -21,6 +21,10 @@ class Product extends Model
         'is_active'
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public static function storeProduct($request, $id = null)
     {
         $product = $request->only(['category_id', 'name', 'barcode', 'description', 'image', 'is_active']);

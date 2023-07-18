@@ -78,19 +78,19 @@ class ProductController extends Controller
     $product = Product::storeProduct($request, $productId);
 
     // Update the product_customize relationship
-    foreach ($request->product_customizes as $productCustomize) {
-      if (isset($productCustomize['product_customize_id'])) {
-        $id = $productCustomize['product_customize_id'];
-        $productCustomizesFromDB = $product->productCustomize;
-        if ($productCustomizesFromDB->where('id', $id)->first()) {
-          $productCustomize['product_id'] = $productId;
-          ProductCustomize::store($productCustomize, $id);
+    foreach ($request->product_customizes as $customize) {
+      if (isset($customize['product_customize_id'])) {
+        $id = $customize['product_customize_id'];
+        $customizesFromDB = $product->productCustomize;
+        if ($customizesFromDB->where('id', $id)->first()) {
+          $customize['product_id'] = $productId;
+          ProductCustomize::store($customize, $id);
         } else {
           return response()->json(['success' => false, 'message' => ["product_customize" => "The product_customize id " . $id . " does not exist in product id " . $productId . '.']], 409);
         }
       } else {
-        $productCustomize['product_id'] = $productId;
-        ProductCustomize::store($productCustomize);
+        $customize['product_id'] = $productId;
+        ProductCustomize::store($customize);
       }
     }
     return response()->json(['success' => true, 'data' => new ShowProductResource($product), 'message' => ["product" => "The product has been updated successfully."]], 200);
