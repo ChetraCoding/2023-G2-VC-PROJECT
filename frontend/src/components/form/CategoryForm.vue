@@ -1,11 +1,10 @@
 <template>
-  <v-form>
-    <v-dialog v-model="dialog" persistent width="800">
+    <v-dialog v-model="dialog" persistent width="400">
       <v-card class="rounded-lg">
-        <v-card-title class="text-center bg-orange-darken-4">
+        <v-card-title class="text-center bg-red-accent-2">
           <span class="text-h6">Create New Category</span>
         </v-card-title>
-        <div >
+        <div>
           <v-col class="mt-2" cols="12">
             <v-text-field
               v-model="categoryName"
@@ -24,14 +23,27 @@
             <danger-button
               @click="$emit('closeForm'), (error = null), (categoryName = '')"
             >
+              <v-icon
+                icon="mdi-close-box-multiple"
+                color="white"
+                size="large"
+              ></v-icon>
+
               CLOSE
             </danger-button>
-            <primary-button @click="add"> SAVE </primary-button>
+            <primary-button @click="add">
+              <v-icon
+                icon="mdi-content-save-all"
+                color="white"
+                size="large"
+              ></v-icon>
+
+              SAVE
+            </primary-button>
           </v-card-actions>
         </div>
       </v-card>
     </v-dialog>
-  </v-form>
 </template>
 
 <script setup>

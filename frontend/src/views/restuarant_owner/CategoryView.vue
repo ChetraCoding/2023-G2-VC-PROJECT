@@ -82,9 +82,9 @@
       </div>
     </v-main>
   </v-layout>
-
   <!-- form create category -->
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
+
 </template>
 
 <script setup>
