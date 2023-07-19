@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import SecondaryButton from '@/components/widget/button/SecondaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import DarkButton from '@/components/widget/button/DarkButton';
 import BaseAlert from '@/components/widget/alert/BaseAlert';
 import ResOwnerSideBar from '@/components/aside/ResOwnerSideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
@@ -46,6 +47,7 @@ app.component('summary-component', SummaryComponent);
 app.component('primary-button', PrimaryButton);
 app.component('secondary-button', SecondaryButton);
 app.component('danger-button', DangerButton);
+app.component('dark-button', DarkButton);
 
 // Alert
 app.component('base-alert', BaseAlert);
