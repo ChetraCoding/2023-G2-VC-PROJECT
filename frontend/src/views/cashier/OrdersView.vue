@@ -21,13 +21,13 @@
 
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
-          <v-spacer></v-spacer>
+          <!-- <v-spacer></v-spacer>
           <v-text-field
             density="compact"
             variant="outlined"
             placeholder="Search orders"
             append-inner-icon="mdi-magnify"
-          ></v-text-field>
+          ></v-text-field> -->
         </v-card>
         <!-- If no order -->
         <div class="h-screen" v-if="notPaidOrders.length == 0">

@@ -65,7 +65,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'store_id'=>2,
-                'role_id'=>4,
+                'role_id'=>5,
                 'first_name'=>"Kaka",
                 'last_name'=>"Ko",
                 'gender'=>"Male",
@@ -75,7 +75,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'store_id'=>3,
-                'role_id'=>4,
+                'role_id'=>5,
                 'first_name'=>"Lala",
                 'last_name'=>"Ly",
                 'gender'=>"Female",

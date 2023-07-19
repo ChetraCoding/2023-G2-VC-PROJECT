@@ -3,7 +3,19 @@
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300&display=swap');
 * {
-    font-family: sans-serif !important;
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif !important;
+}
+body {
+  background: #2C2C2C !important;
+}
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
+}
+.active {
+  background: #F25657;
 }
 </style>

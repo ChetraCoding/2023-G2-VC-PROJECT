@@ -16,7 +16,7 @@
         <th class="bg-white text-left text-black font-weight-bold">
           Possition
         </th>
-        <th class="bg-white text-left text-black font-weight-bold">Action</th>
+        <!-- <th class="bg-white text-left text-black font-weight-bold">Action</th> -->
       </tr>
     </thead>
 
@@ -29,14 +29,14 @@
         <td>{{ person.email }}</td>
         <td>{{ person.role }}</td>
 
-        <td>
+        <!-- <td>
           <v-icon
             icon="mdi-square-edit-outline"
             color="blue"
             class="mr-3"
           ></v-icon>
           <v-icon icon="mdi-delete" color="red"></v-icon>
-        </td>
+        </td> -->
       </tr>
     </tbody>
   </v-table>

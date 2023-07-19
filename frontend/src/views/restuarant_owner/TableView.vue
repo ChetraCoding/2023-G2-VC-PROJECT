@@ -5,7 +5,9 @@
   </base-alert>
   <v-card>
     <v-layout>
-      <side-bar />
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
+    
       <header-component title="Manage table" />
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
@@ -17,11 +19,11 @@
             @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
-          <v-select
+          <!-- <v-select
             :items="items"
             density="comfortable"
             label="Row Number"
-          ></v-select>
+          ></v-select> -->
         </v-card>
         <table-list-table
           v-if="tables.length > 0"
@@ -48,7 +50,7 @@ import { storeToRefs } from "pinia";
 const isShowForm = ref(false);
 const { getTables } = useTableStore();
 const { tables, success } = storeToRefs(useTableStore());
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
+// const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
 // methods
 const closeForm = () => {

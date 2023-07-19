@@ -1,7 +1,7 @@
 <template>
     <v-card class="bg-white py-3 d-flex align-center" width="100%">
         <v-icon @click="$router.push('/waiter')" class="text-h4 ml-5" color="black" icon="mdi-arrow-left"></v-icon>
-        <header class="w-50 ml-7 text-orange-darken-4 text-h5 text-right font-weight-bold">Confirm order</header>
+        <header class="font-inter w-50 ml-7 text-orange-darken-4 text-h5 text-right font-weight-bold">Confirm order</header>
     </v-card>
 
     <div class="d-flex py-4">
