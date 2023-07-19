@@ -1,9 +1,23 @@
 <template>
-  <v-card class="rounded-xl mx-auto px-8 py-10 login-form">
-    <v-form @submit.prevent="onSubmit">
-      <div class="d-flex justify-center pb-4">
-        <img class="w-50" :src="require('../../assets/login-logo.png')" alt="login" />
+  <div class="form text-white d-flex h-100">
+    <div class="login">
+      <div>
+        <img
+          class="w-100 h-80 fastfood low-light-image"
+          :src="require('../../assets/pic-fast-food.png')"
+          alt="fastfood"
+        />
       </div>
+    </div>
+    <v-form @submit.prevent="onSubmit" class="px-8 py-10 login-form">
+      <div class="d-flex justify-center">
+        <img
+          class="w-60"
+          :src="require('../../assets/login-logo.png')"
+          alt="login"
+        />
+      </div>
+      <br /><br />
       <div>
         <v-text-field
           v-model="email"
@@ -13,10 +27,9 @@
           placeholder="example@gmail.com"
           type="email"
           clearable
-          hide-details="auto"
         >
         </v-text-field>
-        <span class="text-caption text-red">{{ errors.email }}</span>
+        <span class="text-caption text-red error">{{ errors.email }}</span>
       </div>
 
       <div>
@@ -27,14 +40,16 @@
           placeholder="**********"
           type="password"
           clearable
-          hide-details="auto"
         >
         </v-text-field>
-        <span class="text-caption text-red">{{ errors.password }}</span>
+        <span class="text-caption text-red error">{{ errors.password }}</span>
       </div>
-
+      <div>
+        <v-tex-filed class="d-flex justify-end">
+          <span class="text-info">Forgot Password ?</span>
+        </v-tex-filed>
+      </div>
       <br />
-
       <v-btn
         class="rounded-pill font-width-bold"
         color="orange-darken-4"
@@ -42,10 +57,11 @@
         type="medium"
         block
       >
+        <v-icon> icon="mdi-login-variant" </v-icon>
         LOGIN
       </v-btn>
     </v-form>
-  </v-card>
+  </div>
 </template>
 
 <script setup>
@@ -65,10 +81,19 @@ const onSubmit = () => {
 </script>
 
 <style scoped>
+.form {
+  background: #2c2c2c;
+}
 .login-form {
   width: 35%;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.login,
+.fastfood,
+img {
+  width: 66.6%;
+  margin-left: -30px;
+}
+.low-light-image {
+  filter: brightness(55%);
 }
 </style>
