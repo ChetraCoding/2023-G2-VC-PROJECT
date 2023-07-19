@@ -34,7 +34,7 @@
               <v-icon icon="mdi-delete" color="red"></v-icon>
             </div>
           </div>
-        </td> -->
+        </td>
       </tr>
     </tbody>
   </v-table>
