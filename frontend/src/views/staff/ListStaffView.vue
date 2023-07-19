@@ -6,17 +6,16 @@
       <header-component title="Manage staff" />
 
       <v-main style="height: auto">
-        <v-slide-group class="text-white">
-            <v-slide-group-item>
-              <secondary-button class="ma-2">Hello</secondary-button>
-              <secondary-button class="mt-2">Hello</secondary-button>
-            </v-slide-group-item>
-          </v-slide-group>
+        <v-slide-group>
+          <v-slide-group-item>
+            <secondary-button class="ml-2 mt-2">Hello</secondary-button>
+            <secondary-button class="ml-2 mt-2">Hello</secondary-button>
+          </v-slide-group-item>
+        </v-slide-group>
 
         <!-- <v-card class="pa-3 mt-3 d-flex justify-space-between">
           <v-icon icon="mdi-plus" size="40" class="rounded-lg" color="orange-darken-4"
             @click="isShowForm = true"></v-icon>
-  
         </v-card> -->
 
         <!-- No staff -->
@@ -55,3 +54,5 @@ onMounted(() => {
   getStaff();
 });
 </script>
+
+

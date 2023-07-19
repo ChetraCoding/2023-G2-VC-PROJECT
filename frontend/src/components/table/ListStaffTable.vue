@@ -12,12 +12,17 @@
       <span>{{ person.role }}</span>
     </v-card-text>
     <v-card-actions>
-      <danger-button
-        ><v-icon icon="mdi-delete-forever"></v-icon> Delete</danger-button
-      >
+      <dark-button>
+        <v-icon icon="mdi-square-edit-outline"></v-icon>
+        Edit
+      </dark-button>
+      <danger-button>
+        <v-icon icon="mdi-delete-forever"></v-icon>
+        Delete
+      </danger-button>
     </v-card-actions>
   </v-card>
-
+  <!-- Summary staff -->
   <summary-component class="mt-2" title="Staff Summary">
     <template v-slot:btn>
       <secondary-button @click="dialog = true">
