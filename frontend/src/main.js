@@ -28,12 +28,15 @@ import BaseDialog from '@/components/widget/dialog/BaseDialog';
 import ChefOrderCard from "@/components/widget/card/ChefOrderCard";
 import ProductResOwnerCard from "@/components/widget/card/ProductResOwnerCard";
 import SummaryComponent from "@/components/summary/SummaryComponent";
+// categoryCard
+import CategoryCard from '@/components/widget/card/CategoryCard';
 const app = createApp(App);
 const pinia = createPinia();
 
 // Card
 app.component('product-res-owner-card', ProductResOwnerCard);
 app.component('product-card', ProductCard);
+app.component('category-card', CategoryCard);
 
 // Components
 app.component('res-owner-side-bar', ResOwnerSideBar);
