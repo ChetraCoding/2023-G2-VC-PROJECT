@@ -24,10 +24,10 @@ class User extends Authenticatable
         'role_id',
         'first_name',
         'last_name',
+        'gender',
         'email',
         'image',
-        'password',
-        'is_active'
+        'password'
     ];
 
     /**
@@ -49,9 +49,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    public static function storeUser($request, $id = null)
+    {
+        $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
+        
+        $user = self::updateOrCreate(['id' => $id], $user);
+
+        return $user;
+    }
+
     public function role():BelongsTo{
         return $this->belongsTo(Role::class);
     }
+
     public function store():BelongsTo {
         return $this->belongsTo(Store::class);
     }

@@ -14,12 +14,12 @@ class ProductCustomizeTableSeeder extends Seeder
     public function run(): void
     {
         $productCustomizes = [
-            ['product_id'=>1,'size'=>'small','quantity'=>1,'price'=>'3.5'],
-            ['product_id'=>1,'size'=>'meduim','quantity'=>1,'price'=>'7'],
-            ['product_id'=>1,'size'=>'large','quantity'=>1,'price'=>'10'],
-            ['product_id'=>2,'size'=>'small','quantity'=>1,'price'=>'3.5'],
-            ['product_id'=>2,'size'=>'meduim','quantity'=>1,'price'=>'7'],
-            ['product_id'=>2,'size'=>'large','quantity'=>1,'price'=>'10'],
+            ['product_id'=>1,'size'=>'small', 'price'=>'3.5'],
+            ['product_id'=>1,'size'=>'meduim', 'price'=>'7'],
+            ['product_id'=>1,'size'=>'large', 'price'=>'10'],
+            ['product_id'=>2,'size'=>'small', 'price'=>'3.5'],
+            ['product_id'=>2,'size'=>'meduim', 'price'=>'7'],
+            ['product_id'=>2,'size'=>'large', 'price'=>'10'],
         ];
         foreach ($productCustomizes as $productCustomize){
             ProductCustomize::create($productCustomize);

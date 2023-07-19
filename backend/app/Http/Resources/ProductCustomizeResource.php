@@ -15,9 +15,8 @@ class ProductCustomizeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
+            'product_customize_id'=>$this->id,
             'size'=>$this->size,
-            'quantity'=>$this->quantity,
             'price'=> $this->price
         ];
     }

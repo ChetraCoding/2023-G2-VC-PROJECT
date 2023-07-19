@@ -1,22 +1,14 @@
 <template>
-  <v-snackbar
-    rounded="xl"
-    v-model="categoryStore.success"
-    :timeout="2000"
-    location="top"
-    color="orange-darken-4"
-  >
-    <div class="orange-darken-4 d-flex justify-center align-center">
-      <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-      <h6 class="mt-1">Category created successfully!</h6>
-    </div>
-  </v-snackbar>
-
+  <base-alert v-model="success">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Category created successfully!</h6>
+  </base-alert>
   <v-card>
     <v-layout>
-      <side-bar />
-
-      <header-component title="Category" />
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
+    
+      <header-component title="Manage category" />
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
           <v-icon
@@ -27,20 +19,17 @@
             @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
-          <v-select
+          <!-- <v-select
             :items="items"
-            density="comfortable"
+            density="compact"
             label="Row Number"
-          ></v-select>
+          ></v-select> -->
         </v-card>
-
-        <category-list-table
-        v-if="categoryStore.categories.length > 0"
-          :categories="categoryStore.categories"
-        ></category-list-table>
-        
+        <category-list-table v-if="categories.length > 0" :categories="categories"></category-list-table>
         <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any category.</h4>
+          <h4 class="text-center mt-5 text-orange-darken-4">
+            Don't have any category.
+          </h4>
         </div>
       </v-main>
     </v-layout>
@@ -51,11 +40,13 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useCategoryStore } from "@/stores/category";
+import { storeToRefs } from "pinia";
 
 // Variables
-const categoryStore = useCategoryStore();
+const { getCategory } = useCategoryStore();
+const { categories, success } = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
+// const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
 // Methods
 const closeForm = () => {
@@ -64,9 +55,6 @@ const closeForm = () => {
 
 // Lifecycle hook
 onMounted(() => {
-  categoryStore.getData();
+  getCategory();
 });
 </script>
-
-<style>
-</style>

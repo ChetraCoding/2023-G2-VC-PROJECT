@@ -86,6 +86,27 @@ const routes = [
     component: () => import("@/views/waiter/WaiterView"),
     beforeEnter: [loginRequired, roleRequired('waiter')],
   },
+  {
+    path: '/order-details',
+    name: 'order-details',
+    component: () => import('@/views/waiter/OrderDetailsView'),
+    beforeEnter: [loginRequired, roleRequired('waiter')]
+  },
+  // Chef =======================================================
+  {
+    path: '/chef',
+    name: '/chef',
+    component: () => import('@/views/chef/ChefView'),
+    beforeEnter: [loginRequired, roleRequired('chef')]
+  },
+  // Cashier =======================================================
+  {
+    path: '/cashier',
+    name: '/cashier',
+    component: () => import('@/views/cashier/OrdersView'),
+    beforeEnter: [loginRequired, roleRequired('cashier')]
+  }
+
 ];
 
 const router = createRouter({

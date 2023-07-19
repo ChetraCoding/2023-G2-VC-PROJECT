@@ -10,18 +10,22 @@ export const useCategoryStore = defineStore("category", {
     };
   },
   actions: {
-    async getData() {
-      const res = await http.get("categories");
-      if (res.data.success) {
-        this.categories = res.data.data;
+    async getCategory() {
+      try {
+        const res = await http.get("categories");
+        if (res.data.success) {
+          this.categories = res.data.data;
+        }
+      } catch (err) {
+        return err;
       }
     },
-    async storeData(category) {
+    async storeCategory(category) {
       try {
-        await http.post("categories", category);
-        this.error = null;
-        this.success = true;
-        this.getData();
+        const res = await http.post("categories", category);
+        if (res.data.success) {
+          this.success = true;
+        }
       } catch (err) {
         this.error = err.response.data.message;
       }

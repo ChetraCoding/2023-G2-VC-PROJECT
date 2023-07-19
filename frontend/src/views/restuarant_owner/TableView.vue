@@ -1,8 +1,14 @@
 <template>
+  <base-alert v-model="success">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Table created successfully!</h6>
+  </base-alert>
   <v-card>
     <v-layout>
-      <side-bar />
-      <header-component title="Table" />
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
+    
+      <header-component title="Manage table" />
       <v-main style="height: auto">
         <v-card class="pa-3 mt-3 d-flex justify-space-between">
           <v-icon
@@ -10,29 +16,20 @@
             size="40"
             class="rounded-lg"
             color="orange-darken-4"
+            @click="isShowForm = true"
           ></v-icon>
           <v-spacer></v-spacer>
-          <v-select
+          <!-- <v-select
             :items="items"
             density="comfortable"
             label="Row Number"
-          ></v-select>
+          ></v-select> -->
         </v-card>
-        <!-- ======== back-end====== -->
-        <!-- <table-list-table
-        v-if="tableStore.tables.length > 0"
-          :tables="tableStore.tables"
-        ></table-list-table> -->
-
-        <!-- <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-orange-darken-4">Don't have any table.</h4>
-        </div>  -->
-
-        <!-- ======== front-end====== -->
         <table-list-table
+          v-if="tables.length > 0"
           :tables="tables"
-          v-if="tables.length != 0"
         ></table-list-table>
+
         <div class="h-screen" v-else>
           <h4 class="text-center mt-5 text-orange-darken-4">
             Don't have any table.
@@ -41,32 +38,29 @@
       </v-main>
     </v-layout>
   </v-card>
+  <table-form :isShowForm="isShowForm" @closeForm="closeForm" />
 </template>
 
 <script setup>
-// =========back-end==========
-// import { onMounted, ref } from "vue";
-// import { useTableStore } from "@/stores/table";
-
+import { onMounted, ref } from "vue";
+import { useTableStore } from "@/stores/table";
+import { storeToRefs } from "pinia";
 
 // Variables
-// =====back-end=======
-// const tableStore = useTableStore();
+const isShowForm = ref(false);
+const { getTables } = useTableStore();
+const { tables, success } = storeToRefs(useTableStore());
+// const items = ref([10, 15, 20, 25, 30, 35, 40]);
 
-  // Lifecycle hook
-  // ======back-end==========
-  // onMounted(() => {
-    //   tableStore.getData();
-  // });
+// methods
+const closeForm = () => {
+  isShowForm.value = false;
+};
 
-import { ref } from "vue";
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
-const tables = ref([
-  { id: 1, number: 1 },
-  { id: 2, number: 2 },
-  { id: 3, number: 3 },
-]);
-
+// Lifecycle hook
+onMounted(() => {
+  getTables();
+});
 </script>
 
 <style>

@@ -68,6 +68,7 @@
 import { ref, defineEmits, defineProps, computed } from "vue";
 let email = ref("");
 let password = ref("");
+// const showPassword = ref(false);
 const emit = defineEmits(["login"]);
 const props = defineProps(["errors"]);
 

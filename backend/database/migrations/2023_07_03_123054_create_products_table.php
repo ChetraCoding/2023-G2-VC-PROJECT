@@ -25,8 +25,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('name');
             $table->string('barcode');
-            $table->string('description');
-            $table->string('image');
+            $table->text('description');
+            $table->text('image');
             $table->boolean('is_active');
             $table->timestamps();
         });
