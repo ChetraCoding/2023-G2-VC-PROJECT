@@ -1,34 +1,31 @@
-// References: https://vuetifyjs.com/en/components/navigation-drawers/
-
 <template>
-  <!-- Sidebar -->
-  <v-navigation-drawer v-model="drawer" :class="rail ? '' : 'slide'" :rail="rail" permanent
-    @click="rail = false">
-    <v-list-item class="text-orange-darken-4 mt-1" prepend-icon="mdi-account-star" :title="props.title">
-      <template v-slot:append>
-        <v-btn variant="text" icon="mdi-chevron-left" @click.stop="rail = !rail"></v-btn>
-      </template>
-    </v-list-item>
-    <v-divider class="mt-1"></v-divider>
-
-    <v-list density="compact" nav>
-
-      <slot name="menu"></slot>
-
-    </v-list>
+  <v-navigation-drawer class="rounded-lg bg-grey-darken-2" width="110">
+    <div class="d-flex flex-column align-center mt-2"> 
+      <v-list-item v-for="item in menus" :key="item" :to="item.link" active-class="active" width="100px" height="80px"
+        class="menu-items text-white rounded-lg text-decoration-none">
+        <div class="d-flex flex-column align-center" width="'10px'">
+          <v-icon :icon="item.icon"></v-icon>
+          <span class="font-inter text-subtitle-2">{{ item.title }}</span>
+        </div>
+      </v-list-item>
+    </div>
   </v-navigation-drawer>
-  <!--  -->
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
-const props = defineProps(['title'])
-let rail = ref(false);
-let drawer = ref(true);
+import { defineProps } from "vue";
+defineProps(['menus']);
 </script>
 
 <style scoped>
-.slide {
-  border-radius: 0px 15px 15px 0px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+.menu-items:hover {
+  color: white;
+}
+.active {
+  background: #F25657;
+}
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <v-card>
     <v-layout>
-      <side-bar />
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
 
       <header-component title="Manage staff" />
 

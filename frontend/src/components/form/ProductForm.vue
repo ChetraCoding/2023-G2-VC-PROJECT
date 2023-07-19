@@ -2,8 +2,9 @@
   <v-form>
     <v-dialog v-model="dialog" persistent width="800">
       <v-card class="rounded-lg">
-        <v-card-title v-if="productInForm.productInForm_id" class="bg-orange-darken-4 text-center">Update productInForm</v-card-title>
-        <v-card-title v-else class="bg-orange-darken-4 text-center">Create New productInForm</v-card-title>
+        <v-card-title v-if="productInForm.productInForm_id" class="bg-red-accent-2 text-center">Update
+          productInForm</v-card-title>
+        <v-card-title v-else class="bg-red-accent-2 text-center">Create New product</v-card-title>
 
         <v-container class="w-100 d-flex">
           <div class="mr-3" style="width: 30%">
@@ -21,13 +22,13 @@
               @blur="vp$.category.$touch">
             </v-select>
 
-            <v-textarea v-model="productInForm.description" required class="mb-3" cols="2" density="compact" label="Description"
-              rows="1" :error-messages="vp$.description.$errors.map((e) => e.$message)" @input="vp$.description.$touch"
-              @blur="vp$.description.$touch"></v-textarea>
+            <v-textarea v-model="productInForm.description" required class="mb-3" cols="2" density="compact"
+              label="Description" rows="1" :error-messages="vp$.description.$errors.map((e) => e.$message)"
+              @input="vp$.description.$touch" @blur="vp$.description.$touch"></v-textarea>
 
-            <v-switch v-model="productInForm.is_active" required color="orange-darken-4" label="Active" hide-details="auto"
-              :error-messages="vp$.is_active.$errors.map((e) => e.$message)" @change="vp$.is_active.$touch"
-              @blur="vp$.is_active.$touch"></v-switch>
+            <v-switch v-model="productInForm.is_active" required color="orange-darken-4" label="Active"
+              hide-details="auto" :error-messages="vp$.is_active.$errors.map((e) => e.$message)"
+              @change="vp$.is_active.$touch" @blur="vp$.is_active.$touch"></v-switch>
           </div>
 
           <div class="mr-3" style="width: 50%">
@@ -43,8 +44,7 @@
               <v-icon @click="
                 vc$.$validate();
               addCustom(findCustIndex);
-              " icon="mdi-plus" color="white" size="30"
-                class="ml-2 mb-3 justify-center bg-orange-darken-4 rounded-pill">
+              " icon="mdi-plus" color="white" size="30" class="ml-2 mb-3 justify-center bg-grey-darken-2 rounded-pill">
               </v-icon>
             </div>
 
@@ -75,14 +75,22 @@
                 vp$.image.$touch;
               imageUpload($event);
               " @blur="vp$.image.$touch"></v-file-input>
-            <v-img :src="(productInForm.image)? productInForm.image: (imgPreview)? imgPreview : require('../../assets/select_product.png')" :width="238" :height="175" class="rounded-lg mb-3" aspect-ratio="16/9" cover ></v-img>
+            <v-img
+              :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
+              :width="238" :height="175" class="rounded-lg mb-3" aspect-ratio="16/9" cover></v-img>
           </div>
         </v-container>
 
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
-          <danger-button @click="clearPruduct()">CLOSE</danger-button>
-          <primary-button @click="vp$.$validate(); save();">SAVE</primary-button>
+          <danger-button @click="clearPruduct()">
+            <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
+            Close
+          </danger-button>
+          <primary-button @click="vp$.$validate(); save();">
+            <v-icon icon="mdi-content-save-all" color="white" size="large"></v-icon>
+            Save
+          </primary-button>
         </v-card-actions>
       </v-card>
     </v-dialog>
