@@ -1,6 +1,8 @@
 <template>
   <v-layout>
-    <side-bar />
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
+    
     <header-component title="Dashbord" />
 
     <v-main style="height: auto">
