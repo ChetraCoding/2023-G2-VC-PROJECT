@@ -12,7 +12,6 @@ import DangerButton from '@/components/widget/button/DangerButton';
 import BaseAlert from '@/components/widget/alert/BaseAlert';
 import ResOwnerSideBar from '@/components/aside/ResOwnerSideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
-import LoginForm from '@/components/form/LoginForm.vue'
 import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
@@ -64,9 +63,6 @@ app.component('table-form', TableForm)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
-
-// Login component
-app.component('login-form', LoginForm);
 
 // List staff
 app.component('list-staff-table', ListStaffTable )
