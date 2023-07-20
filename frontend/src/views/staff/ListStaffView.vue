@@ -18,7 +18,7 @@
 
       <!--List staff card-->
       <div class="mt-2" v-if="staff.length > 0">
-        <list-staff-table v-for="user in staff" :key="user.user_id" :user="user"/>
+        <list-staff-card v-for="user in staff" :key="user.user_id" :user="user"/>
       </div>
       <!-- No staff -->
       <div class="h-screen" v-else>

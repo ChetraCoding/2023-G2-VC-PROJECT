@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar rounded="xg" :timeout="2000" location="top" color="orange-darken-4">
+    <v-snackbar rounded="xg" :timeout="2000" location="top" color="red-accent-2">
         <div class="d-flex justify-center align-center">
             <slot></slot>
         </div>
