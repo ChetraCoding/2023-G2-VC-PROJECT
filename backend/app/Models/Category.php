@@ -27,10 +27,10 @@ class Category extends Model
         return $category;
     }
 
-    // Check category exist in store 
-    public static function contains($field, $id)
+    // Check category exists in store 
+    public static function contains($field, $value)
     {
-        return Auth::user()->store->categories->contains($field, $id);
+        return Auth::user()->store->categories->contains($field, $value);
     }
 
     public function store(): BelongsTo
