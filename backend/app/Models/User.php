@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -56,6 +57,15 @@ class User extends Authenticatable
         $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
         $user = self::updateOrCreate(['id' => $id], $user);
         return $user;
+    }
+
+    // Check the user permission
+    public static function roleRequired($role)
+    {
+        if (Auth::user()->role->name === $role) {
+            return true;
+        }
+        return false;
     }
 
     public function role(): BelongsTo

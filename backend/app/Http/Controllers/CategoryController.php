@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,11 +14,10 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // list category --------------
     public function index()
     {
         $categories = Auth::user()->store->categories->sortByDesc('id');
-        return response()->json(["success"=>true, "data"=>CategoryResource::collection($categories) ,"message" => "Get all categories successfully."],200);
+        return response()->json(["success" => true, "data" => CategoryResource::collection($categories), "message" => "Get all categories successfully."], 200);
     }
 
     /**
@@ -25,45 +25,54 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-        $storeId = Auth::user()->store_id;
-        // get name category from input
-        $nameCategory = $request->all()['name'];
-        // get all categories in store of
-        $categoriesInStore = Auth::user()->store->categories;
-        // Check if the category already exists in the store,it'll return error message .
-        foreach ( $categoriesInStore as $category){
-            if(strtoupper($category->name) == strtoupper($nameCategory)){
-                return response()->json(['success' => false,'message' => "The category already exists."],409);
-            }
-        };
-        $newCategory = ['store_id'=>$storeId,"name"=> $nameCategory];
-        $category = Category::create($newCategory);
-        $category = new CategoryResource($category);
-        return response()->json(['success'=>true, 'data' => $category, 'message'=>"You have created new category successfully.", 'status' => 200]);
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
+        // Check the user permission
+        if (!User::roleRequired('restaurant_owner')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        // Check exists aa categories in store
+        if (Category::contains('name', $request->name)) {
+            return response()->json(['success' => false, 'message' => "The category already exists."], 409);
+        } else {
+            return response()->json(['success' => true, 'data' => Category::storeCategory($request), 'message' => "Created a new category is successfully.", 'status' => 200]);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CreateCategoryRequest $request, int $id)
     {
-        //
+        // Check the user permission
+        if (!User::roleRequired('restaurant_owner')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        if (!Category::contains('id', $id)) {
+            return response()->json(['success' => false, 'message' => "The category is not found."], 404);
+        } else if (
+            // Check category in store without its self
+            Auth::user()->store->categories
+            ->where('id', '!=', $id)
+            ->where('name', $request->name)->count() > 0
+        ) {
+            return response()->json(['success' => false, 'message' => "The category already exists."], 409);
+        } else {
+            return response()->json(['success' => true, 'data' => Category::storeCategory($request, $id), 'message' => "Updated the category is successfully.", 'status' => 200]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(int $id)
     {
-        //
+        // Check the user permission
+        if (!User::roleRequired('restaurant_owner')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        if (!Category::contains('id', $id)) {
+            return response()->json(['success' => false, 'message' => "The category is not found."], 404);
+        }
+        Category::find($id)->delete();
+        return response()->json(['success' => true, 'message' => "Delete the category is successfully."], 200);
     }
 }
