@@ -7,6 +7,7 @@ use App\Http\Resources\ShowProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCustomize;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -16,6 +17,13 @@ class ProductController extends Controller
    */
   public function index()
   {
+    // Check the user permission
+    if (
+      !User::roleRequired('restaurant_owner') &&
+      !User::roleRequired('waiter')
+    ) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+    }
     $products = Auth::user()->store->products->sortByDesc('id');
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products successfully."], 200);
   }
@@ -25,84 +33,86 @@ class ProductController extends Controller
    */
   public function store(CreateProductRequest $request)
   {
-    $categoriesInStore = Auth::user()->store->categories;
-    $checkCategory = $categoriesInStore->where('id', $request->category_id)->first();
-    if ($checkCategory) {
-      // Loop ask barcode on each product, it already exist or not--------
-      $productsInStore = Auth::user()->store->products;
-      $checkBarcode = $productsInStore->where('barcode', $request->barcode)->first();
-      if ($checkBarcode) {
-        return response()->json(['success' => false, 'message' => ['barcode' => "The product's barcode already exists."]], 409);
-      }
-      // Create new product -------------------
-      $newProduct = Product::storeProduct($request);
-
-      // Create product_customize for product ---------
-      $productCustomizes = $request->product_customizes;
-      foreach ($productCustomizes as $productCustomize) {
-        $productCustomize['product_id'] = $newProduct['id'];
-        ProductCustomize::store($productCustomize);
-      }
-      return response()->json(['success' => true, 'data' => new ShowProductResource($newProduct), 'message' => "You have created new product sucessfully."], 200);
+    // Check the user permission
+    if (!User::roleRequired('restaurant_owner')) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
-    // Return error response if category not found
-    return response()->json(['success' => false, 'message' => "The category id " . $request->category_id . " does not exist."], 404);
-  }
+    if (!Category::contains('id', $request->category_id)) {
+      return response()->json(['success' => false, 'message' => "The category id is not found."], 404);
+    } else {
+      // Check product code in store
+      if (Product::contains('barcode', $request->barcode)) {
+        return response()->json(['success' => false, 'message' => ['barcode' => "The product's barcode already exists."]], 409);
+      } else {
+        // Create new product -------------------
+        $product = Product::storeProduct($request);
 
-  /**
-   * Display the specified resource.
-   */
-  public function show(Product $product)
-  {
-    //
+        // Create customizes for a product ---------
+        foreach ($request->product_customizes as $customize) {
+          $customize['product_id'] = $product['id'];
+          ProductCustomize::store($customize);
+        }
+        return response()->json(['success' => true, 'data' => new ShowProductResource($product), 'message' => "Created a new product is sucessfully."], 200);
+      }
+    }
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(CreateProductRequest $request, $productId)
+  public function update(CreateProductRequest $request, $id)
   {
-    $productContains = Auth::user()->store->products->contains($productId);
-    if (!$productContains) return response()->json(["success" => false, "message" => ["product" => "You don't have any product with an id $productId"]], 404);
-    $categoryContains = Auth::user()->store->categories->contains($request->input('category_id'));
-    if (!$categoryContains) return response()->json(['success' => false, 'message' => ["category" => "The category id " . $request->input('category_id') . " does not exist."]], 404);
-
-    $productsInCategory = Category::find($request->input('category_id'))->products->whereNotIn('id', [$productId]);
-    foreach ($productsInCategory as $productInCategory) {
-      if (strtoupper($productInCategory->barcode) === strtoupper($request->input('barcode'))) {
-        return response()->json(['success' => false, 'message' => ['barcode' => "The product's barcode already exists."]], 409);
-      }
+    // Check the user permission
+    if (!User::roleRequired('restaurant_owner')) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
-
-    // Update the product attributes
-    $product = Product::storeProduct($request, $productId);
-
-    // Update the product_customize relationship
-    foreach ($request->product_customizes as $customize) {
-      if (isset($customize['product_customize_id'])) {
-        $id = $customize['product_customize_id'];
-        $customizesFromDB = $product->productCustomize;
-        if ($customizesFromDB->where('id', $id)->first()) {
-          $customize['product_id'] = $productId;
-          ProductCustomize::store($customize, $id);
-        } else {
-          return response()->json(['success' => false, 'message' => ["product_customize" => "The product_customize id " . $id . " does not exist in product id " . $productId . '.']], 409);
+    if (!Product::contains('id', $id)) {
+      return response()->json(["success" => false, "message" => ["product" => "The product id is not found."]], 404);
+    } elseif (!Category::contains('id', $request->category_id)) {
+      return response()->json(['success' => false, 'message' => ["category" => "The category id is not found."]], 404);
+    } else {
+      $productsInCategory = Category::find($request->input('category_id'))->products->whereNotIn('id', [$id]);
+      foreach ($productsInCategory as $productInCategory) {
+        if (strtoupper($productInCategory->barcode) === strtoupper($request->input('barcode'))) {
+          return response()->json(['success' => false, 'message' => ['barcode' => "The product's barcode already exists."]], 409);
         }
-      } else {
-        $customize['product_id'] = $productId;
-        ProductCustomize::store($customize);
       }
+      // Update the product attributes
+      $product = Product::storeProduct($request, $id);
+      // Update the product_customize relationship
+      foreach ($request->product_customizes as $customize) {
+        if (isset($customize['product_customize_id'])) {
+          $customizeId = $customize['product_customize_id'];
+          $customizesFromDB = $product->productCustomize;
+          if ($customizesFromDB->where('id', $customizeId)->first()) {
+            $customize['product_id'] = $id;
+            ProductCustomize::store($customize, $customizeId);
+          } else {
+            return response()->json(['success' => false, 'message' => ["product_customize" => "The product_customize id " . $id . " does not exist in product id " . $id . '.']], 409);
+          }
+        } else {
+          $customize['product_id'] = $id;
+          ProductCustomize::store($customize);
+        }
+      }
+      return response()->json(['success' => true, 'data' => new ShowProductResource($product), 'message' => ["product" => "Updated the product is successfully."]], 200);
     }
-    return response()->json(['success' => true, 'data' => new ShowProductResource($product), 'message' => ["product" => "The product has been updated successfully."]], 200);
   }
-
-
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Product $product)
+  public function destroy(int $id)
   {
-    //
+    // Check the user permission
+    if (!User::roleRequired('restaurant_owner')) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+    }
+    if (Product::contains('id', $id)) {
+      Product::find($id)->delete();
+      return Response()->json(['success' => true, 'message' => 'Delete the product is successfully.'], 200);
+    } else {
+      return Response()->json(['success' => false, 'message' => ['product' => 'The product id is not found.']], 404);
+    }
   }
 }
