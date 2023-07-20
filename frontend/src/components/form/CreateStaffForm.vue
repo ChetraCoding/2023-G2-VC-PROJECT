@@ -1,19 +1,25 @@
 <!-- Referemce: https://play.vuetifyjs.com/
 <!- Dialog for form create staff -->
 <template>
+  <!-- Form create staff -->
   <v-form @submit.prevent="add">
+    <!-- Dialog -->
     <v-dialog v-model="dialog" persistent width="800" no-padding>
+      <!--Card-->
       <v-card
         class="rounded-lg"
         style="max-width: 100%; max-height: 100vh; overflow-y: auto"
       >
-        <v-card-title class="text-center bg-orange-darken-4">
-          <span class="text-h6">Create New Staff</span>
+        <!--Card title-->
+        <v-card-title class="text-center bg-red-accent-2">
+          <span class="text-h6">Create new staff</span>
         </v-card-title>
         <div class="p-60">
           <v-card-text>
+            <!--Card container-->
             <v-container size="small">
               <v-row class="justify-center">
+                <!--Input first name field-->
                 <v-col cols="12" md="4">
                   <v-text-field
                     label="First name"
@@ -27,6 +33,7 @@
                     @blur="v$.first_name.$touch"
                   ></v-text-field>
                 </v-col>
+                <!--Input last name field-->
                 <v-col cols="12" md="4">
                   <v-text-field
                     label="Last name"
@@ -40,6 +47,7 @@
                     @blur="v$.last_name.$touch"
                   ></v-text-field>
                 </v-col>
+                <!--Select gender field-->
                 <v-col cols="12" md="4">
                   <v-select
                     label="Gender"
@@ -52,19 +60,19 @@
                     @blur="v$.gender.$touch"
                   ></v-select>
                 </v-col>
+                <!--Input email field-->
                 <v-col cols="12">
                   <v-text-field
                     label="Email"
                     v-model="staff.email"
                     density="compact"
                     hide-details="auto"
-                    :error-messages="`${v$.email.$errors.map(
-                      (e) => e.$message
-                    )}${err_email}`"
+                    :error-messages="`${v$.email.$errors.map((e) => e.$message)}${err_email}`"
                     @input="v$.email.$touch"
                     @blur="v$.email.$touch"
                   ></v-text-field>
                 </v-col>
+                <!--Input field password-->
                 <v-col cols="12">
                   <v-text-field
                     label="Password"
@@ -79,6 +87,7 @@
                     @blur="v$.password.$touch"
                   ></v-text-field>
                 </v-col>
+                <!--Select role field-->
                 <v-col cols="12">
                   <v-select
                     label="Role"
@@ -95,16 +104,25 @@
               </v-row>
             </v-container>
           </v-card-text>
+          <!--Action-->
           <v-card-actions class="bg-grey-lighten-2">
             <v-spacer></v-spacer>
+            <!--Close button-->
             <danger-button
               @click="
                 clear();
                 $emit('closeForm');
               "
-            >
-              CLOSE
+              >
+              <v-icon
+                icon="mdi-close-box-multiple"
+                color="white"
+                size="large"
+              >
+              </v-icon>
+              Close
             </danger-button>
+            <!--Save button-->
             <primary-button
               type="submit"
               @click="
@@ -113,8 +131,15 @@
                   add();
                 }
               "
-              >SAVE</primary-button
-            >
+              >
+              <v-icon
+                icon="mdi-content-save-all"
+                color="white"
+                size="large"
+              >
+              </v-icon>
+              Save
+              </primary-button>
           </v-card-actions>
         </div>
       </v-card>
@@ -129,6 +154,7 @@
 </template>
 
 <script setup>
+// Import
 import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
