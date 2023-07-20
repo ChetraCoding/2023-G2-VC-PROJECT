@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import OneSignal from '@onesignal/onesignal-vue3';
+import oneSignalConfig from './onesignal';
 import firebase from 'firebase';
 import App from './App.vue'
 import router from './router';
@@ -19,7 +21,7 @@ import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
 import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
-import CategoryForm from '@/components/form/CategoryForm';	
+import CategoryForm from '@/components/form/CategoryForm';
 import TableForm from '@/components/form/TableForm';
 import ListStaffTable from "@/components/table/ListStaffTable";
 import CreateStaffForm from "@/components/form/CreateStaffForm";
@@ -74,9 +76,9 @@ app.component('order-list-table', OrderListTable)
 app.component('login-form', LoginForm);
 
 // List staff
-app.component('list-staff-table', ListStaffTable )
+app.component('list-staff-table', ListStaffTable)
 // List Order Compoment
-app.component('chef-order-card',ChefOrderCard)
+app.component('chef-order-card', ChefOrderCard)
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",
@@ -88,4 +90,8 @@ const firebaseConfig = {
   measurementId: "G-Z9600B42T2"
 };
 firebase.initializeApp(firebaseConfig);
-app.use(pinia).use(vuetify).use(router).mount('#app')
+app.use(pinia)
+  .use(OneSignal, oneSignalConfig)
+  .use(vuetify)
+  .use(router)
+  .mount('#app')

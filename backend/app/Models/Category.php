@@ -13,12 +13,18 @@ class Category extends Model
         'store_id',
         'name'
     ];
-    
-    public function store():BelongsTo{
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
     }
 
-    public function products():HasMany{
+    public function products(): HasMany
+    {
         return $this->hasMany(Product::class);
     }
 }

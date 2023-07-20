@@ -12,24 +12,18 @@
           <div class="d-flex justify-space-between align-center">
             <v-slide-group class="text-white">
               <v-slide-group-item v-slot="{ isSelected, toggle }">
-                <v-btn
-                  :class="[
-                    isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                    'my-1 mr-2 rounded-lg text-none',
-                  ]"
-                  @click="toggle"
-                >
+                <v-btn :class="[
+                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
+                  'my-1 mr-2 rounded-lg text-none',
+                ]" @click="toggle">
                   Done
                 </v-btn>
               </v-slide-group-item>
               <v-slide-group-item v-slot="{ isSelected, toggle }">
-                <v-btn
-                  :class="[
-                    isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                    'my-1 mr-2 rounded-lg text-none',
-                  ]"
-                  @click="toggle"
-                >
+                <v-btn :class="[
+                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
+                  'my-1 mr-2 rounded-lg text-none',
+                ]" @click="toggle">
                   Don't
                 </v-btn>
               </v-slide-group-item>
@@ -44,11 +38,7 @@
 
           <!-- List orders card -->
           <div class="d-flex flex-wrap gap-2 mt-2" v-if="orders.length > 0">
-            <chef-order-card
-              v-for="order in orders"
-              :key="order.order_id"
-              :order="order"
-            >
+            <chef-order-card v-for="order in orders" :key="order.order_id" :order="order">
             </chef-order-card>
           </div>
           <!-- No order -->
@@ -68,21 +58,25 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 
 // Variables
 const { getOrdersNotCompleted } = useOrderStore();
 const { orders, success } = storeToRefs(useOrderStore());
+
 const menus = ref([
   {
     link: "/chef",
     title: "Order",
     icon: "mdi-storefront-plus",
-  },
+  }
 ]);
+
+// setInterval(() => {
+//   getOrdersNotCompleted();
+// }, 6000);
 
 // Lifecycle hook
 onMounted(() => {

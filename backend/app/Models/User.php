@@ -29,7 +29,6 @@ class User extends Authenticatable
         'image',
         'password'
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -38,6 +37,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -49,21 +50,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
     public static function storeUser($request, $id = null)
     {
         $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
-        
         $user = self::updateOrCreate(['id' => $id], $user);
-
         return $user;
     }
 
-    public function role():BelongsTo{
+    public function role(): BelongsTo
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function store():BelongsTo {
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
+    }
+
+    public function onesignals(): HasMany
+    {
+        return $this->hasMany(Onesignal::class);
     }
 }

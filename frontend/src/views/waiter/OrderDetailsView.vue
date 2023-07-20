@@ -68,7 +68,7 @@ const totalPrice = computed(() => {
 })
 
 // Method
-const confirm = () => {
+const confirm = async () => {
     let customizes = JSON.parse(localStorage.getItem('customizes_selectd'));
     let table = JSON.parse(localStorage.getItem('table_selectd'));
     let today = new Date();
@@ -80,7 +80,7 @@ const confirm = () => {
         datetime:dateTime,
         product_customizes: customizes
     };
-    storeOrder(newOrder);
+    await storeOrder(newOrder);
     success.value = true;
     localStorage.removeItem('customizes_selectd');
     localStorage.removeItem('table_selectd');

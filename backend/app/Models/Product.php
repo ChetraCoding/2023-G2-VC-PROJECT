@@ -20,35 +20,39 @@ class Product extends Model
         'image',
         'is_active'
     ];
-
     protected $casts = [
         'is_active' => 'boolean',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public static function storeProduct($request, $id = null)
     {
         $product = $request->only(['category_id', 'name', 'barcode', 'description', 'image', 'is_active']);
         $product['store_id'] = Auth::user()->store->id;
-        
         $product = self::updateOrCreate(['id' => $id], $product);
-
         return $product;
     }
 
-    public function productCustomize():HasMany {
+    public function productCustomize(): HasMany
+    {
         return $this->hasMany(ProductCustomize::class);
     }
 
-    public function orderDetails():BelongsToMany {
+    public function orderDetails(): BelongsToMany
+    {
         return $this->belongsToMany(Order::class);
     }
 
-    public function category():BelongsTo {
+    public function category(): BelongsTo
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function store():BelongsTo {
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
     }
-
 }

@@ -38,7 +38,7 @@
       <span>Table : {{ order.table_number }}</span>
       <span>{{ new Date(order.datetime).toDateString() }}</span>
       <span>{{ new Date(order.datetime).toLocaleTimeString() }}</span>
-      <span>${{ getTotalPrice(order) }}</span>
+      <span v-if="order">${{ getTotalPrice(order) }}</span>
     </v-card-text>
     <v-card-actions>
       <dark-button 
@@ -105,7 +105,6 @@
         <h6 class="text-darken-4 font-weight-bold mt-3">Summary Orders</h6>
         <v-list>
           <div
-            v-list-item
             v-for="order_detail in orderInfo.order_details"
             :key="order_detail.id"
           >
@@ -130,7 +129,7 @@
         <div class="d-flex">
           <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
-          <h6 class="font-weight-bold text-darken-4">
+          <h6 v-if="orderInfo" class="font-weight-bold text-darken-4">
             ${{ getTotalPrice(orderInfo) }}
           </h6>
         </div>
@@ -149,7 +148,7 @@
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps } from "vue";
 
 // Variables
 const props = defineProps(["orders"]);
@@ -157,7 +156,7 @@ const dialog = ref(false);
 const orderInfo = ref(null);
 const isComplete = ref(false);
 const orderClicked = ref(null);
-const { getOrder, updateOrdersToPaid } = useOrderStore();
+const { updateOrdersToPaid } = useOrderStore();
 const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Method
@@ -178,8 +177,4 @@ const complete = () => {
   orderClicked.value = null;
 };
 
-// Lifecycle hook
-onMounted(() => {
-  getOrder();
-});
 </script>
