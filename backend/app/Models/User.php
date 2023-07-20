@@ -52,6 +52,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // Store or Update staff
     public static function storeUser($request, $id = null)
     {
         $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
@@ -59,13 +60,16 @@ class User extends Authenticatable
         return $user;
     }
 
+    // Check user exists in store 
+    public static function contains($field, $value)
+    {
+        return Auth::user()->store->users->contains($field, $value);
+    }
+
     // Check the user permission
     public static function roleRequired($role)
     {
-        if (Auth::user()->role->name === $role) {
-            return true;
-        }
-        return false;
+        return Auth::user()->role->name === $role;
     }
 
     public function role(): BelongsTo
