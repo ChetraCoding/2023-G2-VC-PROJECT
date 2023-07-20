@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RecoverPasswordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -57,5 +58,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // role ------------------//
     Route::resource('roles', RoleController::class);
 });
-
+// login --------------------------------
 Route::post('/login',[UserController::class,'login']);  
+
+// recover Password --------------------------------
+Route::post('/password',[RecoverPasswordController::class, 'sendResetPassword']);
+Route::post('/password/reset',[RecoverPasswordController::class, 'ResetPassword']);
