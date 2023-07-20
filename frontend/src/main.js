@@ -21,7 +21,7 @@ import ProductForm from '@/components/form/ProductForm';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';
 import TableForm from '@/components/form/TableForm';
-import ListStaffTable from "@/components/table/ListStaffTable";
+import ListStaffCard from '@/components/table/ListStaffCard';
 import CreateStaffForm from "@/components/form/CreateStaffForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
@@ -71,7 +71,7 @@ app.component('table-form', TableForm)
 app.component('order-list-table', OrderListTable)
 
 // List staff
-app.component('list-staff-table', ListStaffTable)
+app.component('list-staff-card', ListStaffCard)
 // List Order Compoment
 app.component('chef-order-card', ChefOrderCard)
 
