@@ -4,6 +4,7 @@ import http from "../http-common";
 export const useCategoryStore = defineStore("category", {
   state: () => {
     return {
+      deleteSuccess: false,
       error: null,
       success: false,
       categories: [],
@@ -25,6 +26,16 @@ export const useCategoryStore = defineStore("category", {
         const res = await http.post("categories", category);
         if (res.data.success) {
           this.success = true;
+        }
+      } catch (err) {
+        this.error = err.response.data.message;
+      }
+    },
+    async deleteCategory(id) {
+      try {
+        const res = await http.delete("categories", id);
+        if (res.data.success) {
+          this.deleteSuccess = true;
         }
       } catch (err) {
         this.error = err.response.data.message;

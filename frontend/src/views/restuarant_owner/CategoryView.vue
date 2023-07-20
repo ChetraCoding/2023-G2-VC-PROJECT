@@ -1,7 +1,14 @@
 <template>
+  <!-- create alert -->
   <base-alert v-model="success">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h6 class="mt-2">Category created successfully!</h6>
+  </base-alert>
+
+  <!-- delete alert -->
+  <base-alert v-model="deleteSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Delete category successfully!</h6>
   </base-alert>
   <v-layout>
     <!-- Left side bar -->
@@ -23,16 +30,26 @@
       <!-- Main container -->
       <main class="d-flex mt-2" v-if="categories.length > 0">
         <div class="d-flex flex-column">
-          
           <!-- list category -->
           <div class="grid-container mt-2 gap-2">
             <category-card
-              v-for="category in categories"
+              v-for="(category, index) in categories"
               :key="category.category_id"
               :category="category"
-            >
-              <div class="d-flex justify-space-between align-center mt-2">
-                <secondary-button>
+              ><div class="d-flex justify-space-between align-center mt-2">
+                <!-- dialog delete category -->
+                <base-dialog
+                  v-model="dialog"
+                  title="Comfirm Delete"
+                  ms="Are you sure you want to delete category?"
+                >
+                  <danger-button @click="dialog = false">Cancel</danger-button>
+                  <primary-button @click="deleteCategory"
+                    >Delete</primary-button
+                  >
+                </base-dialog>
+                <!-- close dialo delete category -->
+                <secondary-button @click="editCategory(index)">
                   <v-icon
                     icon="mdi-square-edit-outline"
                     color="white"
@@ -40,7 +57,9 @@
                   ></v-icon>
                   Edit
                 </secondary-button>
-                <danger-button>
+
+                <!-- delete category -->
+                <danger-button @click="getDeleteCategoryId(index)">
                   <v-icon
                     icon="mdi-delete-forever"
                     color="white"
@@ -82,9 +101,9 @@
       </div>
     </v-main>
   </v-layout>
+
   <!-- form create category -->
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
-
 </template>
 
 <script setup>
@@ -94,8 +113,29 @@ import { storeToRefs } from "pinia";
 
 // Variables
 const { getCategory } = useCategoryStore();
-const { categories, success } = storeToRefs(useCategoryStore());
+const { categories, success, deleteSuccess } = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
+
+//method
+
+// delet category
+const dialog = ref(false);
+const categoryId = ref(null);
+let getDeleteCategoryId = (id) => {
+  categoryId.value = id;
+  dialog.value = true;
+};
+const deleteCategory = () => {
+  categories.value.splice(categoryId.value, 1);
+  dialog.value = false;
+};
+// close delete category
+
+// edit category
+const editCategory = (id) => {
+  console.log(id);
+  isShowForm.value = true;
+};
 
 // Methods
 const closeForm = () => {
