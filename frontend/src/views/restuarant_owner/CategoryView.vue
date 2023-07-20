@@ -5,6 +5,12 @@
     <h6 class="mt-2">Category created successfully!</h6>
   </base-alert>
 
+  <!-- create update category successfully -->
+  <base-alert v-model="updateSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Updated category succeefully!</h5>
+  </base-alert>
+
   <!-- delete alert -->
   <base-alert v-model="deleteSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
@@ -33,7 +39,7 @@
           <!-- list category -->
           <div class="grid-container mt-2 gap-2">
             <category-card
-              v-for="(category, index) in categories"
+              v-for="category in categories"
               :key="category.category_id"
               :category="category"
               ><div class="d-flex justify-space-between align-center mt-2">
@@ -49,7 +55,7 @@
                   >
                 </base-dialog>
                 <!-- close dialo delete category -->
-                <secondary-button @click="editCategory(index)">
+                <secondary-button @click="editCategory(category); isShowForm==true" >
                   <v-icon
                     icon="mdi-square-edit-outline"
                     color="white"
@@ -59,7 +65,7 @@
                 </secondary-button>
 
                 <!-- delete category -->
-                <danger-button @click="getDeleteCategoryId(index)">
+                <danger-button @click="getDeleteCategoryId(category)">
                   <v-icon
                     icon="mdi-delete-forever"
                     color="white"
@@ -103,7 +109,7 @@
   </v-layout>
 
   <!-- form create category -->
-  <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
+  <category-form :isShowForm="isShowForm" @closeForm="closeForm" :isUpdate="isUpdate"/>
 </template>
 
 <script setup>
@@ -132,10 +138,15 @@ const deleteCategory = () => {
 // close delete category
 
 // edit category
-const editCategory = (id) => {
-  console.log(id);
+const cate = ref('')
+const isUpdate = ref(false)
+const editCategory = (category) => {
+  cate.value = category['name']
+  console.log(cate.value);
   isShowForm.value = true;
+  // isUpdate.value = true;
 };
+
 
 // Methods
 const closeForm = () => {

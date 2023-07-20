@@ -5,6 +5,7 @@ export const useCategoryStore = defineStore("category", {
   state: () => {
     return {
       deleteSuccess: false,
+      updateSuccess: false,
       error: null,
       success: false,
       categories: [],
@@ -41,5 +42,15 @@ export const useCategoryStore = defineStore("category", {
         this.error = err.response.data.message;
       }
     },
+    async updateCategory(category) {
+      try {
+        const res = await http.put(`categories/${category.category_id}`, category);
+        if (res.data.success) {
+          this.updateSuccess = true;
+        }
+      } catch (err) {
+        return err;
+      }
+    }
   },
 });
