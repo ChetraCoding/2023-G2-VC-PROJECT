@@ -13,10 +13,9 @@ import DarkButton from '@/components/widget/button/DarkButton';
 import BaseAlert from '@/components/widget/alert/BaseAlert';
 import ResOwnerSideBar from '@/components/aside/ResOwnerSideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
-import CategoryListTable from '@/components/table/CategoryListTable';
+// import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
-import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';	
 import TableForm from '@/components/form/TableForm';
@@ -30,6 +29,7 @@ import ProductResOwnerCard from "@/components/widget/card/ProductResOwnerCard";
 import SummaryComponent from "@/components/summary/SummaryComponent";
 // categoryCard
 import CategoryCard from '@/components/widget/card/CategoryCard';
+import TableCard from '@/components/widget/card/TableCard';
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -37,6 +37,7 @@ const pinia = createPinia();
 app.component('product-res-owner-card', ProductResOwnerCard);
 app.component('product-card', ProductCard);
 app.component('category-card', CategoryCard);
+app.component('table-card', TableCard);
 
 // Components
 app.component('res-owner-side-bar', ResOwnerSideBar);
@@ -59,10 +60,8 @@ app.component('base-dialog', BaseDialog);
 
 // Restaurant owner component
 app.component('category-form', CategoryForm)
-app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 app.component('product-form', ProductForm)
-app.component('table-list-table', TableListTable)
 app.component('create-staff-form', CreateStaffForm);
 app.component('table-form', TableForm)
 
