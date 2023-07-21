@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TableController;
@@ -58,6 +59,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // onsignal
     Route::post('onsignal', [OnesignalController::class, 'store']);
+
+    // product report
+    Route::get('product_report/{month}/{year}', [ProductReportController::class, 'productReport']);
 });
 
 Route::post('/login',[UserController::class,'login']);  
