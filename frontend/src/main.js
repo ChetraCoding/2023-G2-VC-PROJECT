@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import OneSignal from '@onesignal/onesignal-vue3';
+import oneSignalConfig from './onesignal';
 import firebase from 'firebase';
 import App from './App.vue'
 import router from './router';
@@ -9,18 +11,17 @@ import "bootstrap/dist/js/bootstrap.js";
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import SecondaryButton from '@/components/widget/button/SecondaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
+import DarkButton from '@/components/widget/button/DarkButton';
 import BaseAlert from '@/components/widget/alert/BaseAlert';
 import ResOwnerSideBar from '@/components/aside/ResOwnerSideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
-import LoginForm from '@/components/form/LoginForm.vue'
-import CategoryListTable from '@/components/table/CategoryListTable';
+// import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
-import TableListTable from '@/components/table/TableListTable';
 import ProductCard from '@/components/widget/card/ProductCard';
-import CategoryForm from '@/components/form/CategoryForm';	
+import CategoryForm from '@/components/form/CategoryForm';
 import TableForm from '@/components/form/TableForm';
-import ListStaffTable from "@/components/table/ListStaffTable";
+import ListStaffCard from '@/components/table/ListStaffCard';
 import CreateStaffForm from "@/components/form/CreateStaffForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
@@ -30,6 +31,7 @@ import ProductResOwnerCard from "@/components/widget/card/ProductResOwnerCard";
 import SummaryComponent from "@/components/summary/SummaryComponent";
 // categoryCard
 import CategoryCard from '@/components/widget/card/CategoryCard';
+import TableCard from '@/components/widget/card/TableCard';
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -37,6 +39,7 @@ const pinia = createPinia();
 app.component('product-res-owner-card', ProductResOwnerCard);
 app.component('product-card', ProductCard);
 app.component('category-card', CategoryCard);
+app.component('table-card', TableCard);
 
 // Components
 app.component('res-owner-side-bar', ResOwnerSideBar);
@@ -49,6 +52,7 @@ app.component('summary-component', SummaryComponent);
 app.component('primary-button', PrimaryButton);
 app.component('secondary-button', SecondaryButton);
 app.component('danger-button', DangerButton);
+app.component('dark-button', DarkButton);
 
 // Alert
 app.component('base-alert', BaseAlert);
@@ -58,23 +62,18 @@ app.component('base-dialog', BaseDialog);
 
 // Restaurant owner component
 app.component('category-form', CategoryForm)
-app.component('category-list-table', CategoryListTable)
 app.component('product-list-table', ProductListTable)
 app.component('product-form', ProductForm)
-app.component('table-list-table', TableListTable)
 app.component('create-staff-form', CreateStaffForm);
 app.component('table-form', TableForm)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
 
-// Login component
-app.component('login-form', LoginForm);
-
 // List staff
-app.component('list-staff-table', ListStaffTable )
+app.component('list-staff-card', ListStaffCard)
 // List Order Compoment
-app.component('chef-order-card',ChefOrderCard)
+app.component('chef-order-card', ChefOrderCard)
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",
@@ -86,4 +85,8 @@ const firebaseConfig = {
   measurementId: "G-Z9600B42T2"
 };
 firebase.initializeApp(firebaseConfig);
-app.use(pinia).use(vuetify).use(router).mount('#app')
+app.use(pinia)
+  .use(OneSignal, oneSignalConfig)
+  .use(vuetify)
+  .use(router)
+  .mount('#app')

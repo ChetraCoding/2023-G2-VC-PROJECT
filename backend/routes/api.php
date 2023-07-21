@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -56,6 +57,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // role ------------------//
     Route::resource('roles', RoleController::class);
+
+    // onsignal
+    Route::post('onsignal', [OnesignalController::class, 'store']);
 });
 
 Route::post('/login',[UserController::class,'login']);  
