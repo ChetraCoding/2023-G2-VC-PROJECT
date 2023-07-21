@@ -24,7 +24,7 @@ return new class extends Migration
                 ->on('categories')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->string('barcode');
+            $table->string('product_code');
             $table->text('description');
             $table->text('image');
             $table->boolean('is_active');

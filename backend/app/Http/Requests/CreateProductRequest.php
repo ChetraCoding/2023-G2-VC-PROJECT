@@ -29,7 +29,7 @@ class CreateProductRequest extends FormRequest
         return [
             'category_id' => 'required',
             'name' => 'required',
-            'barcode' => 'required',
+            'product_code' => 'required',
             'description' => 'required',
             'image' => 'required',
             'is_active' => 'required',
