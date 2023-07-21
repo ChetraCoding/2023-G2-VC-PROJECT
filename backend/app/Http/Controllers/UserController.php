@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
@@ -22,28 +21,10 @@ class UserController extends Controller
         return Response()->json(['success' => true, 'message' => 'You have register a new account into the system successfully.', 'data' => new UserResource(User::storeUser($request))], 200);
     }
 
-    // Create new user by restaurant owner ----------------
-    public function createAccount(CreateAccountRequest $request)
-    {
-        $role = Role::find($request->role_id)->name;
-        if (Auth::user()->role->name !== 'restaurant_owner') return response()->json(['success' => false, 'message' => ["roles" => "You don't have permission to access this route."]], 403);
-        if ($role === 'admin' || $role === 'restaurant_owner') return response()->json(['success' => false, 'message' => ["roles" => "You can't asign this role."]], 403);
-        $request['store_id'] = Auth::user()->store->id;
-        return response()->json(['success' => true, 'message' => 'You have create a new staff into your restaurant successfully.', 'data' => new UserResource(User::storeUser($request))], 200);
-    }
-
     // Get user already login ----------------
     public function getUser()
     {
         return response()->json(["success" => true, "data" => new UserResource(Auth::user()), "message" => "Get user login is successfully."], 200);
-    }
-
-    // Get staff by restaurant owner ----------------
-    public function getSaff()
-    {
-        if (Auth::user()->role->name !== 'restaurant_owner') return response()->json(['success' => false, 'message' => ["roles" => "You don't have permission to access this route."]], 403);
-        $users = Auth::user()->store->users->where('id', '!==', Auth::user()->id)->sortByDesc('id');;
-        return response()->json(["success" => true, "data" => UserResource::collection($users), "message" => "Get all staff are successfully."], 200);
     }
 
     // User login ----------------
@@ -60,7 +41,7 @@ class UserController extends Controller
             ], 200);
         }
         return response()->json([
-            'message' => 'Invalid email and password.'
+            'message' => 'Invalid email or password.'
         ], 401);
     }
 

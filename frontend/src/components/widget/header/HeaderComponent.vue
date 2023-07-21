@@ -40,7 +40,7 @@
     </div>
   </v-app-bar>
 
-  <base-dialog v-model="isLogout" title="Log out" ms="Are you sure you want to log out?">
+  <base-dialog v-model="isLo" title="Log out" ms="Are you sure you want to log out?">
     <danger-button @click="isLogout = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel

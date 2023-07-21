@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -29,7 +30,6 @@ class User extends Authenticatable
         'image',
         'password'
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -38,6 +38,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -49,21 +51,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
+    // Store or Update staff
     public static function storeUser($request, $id = null)
     {
         $user = $request->only(['role_id', 'store_id', 'first_name', 'last_name', 'gender', 'email', 'password', 'image']);
-        
         $user = self::updateOrCreate(['id' => $id], $user);
-
         return $user;
     }
 
-    public function role():BelongsTo{
+    // Check user exists in store 
+    public static function contains($field, $value)
+    {
+        return Auth::user()->store->users->contains($field, $value);
+    }
+
+    // Check the user permission
+    public static function roleRequired($role)
+    {
+        return Auth::user()->role->name === $role;
+    }
+
+    public function role(): BelongsTo
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function store():BelongsTo {
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
+    }
+
+    public function onesignals(): HasMany
+    {
+        return $this->hasMany(Onesignal::class);
     }
 }

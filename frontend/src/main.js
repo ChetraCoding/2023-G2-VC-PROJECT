@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import OneSignal from '@onesignal/onesignal-vue3';
+import oneSignalConfig from './onesignal';
 import firebase from 'firebase';
 import App from './App.vue'
 import router from './router';
@@ -17,9 +19,9 @@ import HeaderComponent from '@/components/widget/header/HeaderComponent';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
 import ProductCard from '@/components/widget/card/ProductCard';
-import CategoryForm from '@/components/form/CategoryForm';	
+import CategoryForm from '@/components/form/CategoryForm';
 import TableForm from '@/components/form/TableForm';
-import ListStaffTable from "@/components/table/ListStaffTable";
+import ListStaffCard from '@/components/table/ListStaffCard';
 import CreateStaffForm from "@/components/form/CreateStaffForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
@@ -32,7 +34,7 @@ import CategoryCard from '@/components/widget/card/CategoryCard';
 import TableCard from '@/components/widget/card/TableCard';
 // Product report
 import VueApexCharts from "vue3-apexcharts";
-import ProductChart from "@/components/chart/ProductChart";
+import ProductChart from "@/components/product/ProductChart";
 
 
 const app = createApp(App);
@@ -74,9 +76,9 @@ app.component('table-form', TableForm)
 app.component('order-list-table', OrderListTable)
 
 // List staff
-app.component('list-staff-table', ListStaffTable )
+app.component('list-staff-card', ListStaffCard)
 // List Order Compoment
-app.component('chef-order-card',ChefOrderCard)
+app.component('chef-order-card', ChefOrderCard)
 
 // Product Report
 app.component('product-chart', ProductChart)
@@ -92,3 +94,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 app.use(pinia).use(vuetify).use(router).use(VueApexCharts).mount('#app')
+  .use(OneSignal, oneSignalConfig)
+  .use(vuetify)
+  .use(router)
+  .mount('#app')

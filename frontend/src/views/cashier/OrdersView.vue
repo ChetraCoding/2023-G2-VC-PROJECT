@@ -80,6 +80,11 @@ const menus = ref([
     icon: "mdi-home-analytics",
   },
 ]);
+
+// setInterval(() => {
+//   getOrder();
+// }, 6000);
+
 // Lifecycle hook
 onMounted(() => {
   getOrder();

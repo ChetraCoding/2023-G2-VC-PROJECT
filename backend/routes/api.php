@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -27,14 +29,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // register by admin ----------
     Route::post('/register',[UserController::class,'register']);
 
-    // register by restaurant ower ----------
-    Route::post('/create_account',[UserController::class,'createAccount']);
-
     // get user already login ----------
     Route::get('/user',[UserController::class,'getUser']);
 
-    // get staff by restaurant owner ----------
-    Route::get('/staff',[UserController::class,'getSaff']);
+    // staff  ---------------------//
+    Route::resource('/staff', StaffController::class);
 
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
@@ -56,6 +55,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // role ------------------//
     Route::resource('roles', RoleController::class);
+
+    // onsignal
+    Route::post('onsignal', [OnesignalController::class, 'store']);
 });
 
 Route::post('/login',[UserController::class,'login']);  
