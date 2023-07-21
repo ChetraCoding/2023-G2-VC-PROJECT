@@ -105,8 +105,14 @@ const routes = [
     name: '/cashier',
     component: () => import('@/views/cashier/OrdersView'),
     beforeEnter: [loginRequired, roleRequired('cashier')]
-  }
-
+  },
+  // Product Report
+  {
+    path: '/sale',
+    name: '/sale',
+    component: () => import('@/views/restuarant_owner/Product_report'),
+    // beforeEnter: [loginRequired, roleRequired('product_report')]
+  },
 ];
 
 const router = createRouter({

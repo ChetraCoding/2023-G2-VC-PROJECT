@@ -30,6 +30,11 @@ import SummaryComponent from "@/components/summary/SummaryComponent";
 // categoryCard
 import CategoryCard from '@/components/widget/card/CategoryCard';
 import TableCard from '@/components/widget/card/TableCard';
+// Product report
+import VueApexCharts from "vue3-apexcharts";
+import ProductChart from "@/components/chart/ProductChart";
+
+
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -73,6 +78,9 @@ app.component('list-staff-table', ListStaffTable )
 // List Order Compoment
 app.component('chef-order-card',ChefOrderCard)
 
+// Product Report
+app.component('product-chart', ProductChart)
+
 const firebaseConfig = {
   apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",
   authDomain: "vc-2023.firebaseapp.com",
@@ -83,4 +91,4 @@ const firebaseConfig = {
   measurementId: "G-Z9600B42T2"
 };
 firebase.initializeApp(firebaseConfig);
-app.use(pinia).use(vuetify).use(router).mount('#app')
+app.use(pinia).use(vuetify).use(router).use(VueApexCharts).mount('#app')
