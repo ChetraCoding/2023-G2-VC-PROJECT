@@ -50,7 +50,7 @@
                   ms="Are you sure you want to delete category?"
                 >
                   <danger-button @click="dialog = false">Cancel</danger-button>
-                  <primary-button @click="deleteCategory"
+                  <primary-button @click="deleted"
                     >Delete</primary-button
                   >
                 </base-dialog>
@@ -118,23 +118,29 @@ import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { getCategory } = useCategoryStore();
+const { getCategory, deleteCategory } = useCategoryStore();
 const { categories, success, deleteSuccess } = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
 
 //method
 
-// delet category
+// delet category static
 const dialog = ref(false);
 const categoryId = ref(null);
 let getDeleteCategoryId = (id) => {
   categoryId.value = id;
   dialog.value = true;
+  // console.log(categoryId.value);
 };
-const deleteCategory = () => {
-  categories.value.splice(categoryId.value, 1);
+const deleted = () => {
+   if (categoryId.value !== null) {
+    const id = categoryId.value['category_id']
+    deleteCategory(id);
+  }
   dialog.value = false;
 };
+
+
 // close delete category
 
 // edit category

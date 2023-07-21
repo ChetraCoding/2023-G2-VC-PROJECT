@@ -34,12 +34,12 @@ export const useCategoryStore = defineStore("category", {
     },
     async deleteCategory(id) {
       try {
-        const res = await http.delete("categories", id);
+        const res = await http.delete(`categories/${id}`);
         if (res.data.success) {
           this.deleteSuccess = true;
         }
       } catch (err) {
-        this.error = err.response.data.message;
+        this.error = err.response.data;
       }
     },
     async updateCategory(category) {
