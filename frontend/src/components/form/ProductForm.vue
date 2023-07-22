@@ -1,13 +1,13 @@
 <template>
   <v-form>
-    <v-dialog v-model="dialog" persistent width="800">
+    <v-dialog v-model="dialog" persistent width="900">
       <v-card class="rounded-lg">
         <v-card-title v-if="productInForm.product_id" class="bg-red-accent-2 text-center">Update
           product</v-card-title>
         <v-card-title v-else class="bg-red-accent-2 text-center">Create new product</v-card-title>
 
         <div class="w-100 px-2 pt-2 d-flex">
-          <div class="mr-3" style="width: 30%">
+          <div class="w-30 mr-3">
             <v-text-field v-model="productInForm.name" required class="mt-2 text-black" variant="outlined"
               density="compact" label="Name" :error-messages="vp$.name.$errors.map((e) => e.$message)"
               @input="vp$.name.$touch" @blur="vp$.name.$touch"></v-text-field>
@@ -33,43 +33,7 @@
               @change="vp$.is_active.$touch" @blur="vp$.is_active.$touch"></v-switch>
           </div>
 
-          <div class="mr-3 w-50">
-            <div class="d-flex align-center gap-2">
-              <v-text-field v-model="customize.size" class="mt-2 text-black w-50" variant="outlined" density="compact"
-                label="Size" :error-messages="vc$.size.$errors.map((e) => e.$message)" @input="vc$.size.$touch"
-                @blur="vc$.size.$touch"></v-text-field>
-
-              <v-text-field v-model="customize.price" class="mt-2 text-black w-50" variant="outlined" density="compact"
-                label="Price" type="number" :error-messages="vc$.price.$errors.map((e) => e.$message)"
-                @input="vc$.price.$touch" @blur="vc$.price.$touch"></v-text-field>
-
-              <v-icon @click="
-                vc$.$validate();
-              addCustom(findCustIndex);
-              " icon="mdi-plus" color="white" size="30" class="mb-3 justify-center bg-grey-darken-2 rounded-pill">
-              </v-icon>
-            </div>
-
-            <div v-for="(customize, index) in productInForm.product_customizes" :key="index"
-              class="d-flex justify-space-between border-1 pa-2 mb-2" style="border-bottom: 1px solid black"
-              width="300px">
-              <div>
-                <span>{{ customize.size }}</span>
-              </div>
-              <div>
-                <span>${{ customize.price }}</span>
-              </div>
-              <div>
-                <v-icon @click="editCustom(index)" icon="mdi-square-edit-outline" color="blue" size="23"
-                  class="mr-1 justify-center">
-                </v-icon>
-                <v-icon @click="deleteCustom(index)" icon="mdi-delete" color="red" size="23" class="justify-center">
-                </v-icon>
-              </div>
-            </div>
-          </div>
-
-          <div style="width: 30%">
+          <div class="w-30">
             <v-file-input required accept="image/png, image/jpeg" :clearable="false" density="compact" label="File input"
               class="mt-2 text-black" variant="outlined" prepend-icon="mdi-file-image"
               :error-messages="vp$.image.$errors.map((e) => e.$message)" @change="
@@ -78,7 +42,44 @@
               " @blur="vp$.image.$touch"></v-file-input>
             <v-img
               :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
-              :width="238" :height="175" class="rounded-lg" aspect-ratio="16/9" cover></v-img>
+              :width="238" :height="193" class="mt-2 rounded-lg" aspect-ratio="16/9" cover></v-img>
+          </div>
+
+          <div class="ml-3 mb-2 w-50">
+            <div class="d-flex align-center gap-2">
+              <v-text-field v-model="customize.size" class="mt-2 text-black w-50" variant="outlined" density="compact"
+                label="Size" :error-messages="vc$.size.$errors.map((e) => e.$message)" @input="vc$.size.$touch"
+                @blur="vc$.size.$touch"></v-text-field>
+
+              <v-text-field v-model="customize.price" class="mt-2 text-black w-50" variant="outlined" density="compact"
+                label="Price ($)" type="number" :error-messages="vc$.price.$errors.map((e) => e.$message)"
+                @input="vc$.price.$touch" @blur="vc$.price.$touch"></v-text-field>
+
+              <primary-button @click="vc$.$validate(); addCustom(findCustIndex)" class="mb-3">
+                <v-icon icon="mdi-content-save-all" color="white" size="large"></v-icon>
+                Save
+              </primary-button>
+            </div>
+
+            <div v-for="(customize, index) in productInForm.product_customizes" :key="index"
+              class="d-flex mt-2 p-2 rounded-lg justify-space-between align-center bg-grey-darken-1 mb-2" width="300px">
+              <div class="w-25">
+                <span>{{ customize.size }}</span>
+              </div>
+              <div class="w-40">
+                <span>${{ customize.price }}</span>
+              </div>
+              <div class="w-40 d-flex justify-end">
+                <secondary-button @click="editCustom(index)">
+                  <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
+                  Edit
+                </secondary-button>
+                <danger-button @click="deleteCustom(index)" class="ml-2">
+                  <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
+                  Delete
+                </danger-button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -258,3 +259,12 @@ onMounted(() => {
   getCategory();
 });
 </script>
+
+<style scoped>
+.w-30 {
+  width: 30%;
+}
+.w-40 {
+  width: 30%;
+}
+</style>
