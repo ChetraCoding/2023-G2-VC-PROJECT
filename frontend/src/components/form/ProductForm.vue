@@ -2,84 +2,85 @@
   <v-form>
     <v-dialog v-model="dialog" persistent width="800">
       <v-card class="rounded-lg">
-        <v-card-title v-if="productInForm.productInForm_id" class="bg-red-accent-2 text-center">Update
-          productInForm</v-card-title>
-        <v-card-title v-else class="bg-red-accent-2 text-center">Create New product</v-card-title>
+        <v-card-title v-if="productInForm.product_id" class="bg-red-accent-2 text-center">Update
+          product</v-card-title>
+        <v-card-title v-else class="bg-red-accent-2 text-center">Create new product</v-card-title>
 
-        <v-container class="w-100 d-flex">
+        <div class="w-100 px-2 pt-2 d-flex">
           <div class="mr-3" style="width: 30%">
-            <v-text-field v-model="productInForm.name" required class="mb-3" density="compact" label="Name"
-              :error-messages="vp$.name.$errors.map((e) => e.$message)" @input="vp$.name.$touch"
-              @blur="vp$.name.$touch"></v-text-field>
+            <v-text-field v-model="productInForm.name" required class="mt-2 text-black" variant="outlined"
+              density="compact" label="Name" :error-messages="vp$.name.$errors.map((e) => e.$message)"
+              @input="vp$.name.$touch" @blur="vp$.name.$touch"></v-text-field>
 
-            <v-text-field v-model="productInForm.barcode" required class="mb-3" density="compact" label="Barcode"
-              :error-messages="`${vp$.barcode.$errors.map((e) => e.$message)}${err_barcode}`"
-              @input="vp$.barcode.$touch; err_barcode = '';" @blur="vp$.barcode.$touch"></v-text-field>
+            <v-text-field v-model="productInForm.product_code" required class="mt-2 text-black" variant="outlined"
+              density="compact" label="Code"
+              :error-messages="`${vp$.product_code.$errors.map((e) => e.$message)}${errProductCode}`"
+              @input="vp$.product_code.$touch; errProductCode = '';" @blur="vp$.product_code.$touch"></v-text-field>
 
-            <v-select v-model="productInForm.category" required class="mb-3" label="Category" :items="categories"
-              :item-title="'name'" :item-value="'id'" density="compact"
-              :error-messages="vp$.category.$errors.map((e) => e.$message)" @change="vp$.category.$touch"
-              @blur="vp$.category.$touch">
+            <v-select v-model="productInForm.category_id" required class="mt-2 text-black" variant="outlined"
+              label="Category" :items="categories" :item-title="'name'" :item-value="'category_id'" density="compact"
+              :error-messages="vp$.category_id.$errors.map((e) => e.$message)" @change="vp$.category_id.$touch"
+              @blur="vp$.category_id.$touch">
             </v-select>
 
-            <v-textarea v-model="productInForm.description" required class="mb-3" cols="2" density="compact"
-              label="Description" rows="1" :error-messages="vp$.description.$errors.map((e) => e.$message)"
-              @input="vp$.description.$touch" @blur="vp$.description.$touch"></v-textarea>
+            <v-textarea v-model="productInForm.description" required class="mt-2 text-black" variant="outlined" cols="2"
+              density="compact" label="Description" rows="1"
+              :error-messages="vp$.description.$errors.map((e) => e.$message)" @input="vp$.description.$touch"
+              @blur="vp$.description.$touch"></v-textarea>
 
-            <v-switch v-model="productInForm.is_active" required color="orange-darken-4" label="Active"
-              hide-details="auto" :error-messages="vp$.is_active.$errors.map((e) => e.$message)"
+            <v-switch v-model="productInForm.is_active" class="text-black" variant="outlined" required
+              color="orange-darken-4" label="Active" :error-messages="vp$.is_active.$errors.map((e) => e.$message)"
               @change="vp$.is_active.$touch" @blur="vp$.is_active.$touch"></v-switch>
           </div>
 
-          <div class="mr-3" style="width: 50%">
-            <div class="d-flex align-center">
-              <v-text-field v-model="customize.size" density="compact" label="Size" class="w-50"
-                :error-messages="vc$.size.$errors.map((e) => e.$message)" @input="vc$.size.$touch"
+          <div class="mr-3 w-50">
+            <div class="d-flex align-center gap-2">
+              <v-text-field v-model="customize.size" class="mt-2 text-black w-50" variant="outlined" density="compact"
+                label="Size" :error-messages="vc$.size.$errors.map((e) => e.$message)" @input="vc$.size.$touch"
                 @blur="vc$.size.$touch"></v-text-field>
 
-              <v-text-field v-model="customize.price" density="compact" label="Price" type="number" class="w-50"
-                :error-messages="vc$.price.$errors.map((e) => e.$message)" @input="vc$.price.$touch"
-                @blur="vc$.price.$touch"></v-text-field>
+              <v-text-field v-model="customize.price" class="mt-2 text-black w-50" variant="outlined" density="compact"
+                label="Price" type="number" :error-messages="vc$.price.$errors.map((e) => e.$message)"
+                @input="vc$.price.$touch" @blur="vc$.price.$touch"></v-text-field>
 
               <v-icon @click="
                 vc$.$validate();
               addCustom(findCustIndex);
-              " icon="mdi-plus" color="white" size="30" class="ml-2 mb-3 justify-center bg-grey-darken-2 rounded-pill">
+              " icon="mdi-plus" color="white" size="30" class="mb-3 justify-center bg-grey-darken-2 rounded-pill">
               </v-icon>
             </div>
 
-            <div class="mt-3">
-              <div v-for="(customize, index) in productInForm.product_customizes" :key="index"
-                class="d-flex justify-space-between border-1 pa-2 mb-2" style="border-bottom: 1px solid black"
-                width="300px">
-                <div>
-                  <span>{{ customize.size }}</span>
-                </div>
-                <div>
-                  <span>${{ customize.price }}</span>
-                </div>
-                <div>
-                  <v-icon @click="editCustom(index)" icon="mdi-square-edit-outline" color="blue" size="23"
-                    class="mr-1 justify-center">
-                  </v-icon>
-                  <v-icon @click="deleteCustom(index)" icon="mdi-delete" color="red" size="23" class="justify-center">
-                  </v-icon>
-                </div>
+            <div v-for="(customize, index) in productInForm.product_customizes" :key="index"
+              class="d-flex justify-space-between border-1 pa-2 mb-2" style="border-bottom: 1px solid black"
+              width="300px">
+              <div>
+                <span>{{ customize.size }}</span>
+              </div>
+              <div>
+                <span>${{ customize.price }}</span>
+              </div>
+              <div>
+                <v-icon @click="editCustom(index)" icon="mdi-square-edit-outline" color="blue" size="23"
+                  class="mr-1 justify-center">
+                </v-icon>
+                <v-icon @click="deleteCustom(index)" icon="mdi-delete" color="red" size="23" class="justify-center">
+                </v-icon>
               </div>
             </div>
           </div>
 
           <div style="width: 30%">
             <v-file-input required accept="image/png, image/jpeg" :clearable="false" density="compact" label="File input"
-              prepend-icon="mdi-file-image" :error-messages="vp$.image.$errors.map((e) => e.$message)" @change="
+              class="mt-2 text-black" variant="outlined" prepend-icon="mdi-file-image"
+              :error-messages="vp$.image.$errors.map((e) => e.$message)" @change="
                 vp$.image.$touch;
               imageUpload($event);
               " @blur="vp$.image.$touch"></v-file-input>
             <v-img
               :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
-              :width="238" :height="175" class="rounded-lg mb-3" aspect-ratio="16/9" cover></v-img>
+              :width="238" :height="175" class="rounded-lg" aspect-ratio="16/9" cover></v-img>
           </div>
-        </v-container>
+        </div>
 
         <v-card-actions class="bg-grey-lighten-2">
           <v-spacer></v-spacer>
@@ -99,6 +100,7 @@
 
 <script setup>
 // Import
+import http from '@/http-common';
 import firebase from "firebase";
 import { onMounted, ref } from "vue";
 import { useProductStore } from "@/stores/product";
@@ -108,45 +110,35 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 // Variables
-const { storeProduct, resetProductForm } = useProductStore();
-const { dialog, productInForm, err_barcode } = storeToRefs(useProductStore());
+const { storeProduct, updateProduct, resetProductForm } = useProductStore();
+const { dialog, productInForm, errProductCode } = storeToRefs(useProductStore());
 const { getCategory } = useCategoryStore();
 const { categories } = storeToRefs(useCategoryStore());
 const imgPreview = ref(null);
 
-// Form: https://vuetifyjs.com/en/components/forms/
-// Validation Product
-// const initialProduct = {
-//   name: null,
-//   barcode: null,
-//   category: null,
-//   description: null,
-//   is_active: false,
-//   image: null,
-// };
-// const product = (productInForm.value)? productInForm.value : ref({...initialProduct});
-
+// Validation product
 const vp$ = useVuelidate(
   {
     name: { required },
-    barcode: { required },
-    category: { required },
+    product_code: { required },
+    category_id: { required },
     description: { required },
     is_active: { required },
     image: { required },
   },
   productInForm
 );
+// Clear product form
 const clearPruduct = () => {
   dialog.value = false;
   clearCustomize();
-  err_barcode.value = "";
+  errProductCode.value = "";
   imgPreview.value = null;
   resetProductForm();
   vp$.value.$reset();
 };
 
-// Validation Customize
+// Validation product customize
 const findCustIndex = ref(null);
 const initialCustomize = {
   size: null,
@@ -162,6 +154,8 @@ const vc$ = useVuelidate(
   },
   customize
 );
+
+// Clear product customize form
 const clearCustomize = () => {
   vc$.value.$reset();
   for (const [key, value] of Object.entries(initialCustomize)) {
@@ -170,6 +164,7 @@ const clearCustomize = () => {
 };
 
 // Method
+// When upload image
 const imageUpload = (e) => {
   const file = e.target.files[0];
   if (file) {
@@ -202,12 +197,13 @@ const imageUpload = (e) => {
   }
 };
 
-// Add customizes
+// Add product customize
 const addCustom = (custIndex) => {
   if (vc$.value.$errors.length === 0) {
     if (custIndex !== null) {
       productInForm.value.product_customizes[custIndex].size = customize.value.size;
       productInForm.value.product_customizes[custIndex].price = customize.value.price;
+      clearCustomize();
     } else {
       productInForm.value.product_customizes.push({ ...customize.value });
       clearCustomize();
@@ -215,22 +211,41 @@ const addCustom = (custIndex) => {
     findCustIndex.value = null;
   }
 };
-const deleteCustom = (index) => {
-  productInForm.value.product_customizes.splice(index, 1);
+// Delete product customize
+const deleteCustom = (custIndex) => {
+  let productCustomizeId = productInForm.value.product_customizes[custIndex].product_customize_id;
+  if (productCustomizeId) {
+    try {
+      http.delete(`product_customizes/${productCustomizeId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  productInForm.value.product_customizes.splice(custIndex, 1);
 };
-
+// Edit product customize
 const editCustom = (index) => {
   findCustIndex.value = index;
   customize.value.size = productInForm.value.product_customizes[index].size;
   customize.value.price = productInForm.value.product_customizes[index].price;
 };
 
+// Save the product
 const save = async () => {
-  if (productInForm.value.product_customizes.length === 0) vc$.value.$touch();
-  // product.value.product_customizes = product.value.product_customizes;
+  if (productInForm.value.product_customizes.length === 0) {
+    vc$.value.$touch();
+  }
   if (vp$.value.$errors.length === 0 && productInForm.value.product_customizes.length > 0) {
-    await storeProduct(productInForm.value);
-    if (!err_barcode.value) {
+    // Check the product id
+    if (productInForm.value.product_id) {
+      // Update the product
+      await updateProduct(productInForm.value);
+    } else {
+      // Create a new product
+      await storeProduct(productInForm.value);
+    }
+    // Check the product code message
+    if (!errProductCode.value) {
       dialog.value = false;
       clearCustomize();
       clearPruduct();

@@ -1,34 +1,25 @@
 // Reference from: https://router.vuejs.org/guide/advanced/navigation-guards.html
 import { createRouter, createWebHistory } from "vue-router";
 import { useCookieStore } from "@/stores/cookie";
-import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
 
 const loginRequired = async (to, from, next) => {
   const { getCookie } = useCookieStore();
-  const { getUser } = useUserStore();
-  const { user } = storeToRefs(useUserStore());
-  await getUser();
-  if (user.value && getCookie("user_token")) {
+  if (getCookie("user_token")) {
     next();
   } else {
     next("/login");
   }
 }
 
-const roleRequired = (role) => 
+const roleRequired = (role) =>
   async (to, from, next) => {
-    const { getUser } = useUserStore();
-    const { user } = storeToRefs(useUserStore());
-    await getUser();
-    if (user.value.role === role) {
+    const { getCookie } = useCookieStore();
+    if (getCookie("user_role") === role) {
       next();
     } else {
       next("/404");
     }
-  
-};
-
+  };
 const routes = [
   {
     path: "/login",

@@ -99,6 +99,8 @@ const onSubmit = async () => {
     try {
       const res = await http.post("login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
+      cookieStore.setCookie("user_role", res.data.user.role, 30);
+      cookieStore.setCookie("user", JSON.stringify(res.data.user), 30);
       if (res.data.user.role === "restaurant_owner") {
         router.push("/");
       } else {

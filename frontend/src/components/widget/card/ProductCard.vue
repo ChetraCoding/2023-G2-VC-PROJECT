@@ -4,7 +4,7 @@
         </v-img>
 
         <v-card-subtitle class="font-weight-bold">
-            {{ product.barcode }}
+            {{ product.product_code }}
         </v-card-subtitle>
 
         <v-card-text>

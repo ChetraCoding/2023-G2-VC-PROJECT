@@ -42,7 +42,7 @@ class ProductController extends Controller
     } else {
       // Check product code in store
       if (Product::contains('product_code', $request->product_code)) {
-        return response()->json(['success' => false, 'message' => ['product_code' => "The product's product_code already exists."]], 409);
+        return response()->json(['success' => false, 'message' => ['product_code' => "The product's product code already exists."]], 409);
       } else {
         // Create new product -------------------
         $product = Product::storeProduct($request);
@@ -74,7 +74,7 @@ class ProductController extends Controller
       $productsInCategory = Category::find($request->input('category_id'))->products->whereNotIn('id', [$id]);
       foreach ($productsInCategory as $productInCategory) {
         if (strtoupper($productInCategory->product_code) === strtoupper($request->input('product_code'))) {
-          return response()->json(['success' => false, 'message' => ['product_code' => "The product's product_code already exists."]], 409);
+          return response()->json(['success' => false, 'message' => ['product_code' => "Code already exists."]], 409);
         }
       }
       // Update the product attributes
