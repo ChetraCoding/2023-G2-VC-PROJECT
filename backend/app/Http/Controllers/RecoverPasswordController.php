@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckResetPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\SendResetPasswordRequest;
 use App\Mail\RecoverPasswordNotifycation;
@@ -51,7 +52,32 @@ class RecoverPasswordController extends Controller
         }
     }
 
-    public function ResetPassword(ResetPasswordRequest $request)
+    public function checkResetPassword(CheckResetPasswordRequest $request)
+    {
+        // Get email and password from user input
+        $email = $request->email;
+        $token = $request->token;
+
+        // Find email and token is valid in password_reset_token 
+        $exists = PasswordResetToken::where('email', $email)
+            ->where('token', $token)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'Check reset password token has in the system',
+                'success' => true
+            ], 200);
+        } else {
+            // User record does not exist with the given email and token
+            return response()->json([
+                'message' => 'Email or token is invalid.',
+                'success' => false
+            ], 200);
+        }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
     {
 
         // Get email and password from user input
@@ -81,7 +107,7 @@ class RecoverPasswordController extends Controller
         } else {
             // User record does not exist with the given email and token
             return response()->json([
-                'message' => 'User not found/Invalid code',
+                'message' => 'Email or token is invalid.',
                 'success' => false
             ], 200);
         }

@@ -9,6 +9,7 @@ export const useUserStore = defineStore("user", {
       err_email: '',
       user: null,
       staff: [],
+      deleteSuccess: false,
     };
   },
   actions: {
@@ -38,6 +39,18 @@ export const useUserStore = defineStore("user", {
         if (err.response.data.message.email) {
           this.err_email = 'The email has already been taken.';
         }
+      }
+    },
+
+    // Delete staff
+    async deleteStaff(id) {
+      try {
+        const res = await http.delete("staff", id);
+        if (res.data.success) {
+          this.deleteSuccess = true;
+        }
+      } catch (err) {
+        this.error = err.response.data.message;
       }
     },
 

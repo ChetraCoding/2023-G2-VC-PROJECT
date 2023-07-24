@@ -3,47 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCustomize;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProductCustomizeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductCustomize $productCustomize)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProductCustomize $productCustomize)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductCustomize $productCustomize)
+    public function destroy(int $id)
     {
-        //
+        // Check the user permission
+        if (!User::roleRequired('restaurant_owner')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        if (ProductCustomize::find($id)) {
+            ProductCustomize::find($id)->delete();
+            return Response()->json(['success' => true, 'message' => 'Delete the product customize is successfully.'], 200);
+        } else {
+            return Response()->json(['success' => false, 'message' => ['product_customize' => 'The product customize id is not found.']], 404);
+        }
     }
 }

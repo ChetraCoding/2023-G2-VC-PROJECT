@@ -18,7 +18,7 @@ class ShowProductResource extends JsonResource
             'product_id'=>$this->id,
             'category'=> new CategoryResource($this->category),
             'name'=>$this->name,
-            'barcode'=>$this->barcode,
+            'product_code'=>$this->product_code,
             'description'=>$this->description,
             'image'=>$this->image,
             'is_active'=>$this->is_active,

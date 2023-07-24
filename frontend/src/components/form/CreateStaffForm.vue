@@ -1,121 +1,73 @@
-<!-- Referemce: https://play.vuetifyjs.com/#eNqVVUtv2zAM/iuCUSAJENvbWmBAkGYZsB122Q4Ddkly8INp1MiSJ8leiyL/fZTkZ+q8Lq1M8iP5faKY1Zv3Nc+DsgBv5s01ZDmLNCzWnJD5VsjMnvBc+hpetL+lwFJnIqT0M5ECe1x7SiMo4FEGa6/2zkBKIf0MlIqeQGFUeWdDgjvrUUEW5WMgjwuCpips0sEnouAaJAI/fmjNLIptyZ+9YhL+FlRC09qS8rzQ3ZpaFMmuBSxjVpjUw/7FPOwSRhFukAGyiLILOtiYK4WoGX/3+4nPca7ynyY9FHCGtQIGiT7FuPK2lCkOkmFq/1+QwoFv1OIHJj6jRLKL+BP085/WYjDCiuE8XSGSHST7WLyckqLxnyddh91I+5sgr6Ig0ZME+HIl/7bUaQVOxFgNal9XhVhzkrBIGTYZ+A9rD2symuxdursyYjRFOdbegqgizqgmJhXC2n1icjSghEEkTbQ99ILnYbWH5mFnPeGnSiTNNVGgi9xG0iwXUpM31CNKNC2BHMhWioyMcL2NehGFgj8FuCabqCWGOVOYCHmEsA9m2kg9BKpY43Ui1IATwZUmlFNNI/bbzAd5JG9OAbN1ZmQ0mrpPm77z7SZvRnjBWGWqL6JjPHTr2AHEAjX7cVUpCIJuCw446XVonikiVyPzrsjH0ZS406fmdN+cHkabLlYWDAy2R8tcQa1Tn2DrmTpTE1AzHsDa/gY9rSbvnD1tyjtssXvpY9v31IlWibEtOAonzGjjEI4nNSecaLzaAl+mBJy2cRWOACHJ2BVY7eF1SmzYhogt+RU/m50CXEsKaty9gEmTGEkbg8FusD+Ldh5s3v6Zh27Kcb69qcco36vgWQmOP9Y2B74chQt2RlYOt/Z2WudqFoZJyjESVxMtZcBBhzzPQpxVTbevy/vgPvgcplTp2uTjilGBTWYy4RUfsKCbfvzdyY+qOoetXHHBh4/N4/eFFsx7CSX+slNcHKnIbC8PrpeOOQCV+bEU/xRITLL2qgu3ZUzDV5S6xBZLvEsdYr0SpC+BpyABd9J1jI5gXVZHrrPM/BQyeh01GxoyGocUE78EWS/X0S67kkYH4Xp3qd8JNbj0bqvR4oYqVeN/8A5Tz0qJw2iv0dv8B32+fuE= -->
-<!-- Dialog for form create staff -->
+<!-- Referemce: https://play.vuetifyjs.com/
+<!- Dialog for form create staff -->
 <template>
+  <!-- Form create staff -->
   <v-form @submit.prevent="add">
+    <!-- Dialog -->
     <v-dialog v-model="dialog" persistent width="800" no-padding>
-      <v-card
-        class="rounded-lg"
-        style="max-width: 100%; max-height: 100vh; overflow-y: auto"
-      >
-        <v-card-title class="text-center bg-orange-darken-4">
-          <span class="text-h6">Create New Staff</span>
+      <v-card class="rounded-lg bg-white" style="max-width: 100%; max-height: 100vh; overflow-y: auto">
+        <!--Card title-->
+        <v-card-title class="text-center bg-red-accent-2">
+          <span class="font-inter text-h6">Create new staff</span>
         </v-card-title>
         <div class="p-60">
-          <v-card-text>
-            <v-container size="small">
-              <v-row class="justify-center">
-                <v-col cols="12" md="4">
-                  <v-text-field
-                    label="First name"
-                    v-model="staff.first_name"
-                    density="compact"
-                    hide-details="auto"
-                    :error-messages="
-                      v$.first_name.$errors.map((e) => e.$message)
-                    "
-                    @input="v$.first_name.$touch"
-                    @blur="v$.first_name.$touch"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field
-                    label="Last name"
-                    v-model="staff.last_name"
-                    density="compact"
-                    hide-details="auto"
-                    :error-messages="
-                      v$.last_name.$errors.map((e) => e.$message)
-                    "
-                    @input="v$.last_name.$touch"
-                    @blur="v$.last_name.$touch"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-select
-                    label="Gender"
-                    v-model="staff.gender"
-                    :items="['Male', 'Female', 'Other']"
-                    density="compact"
-                    hide-details="auto"
-                    :error-messages="v$.gender.$errors.map((e) => e.$message)"
-                    @input="v$.gender.$touch"
-                    @blur="v$.gender.$touch"
-                  ></v-select>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Email"
-                    v-model="staff.email"
-                    density="compact"
-                    hide-details="auto"
-                    :error-messages="`${v$.email.$errors.map(
-                      (e) => e.$message
-                    )}${err_email}`"
-                    @input="v$.email.$touch"
-                    @blur="v$.email.$touch"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Password"
-                    v-model="staff.password"
-                    density="compact"
-                    :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                    :type="showPassword ? 'text' : 'password'"
-                    @click:append-inner="showPassword = !showPassword"
-                    hide-details="auto"
-                    :error-messages="v$.password.$errors.map((e) => e.$message)"
-                    @input="v$.password.$touch"
-                    @blur="v$.password.$touch"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-select
-                    label="Role"
-                    v-model="staff.role"
-                    :items="roles"
-                    :item-title="'name'"
-                    item-value="role_id"
-                    density="compact"
-                    :error-messages="v$.role.$errors.map((e) => e.$message)"
-                    @input="v$.role.$touch"
-                    @blur="v$.role.$touch"
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+          <!--Card container-->
+          <v-container>
+            <v-row class="d-flex px-2 mt-1 flex-column justify-center">
+              <div class="input-group gap-2">
+                <v-text-field v-model="staff.first_name" class="text-black" variant="outlined" label="First name"
+                  density="compact" :error-messages="v$.first_name.$errors.map((e) => e.$message)"
+                  @input="v$.first_name.$touch" @blur="v$.first_name.$touch"></v-text-field>
+                <!--Input last name field-->
+                <v-text-field v-model="staff.last_name" class="text-black" label="Last name" density="compact"
+                  variant="outlined" :error-messages="v$.last_name.$errors.map((e) => e.$message)"
+                  @input="v$.last_name.$touch" @blur="v$.last_name.$touch"></v-text-field>
+                <!--Select gender field-->
+                <v-select v-model="staff.gender" label="Gender" :items="['Male', 'Female', 'Other']" density="compact"
+                  class="text-black" variant="outlined" :error-messages="v$.gender.$errors.map((e) => e.$message)"
+                  @input="v$.gender.$touch" @blur="v$.gender.$touch"></v-select>
+              </div>
+              <!--Input email field-->
+              <v-text-field v-model="staff.email" class="mt-2 text-black" label="Email" density="compact"
+                variant="outlined" :error-messages="`${v$.email.$errors.map(
+                  (e) => e.$message
+                )}${err_email}`" @input="v$.email.$touch" @blur="v$.email.$touch"></v-text-field>
+              <!--Input field password-->
+              <v-text-field v-model="staff.password" label="Password" density="compact" class="mt-2 text-black"
+                variant="outlined" :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="showPassword ? 'text' : 'password'" @click:append-inner="showPassword = !showPassword"
+                :error-messages="v$.password.$errors.map((e) => e.$message)" @input="v$.password.$touch"
+                @blur="v$.password.$touch"></v-text-field>
+              <!--Select role field-->
+              <v-select v-model="staff.role" label="Role" :items="roles" :item-title="'name'" item-value="role_id"
+                density="compact" class="mt-2 text-black" variant="outlined"
+                :error-messages="v$.role.$errors.map((e) => e.$message)" @input="v$.role.$touch"
+                @blur="v$.role.$touch"></v-select>
+            </v-row>
+          </v-container>
           <v-card-actions class="bg-grey-lighten-2">
             <v-spacer></v-spacer>
-            <danger-button
-              @click="
-                clear();
-                $emit('closeForm');
-              "
-            >
-              CLOSE
+            <!--Close button-->
+            <danger-button @click="
+              clear();
+            $emit('closeForm');
+            ">
+              <v-icon icon="mdi-close-box-multiple" color="white" size="large">
+              </v-icon>
+              Close
             </danger-button>
-            <primary-button
-              type="submit"
-              @click="
-                () => {
-                  v$.$validate();
-                  add();
-                }
-              "
-              >SAVE</primary-button
-            >
+            <!--Save button-->
+            <primary-button class="mr-1" type="submit" @click="() => {
+              v$.$validate();
+              add();
+            }
+              ">
+              <v-icon icon="mdi-content-save-all" color="white" size="large">
+              </v-icon>
+              Save
+            </primary-button>
           </v-card-actions>
+          <!--Action-->
         </div>
       </v-card>
     </v-dialog>
@@ -129,6 +81,7 @@
 </template>
 
 <script setup>
+// Import
 import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
@@ -208,3 +161,14 @@ onMounted(() => {
   getRoles();
 });
 </script>
+
+<style scoped>
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+</style>

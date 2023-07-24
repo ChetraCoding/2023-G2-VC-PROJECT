@@ -9,7 +9,7 @@
 
 <body>
     <h3>Please click on the button below to reset password.</h3>
-    <a href="http://172.16.0.142:8080/password/reset/{{$data['token']}}/{{$data['email']}}">
+    <a href="{{env('VUE_APP_BASE_URL')}}reset_password/{{$data['token']}}/{{$data['email']}}">
         <button style="padding: 10px; border-radius: 10px; background-color: blue; border: none; color:white;">Reset Password</button>
     </a>
 </body>

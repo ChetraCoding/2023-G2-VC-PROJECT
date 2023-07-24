@@ -17,26 +17,31 @@ class Order extends Model
         'is_completed',
         'is_paid',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public static function storeOrder($request, $id = null)
     {
-        $order = ($id)? $request->only(['is_completed', 'is_paid']) : $request->only(['table_id', 'datetime', 'is_completed', 'is_paid']);
+        $order = ($id) ? $request->only(['is_completed', 'is_paid']) : $request->only(['table_id', 'datetime', 'is_completed', 'is_paid']);
         $order['store_id'] = Auth::user()->store->id;
-        
         $order = self::updateOrCreate(['id' => $id], $order);
-
         return $order;
     }
 
-    public function store():BelongsTo{
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
     }
-    
-    public function table():BelongsTo{
+
+    public function table(): BelongsTo
+    {
         return $this->belongsTo(Table::class);
     }
 
-    public function orderDetails():HasMany {
+    public function orderDetails(): HasMany
+    {
         return $this->hasMany(OrderDetail::class);
     }
 }

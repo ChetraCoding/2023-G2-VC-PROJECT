@@ -13,61 +13,74 @@
     title="Tips"
     ms="Are you sure you want to completed?"
   >
-    <danger-button @click="isComplete = false">Cancel</danger-button>
-    <primary-button @click="complete()">Confirm</primary-button>
+    <danger-button 
+    @click="isComplete = false"
+    >
+    <v-icon icon="mdi-close-box-multiple"></v-icon>
+    Cancel
+    </danger-button>
+    <primary-button 
+    @click="complete()"
+    >
+    <v-icon icon="mdi-check-circle-outline"></v-icon>
+    Confirm
+  </primary-button>
   </base-dialog>
 
   <!-- Create table of list orders -->
-  <v-table>
-    <thead>
-      <tr>
-        <th class="bg-white text-left text-black font-weight-bold">No.</th>
-        <th class="bg-white text-left text-black font-weight-bold">
-          Table Number
-        </th>
-        <th class="bg-white text-left text-black font-weight-bold">Date</th>
-        <th class="bg-white text-left text-black font-weight-bold">Time</th>
-        <th class="bg-white text-left text-black font-weight-bold">Price</th>
-        <th class="bg-white text-left text-black font-weight-bold">Action</th>
-      </tr>
-    </thead>
+  <v-card
+    v-for="(order, index) in props.orders"
+    :key="order.name"
+    class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg"
+  >
+    <v-card-text class="d-flex justify-space-between ">
+      <span>ID : {{ index + 1 }}</span>
+      <span>Table : {{ order.table_number }}</span>
+      <span>{{ new Date(order.datetime).toDateString() }}</span>
+      <span>{{ new Date(order.datetime).toLocaleTimeString() }}</span>
+      <span v-if="order">${{ getTotalPrice(order) }}</span>
+    </v-card-text>
+    <v-card-actions>
+      <dark-button 
+        @click="(orderInfo = order), (dialog = true)">
+        <v-icon 
+          icon="mdi-eye" 
+          color="red-accent-2" 
+        > 
+        </v-icon>
+        View
+      </dark-button>
 
-    <tbody>
-      <tr v-for="(order, index) in props.orders" :key="order.name">
-        <td>{{ index + 1 }}</td>
-        <td>{{ order.table_number }}</td>
-        <td>{{ new Date(order.datetime).toDateString() }}</td>
-        <td>{{ new Date(order.datetime).toLocaleTimeString() }}</td>
-        <td>${{ getTotalPrice(order) }}</td>
+      <dark-button 
+        @click="(orderInfo = order), (dialog = true)">
+        <v-icon 
+          icon="mdi-printer" 
+          color="red-accent-2" 
+        > 
+        </v-icon>
+        Print
+      </dark-button>
 
-        <td>
-          <v-icon
-            icon="mdi-eye"
-            color="red"
-            class="mr-3"
-            @click="(orderInfo = order), (dialog = true)"
-          ></v-icon>
-
-          <!-- Icon print and check-->
-          <!-- <v-icon icon="mdi-printer"></v-icon> -->
-          <v-icon
-            icon="mdi-checkbox-marked-circle"
-            class="ml-3"
-            color="orange-darken-4"
-            @click="
-              isComplete = true;
-              orderClicked = order;
-            "
-          ></v-icon>
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+      <dark-button
+        @click="
+          isComplete = true;
+          orderClicked = order;
+        "
+        ><v-icon
+          icon="mdi-checkbox-marked-circle"
+          color="red-accent-2"
+        >
+        </v-icon>
+        Check
+        </dark-button
+      >
+    </v-card-actions>
+  </v-card>
 
   <!-- Dialog of confirm order -->
   <v-dialog v-model="dialog" persistent width="600">
     <v-card class="rounded-lg">
-      <v-card-title class="bg-orange-darken-4 text-center"
+      <v-card-title class="bg-red-accent-2 text-center"
         >Confirm Orders</v-card-title
       >
       <v-card-text>
@@ -92,7 +105,6 @@
         <h6 class="text-darken-4 font-weight-bold mt-3">Summary Orders</h6>
         <v-list>
           <div
-            v-list-item
             v-for="order_detail in orderInfo.order_details"
             :key="order_detail.id"
           >
@@ -117,15 +129,18 @@
         <div class="d-flex">
           <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
-          <h6 class="font-weight-bold text-darken-4">
+          <h6 v-if="orderInfo" class="font-weight-bold text-darken-4">
             ${{ getTotalPrice(orderInfo) }}
           </h6>
         </div>
       </v-card-text>
       <v-card-actions class="bg-grey-lighten-2">
         <v-spacer></v-spacer>
-        <danger-button @click="dialog = false">Close</danger-button>
-      </v-card-actions>
+        <danger-button @click="dialog = false">
+          <v-icon icon="mdi-close-box-multiple"></v-icon>
+          Close
+        </danger-button>
+      </v-card-actions> 
     </v-card>
   </v-dialog>
 </template>
@@ -133,7 +148,7 @@
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps } from "vue";
 
 // Variables
 const props = defineProps(["orders"]);
@@ -141,7 +156,7 @@ const dialog = ref(false);
 const orderInfo = ref(null);
 const isComplete = ref(false);
 const orderClicked = ref(null);
-const { getOrder, updateOrdersToPaid } = useOrderStore();
+const { updateOrdersToPaid } = useOrderStore();
 const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Method
@@ -162,8 +177,4 @@ const complete = () => {
   orderClicked.value = null;
 };
 
-// Lifecycle hook
-onMounted(() => {
-  getOrder();
-});
 </script>

@@ -5,10 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
 
-class CreateCategoryRequest extends FormRequest
+class CheckResetPasswordRequest extends FormRequest
 {
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -17,10 +21,6 @@ class CreateCategoryRequest extends FormRequest
         return true;
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(['success' => false, 'message' => $validator->errors()], 412));
-    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +29,8 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'email' => 'required|email|exists:password_reset_tokens,email',
+            'token' => 'required|exists:password_reset_tokens,token'
         ];
     }
 }

@@ -14,18 +14,28 @@ class Table extends Model
         'store_id',
         'table_number'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
+    // Store or Update table
     public static function storeTable($request, $id = null)
     {
         $table = $request->only(['table_number']);
         $table['store_id'] = Auth::user()->store->id;
-        
         $table = self::updateOrCreate(['id' => $id], $table);
-
         return $table;
     }
 
-    public function store():BelongsTo {
+    // Check table exists in store 
+    public static function contains($field, $value)
+    {
+        return Auth::user()->store->tables->contains($field, $value);
+    }
+
+    public function store(): BelongsTo
+    {
         return $this->belongsTo(Store::class);
     }
 }
