@@ -1,11 +1,11 @@
 <template>
   <!-- create alert -->
-  <base-alert v-model="success">
+  <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h6 class="mt-2">Category created successfully!</h6>
   </base-alert>
 
-  <!-- create update category successfully -->
+  <!-- update category successfully -->
   <base-alert v-model="updateSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated category succeefully!</h5>
@@ -16,6 +16,7 @@
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h6 class="mt-2">Delete category successfully!</h6>
   </base-alert>
+
   <v-layout>
     <!-- Left side bar -->
     <res-owner-side-bar></res-owner-side-bar>
@@ -34,48 +35,42 @@
       </header-component>
 
       <!-- Main container -->
-      <main class="d-flex mt-2" v-if="categories.length > 0">
-        <div class="d-flex flex-column">
-          <!-- list category -->
-          <div class="grid-container mt-2 gap-2">
-            <category-card
-              v-for="category in categories"
-              :key="category.category_id"
-              :category="category"
-              ><div class="d-flex justify-space-between align-center mt-2">
-                <!-- dialog delete category -->
-                <base-dialog
-                  v-model="dialog"
-                  title="Comfirm Delete"
-                  ms="Are you sure you want to delete category?"
-                >
-                  <danger-button @click="dialog = false">Cancel</danger-button>
-                  <primary-button @click="deleted"
-                    >Delete</primary-button
-                  >
-                </base-dialog>
-                <!-- close dialo delete category -->
-                <secondary-button @click="editCategory(category); isShowForm==true" >
-                  <v-icon
-                    icon="mdi-square-edit-outline"
-                    color="white"
-                    size="large"
-                  ></v-icon>
-                  Edit
-                </secondary-button>
+      <main class="d-flex flex-column mt-2">
+        <!-- list category -->
+        <div
+          class="grid-container mt-2 mr-2 gap-2"
+          v-if="categories.length > 0"
+        >
+          <category-card
+            v-for="category in categories"
+            :key="category.category_id"
+            :category="category"
+            ><div class="d-flex justify-space-between align-center mt-2">
+              <!-- close dialo delete category -->
+              <secondary-button @click="onEdit(category)">
+                <v-icon
+                  icon="mdi-square-edit-outline"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Edit
+              </secondary-button>
 
-                <!-- delete category -->
-                <danger-button @click="getDeleteCategoryId(category)">
-                  <v-icon
-                    icon="mdi-delete-forever"
-                    color="white"
-                    size="large"
-                  ></v-icon>
-                  Delete
-                </danger-button>
-              </div>
-            </category-card>
-          </div>
+              <!-- delete category -->
+              <danger-button @click="onDelete(category)">
+                <v-icon
+                  icon="mdi-delete-forever"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Delete
+              </danger-button>
+            </div>
+          </category-card>
+        </div>
+        <!-- list category empty -->
+        <div class="w-100 text-center" v-else>
+          <h5 class="text-center mt-5 text-white">Don't have any category.</h5>
         </div>
 
         <!-- Category Summary -->
@@ -92,24 +87,30 @@
           </template>
           <template v-slot:content>
             <div
-              class="bg-grey-darken-2 mt-5 py-3 rounded-lg d-flex justify-space-between align-center"
+              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
-              <span class="mr-2">{{ categories.length }} items</span>
+              <span v-if="categories.length > 1" class="mr-2">{{ categories.length }} items</span>
+              <span v-else class="mr-2">{{ categories.length }} item</span>
             </div>
           </template>
         </summary-component>
       </main>
-
-      <!-- list category empty -->
-      <div class="h-screen" v-else>
-        <h4 class="text-center mt-5 text-white">Don't have any category.</h4>
-      </div>
     </v-main>
   </v-layout>
 
   <!-- form create category -->
-  <category-form :isShowForm="isShowForm" @closeForm="closeForm" :isUpdate="isUpdate"/>
+  <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
+
+  <!-- dialog delete category -->
+  <base-dialog
+    v-model="dialog"
+    title="Tips"
+    ms="Are you sure you want to delete category?"
+  >
+    <danger-button @click="dialog = false">Cancel</danger-button>
+    <primary-button @click="deleted">Delete</primary-button>
+  </base-dialog>
 </template>
 
 <script setup>
@@ -119,40 +120,38 @@ import { storeToRefs } from "pinia";
 
 // Variables
 const { getCategory, deleteCategory } = useCategoryStore();
-const { categories, success, deleteSuccess } = storeToRefs(useCategoryStore());
+const {
+  categoryInForm,
+  categories,
+  createSuccess,
+  updateSuccess,
+  deleteSuccess,
+} = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
-
-//method
-
-// delet category static
 const dialog = ref(false);
 const categoryId = ref(null);
-let getDeleteCategoryId = (id) => {
+
+//Method
+
+// Delet category
+let onDelete = (id) => {
   categoryId.value = id;
   dialog.value = true;
-  // console.log(categoryId.value);
 };
+
 const deleted = () => {
-   if (categoryId.value !== null) {
-    const id = categoryId.value['category_id']
+  if (categoryId.value !== null) {
+    const id = categoryId.value["category_id"];
     deleteCategory(id);
   }
   dialog.value = false;
 };
 
-
-// close delete category
-
-// edit category
-const cate = ref('')
-const isUpdate = ref(false)
-const editCategory = (category) => {
-  cate.value = category['name']
-  console.log(cate.value);
+// Edit category
+const onEdit = (category) => {
+  categoryInForm.value = { ...category };
   isShowForm.value = true;
-  // isUpdate.value = true;
 };
-
 
 // Methods
 const closeForm = () => {
