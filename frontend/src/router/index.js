@@ -78,7 +78,7 @@ const routes = [
   {
     path: "/staff",
     name: "staff",
-    component: () => import("@/views/staff/ListStaffView"),
+    component: () => import("@/views/restuarant_owner/StaffView"),
     beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
   // waiter =====================================================
