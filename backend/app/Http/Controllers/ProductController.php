@@ -25,7 +25,24 @@ class ProductController extends Controller
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
     $products = Auth::user()->store->products->sortByDesc('id');
-    return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products successfully."], 200);
+    return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products is successfully."], 200);
+  }
+
+  /**
+   * Search for product.
+   */
+  public function search(string $keyword)
+  {
+    // Check the user permission
+    if (
+      !User::roleRequired('restaurant_owner') &&
+      !User::roleRequired('waiter')
+    ) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+    }
+    $storeId = Auth::user()->store->id;
+    $products = Product::where('store_id', $storeId)->where('name', 'like', '%' . $keyword . '%')->get();
+    return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Search products is successfully."], 200);
   }
 
   /**
