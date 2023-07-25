@@ -13,18 +13,14 @@
     title="Tips"
     ms="Are you sure you want to completed?"
   >
-    <danger-button 
-    @click="isComplete = false"
-    >
-    <v-icon icon="mdi-close-box-multiple"></v-icon>
-    Cancel
+    <danger-button @click="isComplete = false">
+      <v-icon icon="mdi-close-box-multiple"></v-icon>
+      Cancel
     </danger-button>
-    <primary-button 
-    @click="complete()"
-    >
-    <v-icon icon="mdi-check-circle-outline"></v-icon>
-    Confirm
-  </primary-button>
+    <primary-button @click="complete()">
+      <v-icon icon="mdi-check-circle-outline"></v-icon>
+      Confirm
+    </primary-button>
   </base-dialog>
 
   <!-- Create table of list orders -->
@@ -33,7 +29,7 @@
     :key="order.name"
     class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg"
   >
-    <v-card-text class="d-flex justify-space-between ">
+    <v-card-text class="d-flex justify-space-between">
       <span>ID : {{ index + 1 }}</span>
       <span>Table : {{ order.table_number }}</span>
       <span>{{ new Date(order.datetime).toDateString() }}</span>
@@ -41,23 +37,13 @@
       <span v-if="order">${{ getTotalPrice(order) }}</span>
     </v-card-text>
     <v-card-actions>
-      <dark-button 
-        @click="(orderInfo = order), (dialog = true)">
-        <v-icon 
-          icon="mdi-eye" 
-          color="red-accent-2" 
-        > 
-        </v-icon>
+      <dark-button @click="(orderInfo = order), (dialog = true)">
+        <v-icon icon="mdi-eye" color="red-accent-2"> </v-icon>
         View
       </dark-button>
 
-      <dark-button 
-        @click="(orderInfo = order), (dialog = true)">
-        <v-icon 
-          icon="mdi-printer" 
-          color="red-accent-2" 
-        > 
-        </v-icon>
+      <dark-button @click="printClicked(order)">
+        <v-icon icon="mdi-printer" color="red-accent-2"> </v-icon>
         Print
       </dark-button>
 
@@ -66,14 +52,10 @@
           isComplete = true;
           orderClicked = order;
         "
-        ><v-icon
-          icon="mdi-checkbox-marked-circle"
-          color="red-accent-2"
-        >
+        ><v-icon icon="mdi-checkbox-marked-circle" color="red-accent-2">
         </v-icon>
         Check
-        </dark-button
-      >
+      </dark-button>
     </v-card-actions>
   </v-card>
 
@@ -140,20 +122,102 @@
           <v-icon icon="mdi-close-box-multiple"></v-icon>
           Close
         </danger-button>
-      </v-card-actions> 
+      </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <!-- Print bill---------- -->
+  <div class="d-none">
+    <div id="printOrder" v-if="orderPrint">
+      <div width="100%">
+        <v-card-title class="text-center text-h4">
+          Store's name:
+          <span class="font-weight-bold">{{ orderPrint.store.name }}</span>
+        </v-card-title>
+        <div class="p-2">
+          <div class="p-1">
+            <v-sub-title class="text-subtitle-1">
+              លេខតុ / Table : <span class="font-weight-bold">{{ orderPrint.table_number }}</span> </v-sub-title
+            ><br />
+            <v-sub-title class="text-subtitle-1">
+              កាលបរិច្ឆេទ / Date Time : <span class="font-weight-bold">{{ orderPrint.datetime }}</span>
+            </v-sub-title>
+          </div>
+          <!-- list of food -->
+          <hr />
+          <v-table>
+            <thead>
+              <tr>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  បរិយាយ <br />
+                  Description
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  ទំហំ <br />
+                  Size
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  ចំនួន <br />
+                  quantity
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  តម្លៃ <br />
+                  Price
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  សរុប <br />
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="order_detail in orderPrint.order_details"
+                :key="order_detail"
+              >
+                <td class="text-center">
+                  {{ order_detail.product_customize.product.name }}
+                </td>
+                <td class="text-center">
+                  {{ order_detail.product_customize.size }}
+                </td>
+                <td class="text-center">{{ order_detail.quantity }}</td>
+                <td class="text-center">
+                  {{ order_detail.product_customize.price }} $
+                </td>
+                <td class="text-center">
+                  {{
+                    order_detail.quantity * order_detail.product_customize.price
+                  }}
+                  $
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <hr />
+          <div class="p-1">
+            <v-sub-title class="text-subtitle-1">
+              សរុប / Sub Total : <span class="font-weight-bold"> {{ getTotalPrice(orderPrint) }} $</span></v-sub-title
+            ><br />
+            <i class="font-weight-bold"> Thanks, Please come agains </i><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
 import { ref, defineProps } from "vue";
+import printJS from "print-js";
 
 // Variables
 const props = defineProps(["orders"]);
 const dialog = ref(false);
 const orderInfo = ref(null);
+const orderPrint = ref(null);
 const isComplete = ref(false);
 const orderClicked = ref(null);
 const { updateOrdersToPaid } = useOrderStore();
@@ -177,4 +241,18 @@ const complete = () => {
   orderClicked.value = null;
 };
 
+const printClicked = async (order) => {
+  orderPrint.value = order;
+  // Referrent from :https://fontawesomeicons.com/tryit/code/vue-js-print-current-page/1
+  // Purpose: to print a bill
+
+  document.title = " ID-" + order.order_id + " " + new Date().toLocaleString();
+  setTimeout(() => {
+    printJS({
+      printable: "printOrder",
+      type: "html",
+      targetStyles: ["*"],
+    });
+  }, 10);
+};
 </script>
