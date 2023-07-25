@@ -1,9 +1,10 @@
 <template>
     <v-layout>
         <!-- Nav -->
-        <header-component :title="user.store.name">
-            <v-text-field v-model="keyword" @keyup.enter="search" class="search text-white rounded-lg" density="compact" variant="solo"
-                label="Search for product..." append-inner-icon="mdi-magnify" single-line hide-details></v-text-field>
+        <header-component :title="user.store.name" :class="'m-auto'">
+            <v-text-field v-model="keyword" @keyup.enter="search" class="search text-white rounded-lg" density="compact"
+                variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
+                hide-details></v-text-field>
         </header-component>
 
         <v-main class="mt-3 mb-15">
@@ -89,8 +90,8 @@
 
             <v-spacer></v-spacer>
 
-            <primary-button @click="onOrder" class="px-1">
-                <h5 class="font-weight-bold mt-1">Order Now</h5>
+            <primary-button @click="order" class="px-2">
+                <h6 class="font-weight-bold mt-2">Order Now</h6>
             </primary-button>
         </v-bottom-navigation>
     </v-layout>
@@ -124,7 +125,7 @@
                             <div class="d-flex align-center">
                                 <div class="d-flex align-center">
                                     <div>
-                                        <v-img class="bg-white rounded-lg" :width="150" :height="100"
+                                        <v-img class="bg-white rounded-lg" :width="130" :height="100"
                                             :src="customize.product.image" cover></v-img>
                                     </div>
                                     <div class="ml-3 text-white">
@@ -159,13 +160,13 @@
     <!-- Alert please selecet table -->
     <base-alert v-model="tableAlert">
         <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-        <h5 class="mt-2">Please select table!</h5>
+        <h5 class="mt-2">Please select table.</h5>
     </base-alert>
 
     <!-- Alert please selecet food -->
     <base-alert v-model="foodAlert">
         <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-        <h5 class="mt-2">Please select food!</h5>
+        <h5 class="mt-2">Please select food.</h5>
     </base-alert>
 </template>
 
@@ -180,7 +181,7 @@ import { storeToRefs } from "pinia";
 
 // Variables
 const { getCookie } = useCookieStore();
-const { getProducts } = useProductStore();
+const { getProducts, searchProducts } = useProductStore();
 const { getTables } = useTableStore();
 const user = ref(JSON.parse(getCookie('user')));
 const { tables } = storeToRefs(useTableStore());
@@ -203,15 +204,19 @@ const table = localStorage.getItem('table_selectd') ? ref(JSON.parse(localStorag
 // Methods
 // Search for product
 const search = () => {
-    console.log(keyword.value);
+    if (keyword.value) {
+        searchProducts(keyword.value)
+    } else {
+        getProducts();
+    }
 }
-
+// On click product customize
 const onCustomize = (product) => {
     isCustomize.value = true;
     isCart.value = false;
     productCustomize.value = product;
 }
-
+// Total order price
 const totalPrice = computed(() => {
     let total = 0;
     for (let customize of myCart.value) {
@@ -219,7 +224,7 @@ const totalPrice = computed(() => {
     }
     return total;
 })
-
+// Total order food
 const totalFoods = computed(() => {
     let count = 0;
     for (let customize of myCart.value) {
@@ -227,7 +232,7 @@ const totalFoods = computed(() => {
     }
     return count;
 })
-
+// Add product customize
 const addCustomize = (product, customize) => {
     const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
     let findCustomIndex = customizes.findIndex((custom) => custom.product_customize_id === customize.product_customize_id);
@@ -249,7 +254,7 @@ const addCustomize = (product, customize) => {
     myCart.value = customizes;
     localStorage.setItem('customizes_selectd', JSON.stringify(customizes));
 }
-
+// Minus product customize
 const minusCustomize = (custom_id) => {
     const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
     let findCustomIndex = customizes.findIndex((custom) => custom.product_customize_id === custom_id);
@@ -264,7 +269,7 @@ const minusCustomize = (custom_id) => {
     myCart.value = customizes;
     localStorage.setItem('customizes_selectd', JSON.stringify(customizes));
 }
-
+// Remove product customize
 const removeCustomize = (custom_id) => {
     const customizes = localStorage.getItem('customizes_selectd') ? JSON.parse(localStorage.getItem('customizes_selectd')) : [];
     customizes.splice(custom_id, 1);
@@ -272,14 +277,18 @@ const removeCustomize = (custom_id) => {
     myCart.value = customizes;
     localStorage.setItem('customizes_selectd', JSON.stringify(customizes));
 }
-
+// Get table seleted from localStorage
 const tableSelected = () => {
     localStorage.setItem('table_selectd', JSON.stringify(table.value));
 }
-
-const onOrder = () => {
-    if (myCart.value.length === 0) return foodAlert.value = true;
-    if (!table.value) return tableAlert.value = true;
+// Order food
+const order = () => {
+    if (myCart.value.length === 0) {
+        return foodAlert.value = true;
+    }
+    if (!table.value) {
+        return tableAlert.value = true;
+    }
     router.push('/order-details')
 }
 

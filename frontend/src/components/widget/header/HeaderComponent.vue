@@ -1,6 +1,6 @@
 <template>
   <v-app-bar class="bg-transparent">
-    <div class="w-100 test mx-0 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between">
+    <div :class="`w-100 ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between ${props.class}`">
       <span class="text-white">{{ props.title }}</span>
       <div class="w-50">
         <slot></slot>
@@ -58,7 +58,7 @@ import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
 
 // Variables
-const props = defineProps(["title"]);
+const props = defineProps(["title", "class"]);
 const { getCookie, removeCookie } = useCookieStore();
 const user = ref(JSON.parse(getCookie('user')));
 const initials = user.value.first_name.slice(0, 1).toUpperCase() + user.value.last_name.slice(0, 1).toUpperCase();

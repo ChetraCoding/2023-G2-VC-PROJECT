@@ -31,13 +31,13 @@
     <v-layout class="overflow-visible">
         <v-bottom-navigation class="bg-grey-darken-2 rounded-t-lg">
             <div class="d-flex align-center px-3">
-                <h4 class="mt-2">Total: <span class="font-weight-bold">${{ totalPrice }}</span></h4>
+                <h5 class="mt-2">Total: <span class="font-weight-bold">${{ totalPrice }}</span></h5>
             </div>
 
             <v-spacer></v-spacer>
 
-            <primary-button @click="confirm" class="px-2">
-                <h5 class="font-weight-bold mt-1">Confirm</h5>
+            <primary-button @click="confirm" class="px-3">
+                <h6 class="font-weight-bold mt-2">Confirm</h6>
             </primary-button>
         </v-bottom-navigation>
     </v-layout>
@@ -45,7 +45,7 @@
     <!-- Alert success -->
     <base-alert v-model="success">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h5 class="mt-2">Order succeefully!</h5>
+        <h5 class="mt-2">Ordered succeefully.</h5>
     </base-alert>
 </template>
 
@@ -88,6 +88,6 @@ const confirm = async () => {
     localStorage.removeItem('table_selectd');
     setTimeout(() => {
         router.push('/waiter');
-    }, 1500);
+    }, 1200);
 }
 </script>
