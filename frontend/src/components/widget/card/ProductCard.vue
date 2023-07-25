@@ -1,30 +1,30 @@
 <template>
-    <v-card class="mx-auto rounded-xl" elevation="20" max-width="800">
-        <v-img class="rounded-xl m-3" height="200" :src="product.image" cover>
+    <v-card class="w-auto p-2 bg-grey-darken-2 rounded-lg" elevation="20">
+        <v-img class="rounded-lg" height="130" :src="product.image" cover>
         </v-img>
 
-        <v-card-subtitle class="font-weight-bold">
-            {{ product.product_code }}
-        </v-card-subtitle>
+        <div class="mt-2 d-flex flex-column">
+            <span class="font-weight-bold text-grey-lighten-1">{{ product.product_code }}</span>
+            <span class="font-inter text-h6 font-weight-bold">{{ product.name }}</span>
+            <span class="text-grey-lighten-1">{{ product.description }}</span>
+        </div>
 
-        <v-card-text>
-            <h6 class="font-weight-bold">{{ product.name }}</h6>
-
-            <div>{{ product.description }}</div>
-        </v-card-text>
-
-        <v-card-actions>
+        <div class="d-flex mt-1">
             <v-spacer></v-spacer>
 
-            <primary-button @click="$emit('on-customize', product)">CUSTOMIZE</primary-button>
-        </v-card-actions>
+            <primary-button @click="$emit('on-customize', product)">Customize</primary-button>
+        </div>
     </v-card>
 </template>
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
-
 defineProps(['product']);
 defineEmits(['on-customize']);
-
 </script>
+
+<style scoped>
+.font-inter {
+    font-family: 'Inter', sans-serif !important;
+}
+</style>

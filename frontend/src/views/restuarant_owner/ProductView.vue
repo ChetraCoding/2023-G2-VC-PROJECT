@@ -1,9 +1,10 @@
 <template>
   <v-layout>
-    <!-- Left side bar -->
-    <res-owner-side-bar></res-owner-side-bar>
-
+    
     <v-main class="ml-2">
+      <!-- Left side bar -->
+      <res-owner-side-bar></res-owner-side-bar>
+      
       <!-- Header top -->
       <header-component title="Manage Product">
         <v-text-field class="search text-white rounded-lg" density="compact" variant="solo-none"
