@@ -67,7 +67,7 @@
 
         <!-- list table empty -->
         <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-white">Don't have any table.</h4>
+          <h6 class="text-center mt-5 text-white">Don't have any table.</h6>
         </div>
 
         <!-- Table Summary -->
@@ -84,7 +84,7 @@
           </template>
           <template v-slot:content>
             <div
-              class="bg-grey-darken-2 mt-5 py-3 rounded-lg d-flex justify-space-between align-center"
+              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
               <span v-if="tables.length > 1" class="mr-2"
