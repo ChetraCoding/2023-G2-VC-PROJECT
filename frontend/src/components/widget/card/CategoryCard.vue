@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="bg-grey-darken-2 rounded-lg p-2" width="180">
+  <v-sheet class="w-auto bg-grey-darken-2 rounded-lg p-2">
     <v-card class="p-4 bg-grey-darken-3 rounded-lg">
       <h6 class="font-weight-bold mt-1 text-center">{{ category.name }}</h6>
     </v-card>
