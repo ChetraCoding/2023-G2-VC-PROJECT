@@ -1,10 +1,15 @@
 <template>
     <v-layout>
         <!-- Nav -->
-        <header-component :title="user.store.name"></header-component>
+        <header-component :title="user.store.name">
+            <v-text-field v-model="keyword" @keyup.enter="search" class="search text-white rounded-lg" density="compact" variant="solo"
+                label="Search for product..." append-inner-icon="mdi-magnify" single-line hide-details></v-text-field>
+        </header-component>
+
         <v-main class="mt-3 mb-15">
             <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected"
-                :item-title="'table_number'" :item-value="'table'" class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2" hide-details="auto"
+                :item-title="'table_number'" :item-value="'table'"
+                class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2" hide-details="auto"
                 label="Select table"></v-select>
 
             <header class="text-center text-white text-h5 font-weight-bold">PRODUCTS</header>
@@ -181,6 +186,7 @@ const user = ref(JSON.parse(getCookie('user')));
 const { tables } = storeToRefs(useTableStore());
 const { products } = storeToRefs(useProductStore());
 const router = useRouter();
+const keyword = ref('');
 
 const isCustomize = ref(false);
 const isRemoveCustom = ref(false);
@@ -194,8 +200,12 @@ const foodAlert = ref(false);
 
 const table = localStorage.getItem('table_selectd') ? ref(JSON.parse(localStorage.getItem('table_selectd'))) : ref(null);
 
-
 // Methods
+// Search for product
+const search = () => {
+    console.log(keyword.value);
+}
+
 const onCustomize = (product) => {
     isCustomize.value = true;
     isCart.value = false;
@@ -282,9 +292,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.search {
+    background: #2C2C2C;
+}
+
 .select-table {
     width: 200px;
 }
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

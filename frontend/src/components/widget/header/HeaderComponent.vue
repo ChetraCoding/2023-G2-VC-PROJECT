@@ -1,6 +1,6 @@
 <template>
   <v-app-bar class="bg-transparent">
-    <div class="w-100 test ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between">
+    <div class="w-100 test mx-0 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between">
       <span class="text-white">{{ props.title }}</span>
       <div class="w-50">
         <slot></slot>
