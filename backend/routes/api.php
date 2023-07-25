@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // prouduct ------------------//
     Route::resource('products', ProductController::class);
+    Route::get('/products/search/{keyowrd}', [ProductController::class, 'search']);
 
     // prouduct customize ------------------//
     Route::delete('product_customizes/{id}', [ProductCustomizeController::class, 'destroy']);
