@@ -8,7 +8,7 @@
   <!-- update category successfully -->
   <base-alert v-model="updateSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Updated category succeefully!</h5>
+    <h6 class="mt-2">Updated category succeefully!</h6>
   </base-alert>
 
   <!-- delete alert -->
@@ -70,7 +70,7 @@
         </div>
         <!-- list category empty -->
         <div class="w-100 text-center" v-else>
-          <h5 class="text-center mt-5 text-white">Don't have any category.</h5>
+          <h6 class="text-center mt-5 text-white">Don't have any category.</h6>
         </div>
 
         <!-- Category Summary -->
@@ -90,7 +90,9 @@
               class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
-              <span v-if="categories.length > 1" class="mr-2">{{ categories.length }} items</span>
+              <span v-if="categories.length > 1" class="mr-2"
+                >{{ categories.length }} items</span
+              >
               <span v-else class="mr-2">{{ categories.length }} item</span>
             </div>
           </template>
@@ -108,8 +110,14 @@
     title="Tips"
     ms="Are you sure you want to delete category?"
   >
-    <danger-button @click="dialog = false">Cancel</danger-button>
-    <primary-button @click="deleted">Delete</primary-button>
+    <danger-button @click="dialog = false">
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon
+      >Cancel
+    </danger-button>
+    <primary-button @click="deleted">
+      <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
+      Delete
+    </primary-button>
   </base-dialog>
 </template>
 
