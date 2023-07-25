@@ -1,25 +1,22 @@
 <template>
     <v-layout>
         <!-- Nav -->
-        <header-component :title="user.store.name" />
+        <header-component :title="user.store.name"></header-component>
         <v-main class="mt-3 mb-15">
             <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected"
-                :item-title="'table_number'" :item-value="'table'" class="text-orange-darken-4 bg-white w-25"
-                hide-details="auto" clearable label="Select table"></v-select>
+                :item-title="'table_number'" :item-value="'table'" class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2" hide-details="auto"
+                label="Select table"></v-select>
 
-            <header class="text-center text-orange-darken-4 text-h5 font-weight-bold">PRODUCTS</header>
+            <header class="text-center text-white text-h5 font-weight-bold">PRODUCTS</header>
 
             <!-- List products -->
-            <v-container v-if="products.length > 0">
-                <!-- <v-row> -->
-                    <v-col v-for="product in products" :key="product.id" sm="1">
-                        <product-card :product="product" @on-customize="onCustomize"></product-card>
-                    </v-col>
-                <!-- </v-row> -->
-            </v-container>
+            <div v-if="products.length > 0" class="grid-container gap-2 mx-2 mt-2">
+                <product-card v-for="product in products" :key="product.id" :product="product"
+                    @on-customize="onCustomize"></product-card>
+            </div>
 
             <v-container v-else>
-                <h4 class="mt-5 text-center text-orange-darken-4">Don't have any product.</h4>
+                <h4 class="mt-5 text-center text-white">Don't have any product.</h4>
             </v-container>
         </v-main>
     </v-layout>
@@ -27,10 +24,10 @@
     <!-- A product customize -->
     <v-card v-if="productCustomize" class="overflow-visible">
         <v-layout>
-            <v-navigation-drawer style="margin-bottom: 56px;" class="h-auto rounded-t-xl" v-model="isCustomize" temporary
-                location="bottom">
-                <v-card class="mx-auto rounded-t-xl">
-                    <v-card-item class="bg-orange-darken-4">
+            <v-navigation-drawer style="margin-bottom: 56px;" class="bg-grey-darken-2 h-auto rounded-t-lg"
+                v-model="isCustomize" temporary location="bottom">
+                <v-card class="mx-auto rounded-t-lg bg-grey-darken-2">
+                    <v-card-item class="bg-red-accent-2">
                         <v-card-title>
                             <span class="text-h5">{{ productCustomize.name }}</span>
                         </v-card-title>
@@ -56,14 +53,13 @@
                             </div>
                         </v-list-item>
 
-                        <v-list-item v-for="customize in productCustomize.product_customizes" :key="customize.id"
-                            class="text-orange-darken-4">
+                        <v-list-item v-for="customize in productCustomize.product_customizes" :key="customize.id">
                             <div class="d-flex align-center">
                                 <span class="font-weight-bold">{{ customize.size }}</span>
                                 <v-spacer></v-spacer>
-                                <span class="mr-8 font-weight-bold">${{ customize.price }}</span>
+                                <span class="mr-6 font-weight-bold">${{ customize.price }}</span>
                                 <v-icon @click="addCustomize(productCustomize, customize)" class="text-h4"
-                                    color="orange-darken-4" icon="mdi-plus-circle"></v-icon>
+                                    color="red-accent-2" icon="mdi-plus-circle"></v-icon>
                             </div>
                         </v-list-item>
                     </v-list>
@@ -74,31 +70,33 @@
 
     <!-- Order summary -->
     <v-layout class="overflow-visible">
-        <v-bottom-navigation class="bg-grey-darken-4 rounded-t-xl">
-            <div @click="isCart = !isCart, isCustomize = false"
-                class="d-flex align-center bg-orange-darken-4 rounded-pill px-4" style="cursor: pointer">
+        <v-bottom-navigation class="rounded-t-lg bg-grey-darken-2">
+            <div @click="isCart = !isCart, isCustomize = false" class="d-flex align-center bg-red-accent-2 rounded-lg px-2"
+                style="cursor: pointer">
                 <div>
                     <v-icon class="text-h4 mt-3" icon="mdi-cart"></v-icon>
                     <v-avatar class="mb-2 text-h6 text-white font-weight-bold" color="grey-darken-4">
                         {{ totalFoods }}
                     </v-avatar>
                 </div>
-                <h4 class="ml-4 mt-2">Total: <span class="font-weight-bold">${{ totalPrice }}</span></h4>
+                <h5 class="ml-2 mt-2">Total: <span class="font-weight-bold">${{ totalPrice }}</span></h5>
             </div>
 
             <v-spacer></v-spacer>
 
-            <primary-button @click="onOrder">Order Now</primary-button>
+            <primary-button @click="onOrder" class="px-1">
+                <h5 class="font-weight-bold mt-1">Order Now</h5>
+            </primary-button>
         </v-bottom-navigation>
     </v-layout>
 
     <!-- My cart -->
     <v-card v-if="myCart.length > 0" class="overflow-visible">
         <v-layout>
-            <v-navigation-drawer style="margin-bottom: 56px;" class="h-auto rounded-t-xl" v-model="isCart" temporary
-                location="bottom">
-                <v-card class="mx-auto rounded-t-xl">
-                    <v-card-item class="bg-orange-darken-4">
+            <v-navigation-drawer style="margin-bottom: 56px;" class="h-auto bg-grey-darken-2 rounded-t-lg" v-model="isCart"
+                temporary location="bottom">
+                <v-card class="mx-auto bg-grey-darken-2 rounded-t-lg">
+                    <v-card-item class="bg-red-accent-2">
                         <v-card-title>
                             <span class="text-h5">Cart ({{ totalFoods }})</span>
                         </v-card-title>
@@ -121,10 +119,10 @@
                             <div class="d-flex align-center">
                                 <div class="d-flex align-center">
                                     <div>
-                                        <v-img class="bg-white rounded-xl" :width="150" :height="100"
+                                        <v-img class="bg-white rounded-lg" :width="150" :height="100"
                                             :src="customize.product.image" cover></v-img>
                                     </div>
-                                    <div class="ml-3 text-black">
+                                    <div class="ml-3 text-white">
                                         <h6 class="font-weight-bold">{{ customize.product.name }}</h6>
                                         <span>Size / {{ customize.size }}</span>
                                         <h5 class="font-weight-bold">${{ customize.quantity * customize.price }}
@@ -134,10 +132,10 @@
                                 <v-spacer></v-spacer>
                                 <div class="d-flex align-center">
                                     <v-icon @click="minusCustomize(customize.product_customize_id)" class="text-h4"
-                                        color="orange-darken-4" icon="mdi-minus-circle-outline"></v-icon>
-                                    <h4 class="text-black mx-3 mt-2 font-weight-bold">{{ customize.quantity }}</h4>
+                                        color="white" icon="mdi-minus-circle-outline"></v-icon>
+                                    <h4 class="text-white mx-3 mt-2 font-weight-bold">{{ customize.quantity }}</h4>
                                     <v-icon @click="addCustomize(customize.product, customize)" class="text-h4"
-                                        color="orange-darken-4" icon="mdi-plus-circle"></v-icon>
+                                        color="red-accent-2" icon="mdi-plus-circle"></v-icon>
                                 </div>
                             </div>
                         </v-list-item>
@@ -282,3 +280,25 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+.select-table {
+    width: 200px;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+@media screen and (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>

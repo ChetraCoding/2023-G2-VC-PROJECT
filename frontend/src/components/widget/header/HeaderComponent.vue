@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar class="pl-1 mx-2 pr-2 bg-grey-darken-2 nav">
-    <div class="w-100 px-3 py-2 bg-grey-darken-2 rounded-lg  d-flex align-center justify-space-between">
+  <v-app-bar class="bg-transparent">
+    <div class="w-100 test ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between">
       <span class="text-white">{{ props.title }}</span>
       <div class="w-50">
         <slot></slot>
@@ -82,10 +82,6 @@ const logout = async () => {
 </script>
 
 <style scoped>
-.nav {
-  border-radius: 10px 20px 20px 10px !important;
-}
-
 .font-inter {
   font-family: 'Inter', sans-serif !important;
 }
