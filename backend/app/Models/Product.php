@@ -15,7 +15,7 @@ class Product extends Model
         'store_id',
         'category_id',
         'name',
-        'barcode',
+        'product_code',
         'description',
         'image',
         'is_active'
@@ -28,12 +28,19 @@ class Product extends Model
         'updated_at'
     ];
 
+    // Store or Update product
     public static function storeProduct($request, $id = null)
     {
-        $product = $request->only(['category_id', 'name', 'barcode', 'description', 'image', 'is_active']);
+        $product = $request->only(['category_id', 'name', 'product_code', 'description', 'image', 'is_active']);
         $product['store_id'] = Auth::user()->store->id;
         $product = self::updateOrCreate(['id' => $id], $product);
         return $product;
+    }
+
+    // Check product exists in store 
+    public static function contains($field, $value)
+    {
+        return Auth::user()->store->products->contains($field, $value);
     }
 
     public function productCustomize(): HasMany

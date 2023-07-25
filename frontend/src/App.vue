@@ -7,8 +7,10 @@ import http from "@/http-common";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "@/stores/user";
 import { useOneSignal } from '@onesignal/onesignal-vue3';
+import { onBeforeMount } from "vue";
 
 // Variables
+const { getUser } = useUserStore();
 const { user } = storeToRefs(useUserStore());
 const oneSignal = useOneSignal()
 
@@ -33,6 +35,10 @@ oneSignal.on('subscriptionChange', (isSubscribed) => {
     }
   }
 });
+
+onBeforeMount(async () => {
+  await getUser();
+})
 </script>
 
 <style>

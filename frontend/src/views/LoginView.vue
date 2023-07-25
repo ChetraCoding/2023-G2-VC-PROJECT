@@ -4,62 +4,28 @@
     <div class="login-form d-flex justify-center align-center">
       <v-form @submit.prevent="onSubmit" class="form w-100 px-8 py-10">
         <div class="d-flex justify-center">
-          <v-icon
-            icon="mdi-shield-account-outline"
-            class="logo text-red-accent-2"
-          ></v-icon>
+          <v-icon icon="mdi-shield-account-outline" class="logo text-red-accent-2"></v-icon>
         </div>
-        <br /><br />
-        <div>
-          <v-text-field
-            class="text-black"
-            v-model="credentials.email"
-            density="compact"
-            placeholder="Email address"
-            type="email"
-            prepend-inner-icon="mdi-email-outline"
-            variant="outlined"
-            :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`"
-            @input="v$.email.$touch"
-            @blur="v$.email.$touch"
-          ></v-text-field>
+        <div class="mt-4">
+          <v-text-field class="text-black" v-model="credentials.email" density="compact" placeholder="Email address"
+            type="email" prepend-inner-icon="mdi-email-outline" variant="outlined"
+            :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`" @input="v$.email.$touch"
+            @blur="v$.email.$touch"></v-text-field>
         </div>
 
         <div>
-          <div
-            class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-end"
-          >
-            <a
-              class="text-caption text-decoration-none text-blue"
-              href="#"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Forgot login password?</a
-            >
+          <div class="text-medium-emphasis d-flex align-center justify-end">
+            <span class="text-subtitle-1 cursor text-blue" @click="$router.push('/recover_password')">
+              Forgot password?</span>
           </div>
-          <v-text-field
-            class="text-black"
-            v-model="credentials.password"
-            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showPassword ? 'text' : 'password'"
-            density="compact"
-            placeholder="Enter your password"
-            prepend-inner-icon="mdi-lock-outline"
-            variant="outlined"
+          <v-text-field class="text-black" v-model="credentials.password"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" :type="showPassword ? 'text' : 'password'"
+            density="compact" placeholder="Enter your password" prepend-inner-icon="mdi-lock-outline" variant="outlined"
             @click:append-inner="showPassword = !showPassword"
-            :error-messages="v$.password.$errors.map((e) => e.$message)"
-            @input="v$.password.$touch"
-            @blur="v$.password.$touch"
-          ></v-text-field>
+            :error-messages="v$.password.$errors.map((e) => e.$message)" @input="v$.password.$touch"
+            @blur="v$.password.$touch"></v-text-field>
         </div>
-        <primary-button
-          @click="v$.$touch()"
-          class="mt-2"
-          block
-          size="large"
-          type="medium"
-        >
+        <primary-button @click="v$.$touch()" class="mt-2" block size="large" type="medium">
           <v-icon icon="mdi-login-variant" class="mr-2"></v-icon>
           LOG IN
         </primary-button>
@@ -67,6 +33,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
@@ -99,6 +66,8 @@ const onSubmit = async () => {
     try {
       const res = await http.post("login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
+      cookieStore.setCookie("user_role", res.data.user.role, 30);
+      cookieStore.setCookie("user", JSON.stringify(res.data.user), 30);
       if (res.data.user.role === "restaurant_owner") {
         router.push("/");
       } else {
@@ -117,6 +86,7 @@ const onSubmit = async () => {
 .login-form {
   width: 40%;
 }
+
 .bg-img {
   width: 60%;
   background-image: url("../assets/pic-fast-food.png");
@@ -124,21 +94,29 @@ const onSubmit = async () => {
   filter: brightness(55%);
   background-position: center;
 }
+
 .logo {
   font-size: 10rem;
+}
+
+.cursor {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
   .bg-img {
     display: none;
   }
+
   .login-form {
     width: 100%;
   }
+
   .form {
     width: 60% !important;
   }
 }
+
 @media screen and (max-width: 430px) {
   .form {
     width: 100% !important;
