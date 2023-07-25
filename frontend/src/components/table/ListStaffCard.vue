@@ -21,7 +21,7 @@
       </dark-button>
       <!--Delete button-->
       <danger-button
-      @click="isDelete=true"
+      @click="onDelete(user)"
       >
         <v-icon icon="mdi-delete-forever"></v-icon>
         Delete
@@ -35,7 +35,7 @@
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
     </danger-button>
-    <primary-button @click="deleteStaff(user.user_id),closeForm()">
+    <primary-button @click="deleted(user.user_id),closeForm()">
       <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
       Delete
     </primary-button>
@@ -49,17 +49,28 @@
 import { defineProps, ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+const {deleteStaff} = useUserStore();
 const { deleteSuccess } = storeToRefs(useUserStore());
+const staffId = ref(null);
 
 
 // Variables
 defineProps(["user"]);
 const isDelete = ref(false);
 // Mothods
-const deleteStaff = (id)=>{
-  deleteSuccess.value = true;
-  console.log(id);
-};
+
+const onDelete = (id)=>{
+  staffId.value = id;
+  isDelete.value = true;
+}
+
+const deleted = ()=>{
+  if (staffId.value!=null){
+    const id = staffId.value["user_id"];
+    deleteStaff(id);
+  }
+}
+
 const closeForm = ()=>{
   isDelete.value = false;
   console.log("Delete staff successfully");

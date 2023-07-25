@@ -42,17 +42,7 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    // Delete staff
-    async deleteStaff(id) {
-      try {
-        const res = await http.delete("staff", id);
-        if (res.data.success) {
-          this.deleteSuccess = true;
-        }
-      } catch (err) {
-        this.error = err.response.data.message;
-      }
-    },
+ 
 
     // List staff
     async getStaff() {
@@ -65,5 +55,18 @@ export const useUserStore = defineStore("user", {
         return err;
       }
     },
+
+       // Delete staff
+       async deleteStaff(id) {
+        try {
+          const res = await http.delete(`staff/${id}`);
+          if (res.data.success) {
+            this.deleteSuccess = true;
+            this.getStaff();
+          }
+        } catch (err) {
+          return err;
+        }
+      },
   },
 });
