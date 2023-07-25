@@ -5,7 +5,6 @@
       <div class="w-50">
         <slot></slot>
       </div>
-
       <v-menu rounded>
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
@@ -18,9 +17,9 @@
         <v-card class="bg-grey-darken-2 rounded-lg mt-3 px-5 py-2">
           <v-card-text>
             <div class="mx-auto text-center">
-              <v-avatar color="orange-darken-4" size="72">
+              <v-avatar color="red-accent-2" size="72">
                 <v-img v-if="user.image" :src="user.image" :alt="user.first_name"></v-img>
-                <span v-else class="text-h5">{{ initials }}</span>
+                <span v-else class="text-h4">{{ initials }}</span>
               </v-avatar>
               <h3>{{ user.first_name }} {{ user.last_name }}</h3>
               <p class="font-inter text-subtitle-1 mt-1">
@@ -40,7 +39,7 @@
     </div>
   </v-app-bar>
 
-  <base-dialog v-model="isLo" title="Log out" ms="Are you sure you want to log out?">
+  <base-dialog v-model="isLogout" title="Log out" ms="Are you sure you want to log out?">
     <danger-button @click="isLogout = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
@@ -53,26 +52,33 @@
 </template>
 
 <script setup>
+import http from "@/http-common";
 import { defineProps, ref } from "vue";
-import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
 import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
 
 // Variables
 const props = defineProps(["title"]);
-const { removeCookie } = useCookieStore();
-const { user } = storeToRefs(useUserStore());
+const { getCookie, removeCookie } = useCookieStore();
+const user = ref(JSON.parse(getCookie('user')));
 const initials = user.value.first_name.slice(0, 1).toUpperCase() + user.value.last_name.slice(0, 1).toUpperCase();
 const isLogout = ref(false);
 const router = useRouter();
 
 // Method
-const logout = () => {
-  isLogout.value = false;
-  removeCookie('user_token');
-  router.push('/login');
+const logout = async () => {
+  try {
+    await http.post('logout');
+    isLogout.value = false;
+    removeCookie('user_token');
+    removeCookie('user_role');
+    removeCookie('user');
+    router.push('/login');
+  } catch (err) {
+    console.log(err);
+  }
 }
+
 </script>
 
 <style scoped>

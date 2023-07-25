@@ -18,7 +18,7 @@ class ProductTableSeeder extends Seeder
                 'store_id'=> 1,
                 'category_id' => 1,
                 'name'=>"Pizza",
-                'barcode'=>"PZ123",
+                'product_code'=>"PZ123",
                 'description'=>"Seafood Pizza",
                 'image'=>"https://www.bacinos.com/wp-content/uploads/2021/05/30-Seafood-Pizza-Recipes-500x375.jpg",
                 'is_active'=>true
@@ -27,7 +27,7 @@ class ProductTableSeeder extends Seeder
                 'store_id'=> 1,
                 'category_id' => 1,
                 'name'=>"Hamburger",
-                'barcode'=>"HG123",
+                'product_code'=>"HG123",
                 'description'=>"Seafood Hamburger",
                 'image'=>"https://www.kamaboko.com/en/wp-content/uploads/surimi_15_008-1024x683.jpeg",
                 'is_active'=>true
