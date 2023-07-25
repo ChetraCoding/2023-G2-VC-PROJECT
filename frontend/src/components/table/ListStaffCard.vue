@@ -55,16 +55,15 @@ const { deleteSuccess } = storeToRefs(useUserStore());
 // Variables
 defineProps(["user"]);
 const isDelete = ref(false);
+// Mothods
 const deleteStaff = (id)=>{
   deleteSuccess.value = true;
   console.log(id);
 };
-// Mothods
 const closeForm = ()=>{
   isDelete.value = false;
   console.log("Delete staff successfully");
 };
-
 
 </script>
 
