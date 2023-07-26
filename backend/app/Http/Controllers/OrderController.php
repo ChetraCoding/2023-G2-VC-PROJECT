@@ -53,6 +53,7 @@ class OrderController extends Controller
             $proCustomId = $productCustomize['product_customize_id'];
             $quantity = $productCustomize['quantity'];
             $price = ProductCustomize::find($proCustomId)->price;
+            // Store order details
             OrderDetail::storeOrderDetail([
                 'product_customize_id' => $proCustomId,
                 'order_id' => $newOrder->id,

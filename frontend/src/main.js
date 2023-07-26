@@ -92,8 +92,9 @@ const firebaseConfig = {
   measurementId: "G-Z9600B42T2"
 };
 firebase.initializeApp(firebaseConfig);
-app.use(pinia).use(vuetify).use(router).use(VueApexCharts).mount('#app')
+app.use(pinia)
+  .use(router)
+  .use(VueApexCharts)
   .use(OneSignal, oneSignalConfig)
   .use(vuetify)
-  .use(router)
   .mount('#app')

@@ -11,7 +11,6 @@ const loginRequired = async (to, from, next) => {
   }
 };
 
-<<<<<<< HEAD
 const roleRequired = (role) =>
   async (to, from, next) => {
     const { getCookie } = useCookieStore();
@@ -21,19 +20,7 @@ const roleRequired = (role) =>
       next("/404");
     }
   };
-=======
-const roleRequired = (role) => async (to, from, next) => {
-  const { getUser } = useUserStore();
-  const { user } = storeToRefs(useUserStore());
-  await getUser();
-  if (user.value.role === role) {
-    next();
-  } else {
-    next("/404");
-  }
-};
 
->>>>>>> productReportsBranch
 const routes = [
   {
     path: "/login",
@@ -92,20 +79,8 @@ const routes = [
   {
     path: "/staff",
     name: "staff",
-<<<<<<< HEAD
     component: () => import("@/views/restuarant_owner/StaffView"),
     beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
-=======
-    component: () => import("@/views/staff/ListStaffView"),
-    beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
-  },
-  // Product Report
-  {
-    path: "/sale",
-    name: "/sale",
-    component: () => import("@/views/restuarant_owner/ProductReportView"),
-    beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
->>>>>>> productReportsBranch
   },
   // waiter =====================================================
   {

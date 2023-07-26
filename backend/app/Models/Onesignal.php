@@ -32,10 +32,10 @@ class Onesignal extends Model
         foreach ($users as $user) {
             if ($user->role_id === $roleChefId) {
                 // Push notofication to Chef role
-                self::pushNotification($players, $user, 'http://172.16.0.142:8080/chef');
+                self::pushNotification($players, $user, env('VUE_APP_BASE_URL') . 'chef');
             } else if ($user->role_id === $roleCashierId) {
                 // Push notofication to Cashier role
-                self::pushNotification($players, $user, 'http://172.16.0.142:8080/cashier');
+                self::pushNotification($players, $user, env('VUE_APP_BASE_URL') . 'cashier');
             }
         }
     }
