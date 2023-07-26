@@ -3,7 +3,7 @@
 <template>
   <!-- Alert message -->
   <base-alert v-model="paidSuccess">
-    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
     <h6 class="mt-2">Order have paid successfully!</h6>
   </base-alert>
 
@@ -14,11 +14,11 @@
     ms="Are you sure you want to completed?"
   >
     <danger-button @click="isComplete = false">
-      <v-icon icon="mdi-close-box-multiple"></v-icon>
+      <span icon="mdi-close-box-multiple"></span>
       Cancel
     </danger-button>
     <primary-button @click="complete()">
-      <v-icon icon="mdi-check-circle-outline"></v-icon>
+      <span icon="mdi-check-circle-outline"></span>
       Confirm
     </primary-button>
   </base-dialog>
@@ -127,7 +127,93 @@
   </v-dialog>
 
   <!-- Print bill---------- -->
-
+  <div class="d-none">
+    <div id="printOrder" v-if="orderPrint">
+      <div width="100%">
+        <h6 class="text-center text-h4">
+          Store's name:
+          <span class="font-weight-bold">{{ orderPrint.store.name }}</span>
+        </h6>
+        <div class="p-2">
+          <div class="p-1">
+            <h6 class="text-subtitle-1">
+              លេខតុ / Table :
+              <span class="font-weight-bold">{{
+                orderPrint.table_number
+              }}</span>
+            </h6>
+            <br />
+            <h6 class="text-subtitle-1">
+              កាលបរិច្ឆេទ / Date Time :
+              <span class="font-weight-bold">{{ orderPrint.datetime }}</span>
+            </h6>
+          </div>
+          <!-- list of food -->
+          <hr />
+          <v-table>
+            <thead>
+              <tr>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  បរិយាយ <br />
+                  Description
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  ទំហំ <br />
+                  Size
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  ចំនួន <br />
+                  quantity
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  តម្លៃ <br />
+                  Price
+                </th>
+                <th class="bg-white text-center text-black font-weight-bold">
+                  សរុប <br />
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="order_detail in orderPrint.order_details"
+                :key="order_detail"
+              >
+                <td class="text-center">
+                  {{ order_detail.product_customize.product.name }}
+                </td>
+                <td class="text-center">
+                  {{ order_detail.product_customize.size }}
+                </td>
+                <td class="text-center">{{ order_detail.quantity }}</td>
+                <td class="text-center">
+                  {{ order_detail.product_customize.price }} $
+                </td>
+                <td class="text-center">
+                  {{
+                    order_detail.quantity * order_detail.product_customize.price
+                  }}
+                  $
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <hr />
+          <div class="p-1">
+            <h6 class="text-subtitle-1">
+              សរុប / Sub Total :
+              <span class="font-weight-bold">
+                {{ getTotalPrice(orderPrint) }} $</span
+              >
+            </h6>
+            <br />
+            <i class="font-weight-bold"> Thanks, Please come agains </i><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -176,6 +262,6 @@ const printClicked = async (order) => {
       type: "html",
       targetStyles: ["*"],
     });
-  }, 10);
+  }, 1);
 };
 </script>
