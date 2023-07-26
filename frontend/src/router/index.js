@@ -27,6 +27,16 @@ const routes = [
     component: () => import("@/views/LoginView"),
   },
   {
+    path: "/manage_account",
+    name: "manage_account",
+    component: () => import("@/views/ManageAccountView"),
+  },
+  {
+    path: "/change_password",
+    name: "change_password",
+    component: () => import("@/views/ChangePasswordView"),
+  },
+  {
     path: "/recover_password",
     name: "recover_password",
     component: () => import("@/views/RecoverPasswordView"),
