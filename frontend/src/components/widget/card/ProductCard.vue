@@ -1,10 +1,10 @@
 <template>
-    <v-card class="mx-auto rounded-xl" elevation="20" max-width="400">
+    <v-card class="mx-auto rounded-xl" elevation="20" max-width="800">
         <v-img class="rounded-xl m-3" height="200" :src="product.image" cover>
         </v-img>
 
         <v-card-subtitle class="font-weight-bold">
-            {{ product.barcode }}
+            {{ product.product_code }}
         </v-card-subtitle>
 
         <v-card-text>

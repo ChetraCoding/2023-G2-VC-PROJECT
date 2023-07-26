@@ -36,6 +36,9 @@ import TableCard from '@/components/widget/card/TableCard';
 import VueApexCharts from "vue3-apexcharts";
 import ProductChart from "@/components/product/ProductChart";
 
+// Date picker
+// import VueDatePicker from '@mathieustan/vue-datepicker';
+// import '@mathieustan/vue-datepicker/dist/vue-datepicker.min.css';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -82,6 +85,8 @@ app.component('chef-order-card', ChefOrderCard)
 
 // Product Report
 app.component('product-chart', ProductChart)
+
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",

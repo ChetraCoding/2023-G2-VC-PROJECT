@@ -11,11 +11,11 @@
 
             <!-- List products -->
             <v-container v-if="products.length > 0">
-                <v-row>
-                    <v-col v-for="product in products" :key="product.id" cols="5" sm="4">
+                <!-- <v-row> -->
+                    <v-col v-for="product in products" :key="product.id" sm="1">
                         <product-card :product="product" @on-customize="onCustomize"></product-card>
                     </v-col>
-                </v-row>
+                <!-- </v-row> -->
             </v-container>
 
             <v-container v-else>
@@ -171,14 +171,15 @@
 import { computed, onMounted, ref } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user";
+import { useCookieStore } from "@/stores/cookie";
 import { useTableStore } from "@/stores/table"
 import { storeToRefs } from "pinia";
 
 // Variables
+const { getCookie } = useCookieStore();
 const { getProducts } = useProductStore();
 const { getTables } = useTableStore();
-const { user } = storeToRefs(useUserStore());
+const user = ref(JSON.parse(getCookie('user')));
 const { tables } = storeToRefs(useTableStore());
 const { products } = storeToRefs(useProductStore());
 const router = useRouter();

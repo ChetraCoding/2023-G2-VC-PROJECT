@@ -10,17 +10,14 @@
       <!-- Main container -->
       <main class="d-flex mt-2">
         <div class="w-100 d-flex flex-column">
-          <!-- Tab of month  -->
-          <v-slide-group>
-            <v-slide-group-item>
-              <secondary-button class="ml-2 mt-2">January</secondary-button>
-              <secondary-button class="ml-2 mt-2">February</secondary-button>
-              <secondary-button class="ml-2 mt-2">March</secondary-button>
-              <secondary-button class="ml-2 mt-2">April</secondary-button>
-              <secondary-button class="ml-2 mt-2">May</secondary-button>
-              <secondary-button class="ml-2 mt-2">June</secondary-button>
-            </v-slide-group-item>
-          </v-slide-group>
+          <!-- Select date -->
+          <div class="w-50 text-white">
+            <v-text-field
+              type="month"
+              label="Select"
+              @change="select"
+            ></v-text-field>
+          </div>
 
           <product-chart></product-chart>
         </div>
@@ -32,9 +29,9 @@
               class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
             >
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                Original Pizza
+                Pizza
               </div>
-              <span class="mr-2">9000 Items</span>
+              <span class="mr-2">1000 Items</span>
             </div>
             <div
               class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
@@ -42,29 +39,13 @@
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
                 Humburger
               </div>
-              <span class="mr-2">8000 Items</span>
-            </div>
-            <div
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
-            >
-              <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                Sandwich
-              </div>
-              <span class="mr-2">7000 Items</span>
-            </div>
-            <div
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
-            >
-              <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                Coca
-              </div>
-              <span class="mr-2">5000 Items</span>
+              <span class="mr-2">1300 Items</span>
             </div>
             <div
               class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
-              <span class="mr-2">11111.1111 items</span>
+              <span class="mr-2">2300 items</span>
             </div>
           </template>
         </summary-component>
@@ -72,5 +53,10 @@
     </v-main>
   </v-layout>
 </template>
+<script setup>
 
-<script></script>
+const select = (event) => {
+  const selectedValue = event.target.value;
+  console.log(`${selectedValue}`);
+};
+</script>

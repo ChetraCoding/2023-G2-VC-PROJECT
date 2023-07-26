@@ -3,7 +3,7 @@ import http from "../http-common";
 
 const initialProduct = {
   name: null,
-  barcode: null,
+  product_code: null,
   category_id: null,
   description: null,
   is_active: false,
@@ -16,8 +16,9 @@ export const useProductStore = defineStore("product", {
       productInForm: { ...initialProduct },
       dialog: false,
       success: false,
+      deleteSuccess: false,
       updateSuccess: false,
-      err_barcode: '',
+      errProductCode: '',
       products: []
     };
   },
@@ -41,12 +42,12 @@ export const useProductStore = defineStore("product", {
         const res = await http.post('products', product);
         if (res.data.success) {
           this.success = true;
-          this.err_barcode = '';
+          this.errProductCode = '';
           this.getProducts();
         }
       } catch (err) {
-        if (err.response.data.message.barcode) {
-          this.err_barcode = 'Barcode already exists.';
+        if (err.response.data.message.product_code) {
+          this.errProductCode = 'Code already exists.';
         }
       }
     },
@@ -55,10 +56,25 @@ export const useProductStore = defineStore("product", {
         const res = await http.put(`products/${product.product_id}`, product);
         if (res.data.success) {
           this.updateSuccess = true;
+          this.errProductCode = '';
+          this.getProducts();
+        }
+      } catch (err) {
+        if (err.response.data.message.product_code) {
+          this.errProductCode = 'Code already exists.';
+        }
+      }
+    },
+    async deleteProduct(product_id) {
+      try {
+        const res = await http.delete(`products/${product_id}`);
+        if (res.data.success) {
+          this.getProducts();
+          this.deleteSuccess = true;
         }
       } catch (err) {
         return err;
       }
-    }
+    },
   },
 });

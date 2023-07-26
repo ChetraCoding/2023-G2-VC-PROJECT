@@ -19,6 +19,7 @@ class ProductCustomize extends Model
         'updated_at'
     ];
 
+    // Store or Update product customize
     public static function store($request, $id = null)
     {
         $productCustomize = [
