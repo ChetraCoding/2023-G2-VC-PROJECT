@@ -15,14 +15,13 @@ import DarkButton from '@/components/widget/button/DarkButton';
 import BaseAlert from '@/components/widget/alert/BaseAlert';
 import ResOwnerSideBar from '@/components/aside/ResOwnerSideBar';
 import HeaderComponent from '@/components/widget/header/HeaderComponent';
-// import CategoryListTable from '@/components/table/CategoryListTable';
 import ProductListTable from '@/components/table/ProductListTable';
 import ProductForm from '@/components/form/ProductForm';
 import ProductCard from '@/components/widget/card/ProductCard';
 import CategoryForm from '@/components/form/CategoryForm';
 import TableForm from '@/components/form/TableForm';
-import ListStaffCard from '@/components/table/ListStaffCard';
-import CreateStaffForm from "@/components/form/CreateStaffForm";
+import StaffCard from '@/components/widget/card/StaffCard';
+import StaffForm from "@/components/form/StaffForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
 import BaseDialog from '@/components/widget/dialog/BaseDialog';
@@ -32,6 +31,11 @@ import SummaryComponent from "@/components/summary/SummaryComponent";
 // categoryCard
 import CategoryCard from '@/components/widget/card/CategoryCard';
 import TableCard from '@/components/widget/card/TableCard';
+// Product report
+import VueApexCharts from "vue3-apexcharts";
+import ProductChart from "@/components/product/ProductChart";
+
+
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -64,16 +68,19 @@ app.component('base-dialog', BaseDialog);
 app.component('category-form', CategoryForm)
 app.component('product-list-table', ProductListTable)
 app.component('product-form', ProductForm)
-app.component('create-staff-form', CreateStaffForm);
+app.component('staff-form', StaffForm);
 app.component('table-form', TableForm)
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
 
 // List staff
-app.component('list-staff-card', ListStaffCard)
+app.component('staff-card', StaffCard)
 // List Order Compoment
 app.component('chef-order-card', ChefOrderCard)
+
+// Product Report
+app.component('product-chart', ProductChart)
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",
@@ -86,7 +93,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 app.use(pinia)
+  .use(router)
+  .use(VueApexCharts)
   .use(OneSignal, oneSignalConfig)
   .use(vuetify)
-  .use(router)
   .mount('#app')

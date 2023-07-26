@@ -13,18 +13,14 @@
     title="Tips"
     ms="Are you sure you want to completed?"
   >
-    <danger-button 
-    @click="isComplete = false"
-    >
-    <v-icon icon="mdi-close-box-multiple"></v-icon>
-    Cancel
+    <danger-button @click="isComplete = false">
+      <v-icon icon="mdi-close-box-multiple"></v-icon>
+      Cancel
     </danger-button>
-    <primary-button 
-    @click="complete()"
-    >
-    <v-icon icon="mdi-check-circle-outline"></v-icon>
-    Confirm
-  </primary-button>
+    <primary-button @click="complete()">
+      <v-icon icon="mdi-check-circle-outline"></v-icon>
+      Confirm
+    </primary-button>
   </base-dialog>
 
   <!-- Create table of list orders -->
@@ -33,7 +29,7 @@
     :key="order.name"
     class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg"
   >
-    <v-card-text class="d-flex justify-space-between ">
+    <v-card-text class="d-flex justify-space-between">
       <span>ID : {{ index + 1 }}</span>
       <span>Table : {{ order.table_number }}</span>
       <span>{{ new Date(order.datetime).toDateString() }}</span>
@@ -41,23 +37,13 @@
       <span v-if="order">${{ getTotalPrice(order) }}</span>
     </v-card-text>
     <v-card-actions>
-      <dark-button 
-        @click="(orderInfo = order), (dialog = true)">
-        <v-icon 
-          icon="mdi-eye" 
-          color="red-accent-2" 
-        > 
-        </v-icon>
+      <dark-button @click="(orderInfo = order), (dialog = true)">
+        <v-icon icon="mdi-eye" color="red-accent-2"> </v-icon>
         View
       </dark-button>
 
-      <dark-button 
-        @click="(orderInfo = order), (dialog = true)">
-        <v-icon 
-          icon="mdi-printer" 
-          color="red-accent-2" 
-        > 
-        </v-icon>
+      <dark-button @click="printClicked(order)">
+        <v-icon icon="mdi-printer" color="red-accent-2"> </v-icon>
         Print
       </dark-button>
 
@@ -66,14 +52,10 @@
           isComplete = true;
           orderClicked = order;
         "
-        ><v-icon
-          icon="mdi-checkbox-marked-circle"
-          color="red-accent-2"
-        >
+        ><v-icon icon="mdi-checkbox-marked-circle" color="red-accent-2">
         </v-icon>
         Check
-        </dark-button
-      >
+      </dark-button>
     </v-card-actions>
   </v-card>
 
@@ -140,20 +122,25 @@
           <v-icon icon="mdi-close-box-multiple"></v-icon>
           Close
         </danger-button>
-      </v-card-actions> 
+      </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <!-- Print bill---------- -->
+
 </template>
 
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
 import { ref, defineProps } from "vue";
+import printJS from "print-js";
 
 // Variables
 const props = defineProps(["orders"]);
 const dialog = ref(false);
 const orderInfo = ref(null);
+const orderPrint = ref(null);
 const isComplete = ref(false);
 const orderClicked = ref(null);
 const { updateOrdersToPaid } = useOrderStore();
@@ -177,4 +164,18 @@ const complete = () => {
   orderClicked.value = null;
 };
 
+const printClicked = async (order) => {
+  orderPrint.value = order;
+  // Referrent from :https://fontawesomeicons.com/tryit/code/vue-js-print-current-page/1
+  // Purpose: to print a bill
+
+  document.title = " ID-" + order.order_id + " " + new Date().toLocaleString();
+  setTimeout(() => {
+    printJS({
+      printable: "printOrder",
+      type: "html",
+      targetStyles: ["*"],
+    });
+  }, 10);
+};
 </script>

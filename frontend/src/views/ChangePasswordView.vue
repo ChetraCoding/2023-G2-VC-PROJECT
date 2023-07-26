@@ -1,57 +1,65 @@
 <template>
-  <div class="h-75 mt-5 text-white w-100 d-flex justify-center">
-    <div class="login-form bg-grey-lighten-1 rounded-lg">
-      <v-form @submit.prevent="onSubmit" class="form w-100 px-8 py-10">
-        <div class="d-flex flex-column align-center">
+  <div class="bg-grey-lighten-1">
+    <span
+      class="mdi mdi-keyboard-backspace ml-3"
+      style="font-size: 30px"
+      @click="comeback"
+    ></span>
+    <div class="h-screen bg-grey-lighten-1 d-flex justify-center align-center">
+      <v-form
+        @submit.prevent="change"
+        class="form d-flex flex-column align-center rounded-lg  w-40 px-8 py-10"
+      >
+        <div class="d-flex text-center flex-column align-center justify-center">
           <v-icon
-            icon="mdi-shield-account-outline"
-            class="logo text-red-accent-2"
+            icon="mdi-shield-lock"
+            class="logo mb-2 text-red-accent-2"
           ></v-icon>
-          <h1>Change Password</h1>
+          <h2>Change new password</h2>
         </div>
-        <div class="mt-4">
+        <div class="w-100">
           <v-text-field
             class="text-black"
-            v-model="credentials.password"
-            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showPassword ? 'text' : 'password'"
+            v-model="passwords.currentPassword"
+            :append-inner-icon="showCurrentPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="showCurrentPassword ? 'text' : 'password'"
             density="compact"
-            placeholder="Old password"
+            placeholder="Current password"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            @click:append-inner="showPassword = !showPassword"
-            :error-messages="v$.password.$errors.map((e) => e.$message)"
-            @input="v$.password.$touch"
-            @blur="v$.password.$touch"
+            @click:append-inner="showCurrentPassword = !showCurrentPassword"
+            :error-messages="v$.currentPassword.$errors.map((e) => e.$message)"
+            @input="v$.currentPassword.$touch"
+            @blur="v$.currentPassword.$touch"
           ></v-text-field>
-
           <v-text-field
             class="text-black"
-            v-model="credentials.password"
-            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showPassword ? 'text' : 'password'"
+            v-model="passwords.newPassword"
+            :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="showNewPassword ? 'text' : 'password'"
             density="compact"
             placeholder="New password"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            @click:append-inner="showPassword = !showPassword"
-            :error-messages="v$.password.$errors.map((e) => e.$message)"
-            @input="v$.password.$touch"
-            @blur="v$.password.$touch"
+            @click:append-inner="showNewPassword = !showNewPassword"
+            :error-messages="v$.newPassword.$errors.map((e) => e.$message)"
+            @input="v$.newPassword.$touch"
+            @blur="v$.newPassword.$touch"
           ></v-text-field>
           <v-text-field
-            class="text-black"
-            v-model="credentials.password"
-            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showPassword ? 'text' : 'password'"
+            class="text-black mt-2"
+            v-model="passwords.confirmPassword"
+            :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="showConfirm ? 'text' : 'password'"
             density="compact"
-            placeholder="Comfirm password"
-            prepend-inner-icon="mdi-lock-outline"
+            placeholder="Confirm password"
+            prepend-inner-icon="mdi-lock-check-outline"
             variant="outlined"
-            @click:append-inner="showPassword = !showPassword"
-            :error-messages="v$.password.$errors.map((e) => e.$message)"
-            @input="v$.password.$touch"
-            @blur="v$.password.$touch"
+            @click:append-inner="showConfirm = !showConfirm"
+            :rules="[passwordConfirmationRule]"
+            :error-messages="v$.confirmPassword.$errors.map((e) => e.$message)"
+            @input="v$.confirmPassword.$touch"
+            @blur="v$.confirmPassword.$touch"
           ></v-text-field>
         </div>
         <primary-button
@@ -61,87 +69,112 @@
           size="large"
           type="medium"
         >
+          <v-icon icon="mdi-lock-reset" class="mr-2"></v-icon>
           CHANGE
         </primary-button>
       </v-form>
     </div>
   </div>
+
+  <!-- Alert success -->
+  <base-alert v-model="success">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Password changed successfully.</h6>
+  </base-alert>
+
 </template>
 
 <script setup>
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import { ref } from "vue";
-
-// Variable
-const cookieStore = useCookieStore();
+import { required, minLength } from "@vuelidate/validators";
+// Variables
+const { getCookie } = useCookieStore();
+const user = ref(JSON.parse(getCookie("user")));
 const router = useRouter();
-const showPassword = ref(false);
-const errMessage = ref("");
-const initialsUser = {
-  email: "",
-  password: "",
+const success = ref(false);
+const showCurrentPassword = ref(false);
+const showNewPassword = ref(false);
+const showConfirm = ref(false);
+const initialsPassword = {
+  currentPassword: "",
+  newPassword: "",
+  confirmPassword: "",
 };
-const credentials = reactive({
-  ...initialsUser,
+const passwords = reactive({
+  ...initialsPassword,
 });
 const rules = {
-  email: { required, email },
-  password: { required },
+  currentPassword: { required },
+  newPassword: { required, minLength: minLength(8) },
+  confirmPassword: { required },
 };
-const v$ = useVuelidate(rules, credentials);
+const v$ = useVuelidate(rules, passwords);
+// Validation confirm password
+const passwordConfirmationRule = () => {
+  if (passwords.newPassword !== passwords.confirmPassword) {
+    return "Confirm password must be match.";
+  } else {
+    return true;
+  }
+};
 
-const onSubmit = async () => {
-  if (v$.value.$errors.length === 0) {
+// Method
+const change = async () => {
+  if (v$.value.$errors.length === 0 && passwordConfirmationRule() === true) {
+    let changePassword = {
+      current_password: passwords.currentPassword,
+      new_password: passwords.newPassword,
+    };
     try {
-      const res = await http.post("login", credentials);
-      cookieStore.setCookie("user_token", res.data.token, 30);
-      cookieStore.setCookie("user_role", res.data.user.role, 30);
-      cookieStore.setCookie("user", JSON.stringify(res.data.user), 30);
-      if (res.data.user.role === "restaurant_owner") {
-        router.push("/");
-      } else {
-        router.push(`/${res.data.user.role}`);
+      const res = await http.post("/changePassword", changePassword);
+      if (res.data.success) {
+        success.value = true;
+        setTimeout(() => {
+          if (user.value.role.name === "restaurant_owner") {
+            router.push("/");
+          } else {
+            router.push(`/${user.value.role.name}`);
+          }
+        }, 1800);
       }
     } catch (err) {
-      if (err.response.data.message) {
-        errMessage.value = err.response.data.message;
-      }
+      return err;
     }
+  }
+};
+const comeback = () => {
+  if (user.value.role.name === "restaurant_owner") {
+    router.push("/");
+  } else {
+    router.push(`/${user.value.role.name}`);
   }
 };
 </script>
 
 <style scoped>
-.login-form {
-  width: 50%;
+.w-40 {
+  width: 40%;
 }
-
 .logo {
   font-size: 10rem;
 }
-
 .cursor {
   cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
-  .login-form {
-    width: 100%;
-  }
-
   .form {
-    width: 60% !important;
+    width: 60%;
   }
 }
 
 @media screen and (max-width: 430px) {
   .form {
-    width: 100% !important;
+    width: 100%;
   }
 }
 </style>
