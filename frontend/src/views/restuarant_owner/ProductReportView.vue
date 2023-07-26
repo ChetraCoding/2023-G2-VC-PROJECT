@@ -23,9 +23,11 @@
             ></v-text-field>
           </div>
 
-          <apexchart 
-            v-if="productReports.length > 0"
-            class="bg-grey-darken-2 rounded-lg mr-2"
+          <apexchart
+            :class="[
+              productReports.length == 0 ? 'd-none' : '',
+              'bg-grey-darken-2 rounded-lg mr-2',
+            ]"
             height="485"
             type="bar"
             :options="options"
@@ -33,7 +35,7 @@
           ></apexchart>
 
           <!-- No product report -->
-          <div class="h-screen" v-else>
+          <div v-if="productReports.length == 0" class="h-screen">
             <h4 class="text-center mt-5 text-white">Don't have any report.</h4>
           </div>
         </div>
