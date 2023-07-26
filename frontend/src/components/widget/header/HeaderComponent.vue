@@ -25,6 +25,10 @@
               <p class="font-inter text-subtitle-1 mt-1">
                 {{ user.email }}
               </p>
+              <p class="font-inter text-subtitle-1 mt-1" @click="$router.push('/manage_account')">
+                 <v-icon icon="mdi-cog" color="white" size="small"></v-icon>
+                  Manage Account
+              </p>
               <v-divider class="my-3"></v-divider>
               <div class="d-flex justify-center">
                 <danger-button @click="isLogout = true">
