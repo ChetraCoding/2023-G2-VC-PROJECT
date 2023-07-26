@@ -23,27 +23,31 @@
             </v-slide-group-item>
           </v-slide-group>
           <!-- <money-chart ></money-chart> -->
-          <div>
-            <apexchart
-              height="500"
-              type="bar"
-              :options="options"
-              :series="series"
-            ></apexchart>
-          </div>
+          <apexchart
+            height="500"
+            type="bar"
+            :options="options"
+            :series="series"
+          ></apexchart>
         </div>
         <!--Money summary -->
         <summary-component class="mt-2" title="Money Summary">
           <template v-slot:content>
-            <div v-for="money in moneyReport" :key="money" class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center">
-              <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">{{money.month}}</div>
-              <span class="mr-2">{{money.total_money}}$</span>
+            <div
+              v-for="money in moneyReports"
+              :key="money"
+              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
+            >
+              <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
+                {{ money.month }}
+              </div>
+              <span class="mr-2">{{ money.total_money }}$</span>
             </div>
             <div
               class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
-              <span class="mr-2">{{getTotalMoney()}} $</span>
+              <!-- <span class="mr-2">{{ getTotalMoney() }} $</span> -->
             </div>
           </template>
         </summary-component>
@@ -115,18 +119,20 @@
 //   },
 // ];
 import { onMounted, ref } from "vue";
-import { useMoneyStore } from "@/stores/money";
+import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
 
-const { getMoneyByYear } = useMoneyStore();
-const { moneyReport } = storeToRefs(useMoneyStore());
+// Variables
+const { getMoneyReports } = useReportsStore();
+const { moneyReports } = storeToRefs(useReportsStore());
 
-const filter = (key) => {
-  const items = ref([]);
-  moneyReport.value.filter(function (value) {
-    items.value.push(value[key]);
+// Get values from object in array
+const filter = (array, key) => {
+  let items = [4];
+  array.filter(function (value) {
+    items.push(value[key]);
   });
-  return items.value;
+  return items;
 };
 
 const options = ref({
@@ -136,14 +142,12 @@ const options = ref({
       borderRadiusApplication: "end",
       borderRadiusWhenStacked: "last",
       borderRadius: 10,
+      margin: 70,
     },
   },
   yaxis: {
-    // min: 0,
+    min: 0,
     labels: {
-      formatter: function (value) {
-        return "$" + value;
-      },
       style: {
         fontSize: "0.8rem",
         fontFamily: "Inter, sans-serif",
@@ -154,10 +158,8 @@ const options = ref({
     },
   },
   xaxis: {
+    categories: filter(moneyReports.value, "month"),
     labels: {
-      formatter: function (value) {
-        return value;
-      },
       style: {
         fontSize: "0.8rem",
         fontFamily: "Inter, sans-serif",
@@ -165,32 +167,39 @@ const options = ref({
         colors: "white",
       },
     },
-    categories: filter("month"),
   },
 });
 
 const series = ref([
   {
-    data: filter("total_money"),
+    data: filter(moneyReports.value, "total_money"),
     color: "#F25657",
   },
 ]);
 // Variable
-const year = ref("2023");
+// const year = ref("2023");
 
-// method
+// Methods
+// const getTotalMoney = () => {
+//   const sumTotalMoney = ref(0);
+//   for (let money of moneyReports.value) {
+//     sumTotalMoney.value += money.total_money;
+//   }
+//   return sumTotalMoney.value;
+// };
 
-const getTotalMoney = () => {
-  const sumTotalMoney = ref(0);
-  for (let money of moneyReport.value) {
-    sumTotalMoney.value += money.total_money;
-    console.log("jdhfsjkhfksdhk",moneyReport.value);
-  }
-  return sumTotalMoney.value;
-}
+// Render date to chart view
+const renderChart = () => {
+  options.value = {
+    xaxis: {
+      categories: filter(moneyReports.value, "month"),
+    },
+  };
+  series.value[0].data = filter(moneyReports.value, "total_money");
+};
 // Lifecycle hook
-onMounted(() => {
-  getMoneyByYear(year.value);
-
+onMounted(async () => {
+  await getMoneyReports(2023);
+  renderChart();
 });
 </script>
