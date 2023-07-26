@@ -2,53 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductReportController extends Controller
 {
     /**
-     * Get product report by month and year.
+     * Get product reports by month and year.
      */
-    public function productReport($month, $year)
+    public function productReport(int $month, int $year)
     {
-        // Test ============
-        return response(
-            Order::join('order_details', 'orders.id', '=', 'order_details.order_id')
-                ->join('product_customizes', 'order_details.product_customize_id', '=', 'product_customizes.id')
-                ->join('products', 'product_customizes.product_id', '=', 'products.id')
-                ->whereYear('datetime', '=', $year)
-                ->whereMonth('datetime', '=', $month)->get()
-                // ->get()
-                ->groupBy('product_id')
-            // ->sum('order_details.quantity')
-        );
-        // =============
         // Check the user permission
-        // if (!User::roleRequired('restaurant_owner')) {
-        //     return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
-        // }
+        if (!User::roleRequired('restaurant_owner')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        // Reference: https://poe.com/s/RowjYps9KwNltWSLMGlD
         $storeId = Auth::user()->store->id;
-        // // $orders = Auth::user()->store->orders->whereDate('datetime', $selectedDate);
-        // $orders = Order::where('store_id', $storeId)
-        //     ->withCount('orderDetails')
-        //     ->with('orderDetails.productCustomize')
-        //     ->whereYear('datetime', '=', $year)
-        //     ->whereMonth('datetime', '=', $month)->get();
-        // return response($orders);
-        return response(
-            Product::with('productCustomize')
-                ->with('productCustomize.orderDetails')
-                ->with('productCustomize.orderDetails.order')
-                ->whereHas('productCustomize.orderDetails.order', function ($query) use ($month, $year) {
-                    $query->whereMonth('datetime', '=', $month)
-                        ->whereYear('datetime', '=', $year);
-                })
-                ->get()
-
-        );
+        $totalProductReports = DB::table('orders')
+            ->join('stores', 'orders.store_id', '=', 'stores.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('product_customizes', 'order_details.product_customize_id', '=', 'product_customizes.id')
+            ->join('products', 'product_customizes.product_id', '=', 'products.id')
+            // Select products and sum total orders for each product
+            ->select('products.name as product_name', DB::raw('SUM(order_details.quantity) as total_orders'))
+            // Check store id from the user
+            ->where('orders.store_id', $storeId)
+            // Check year
+            ->whereYear('datetime', '=', $year)
+            // Check month
+            ->whereMonth('datetime', '=', $month)
+            ->groupBy('products.name')
+            ->orderBy('total_orders', 'desc')
+            ->get();
+        return response()->json(["success" => true, "data" => $totalProductReports, "message" => "Get product reports is successfully."], 200);
     }
 }
