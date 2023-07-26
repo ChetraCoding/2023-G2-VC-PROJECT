@@ -78,7 +78,7 @@ const routes = [
   {
     path: "/staff",
     name: "staff",
-    component: () => import("@/views/staff/ListStaffView"),
+    component: () => import("@/views/restuarant_owner/StaffView"),
     beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
   },
   // Product Report
@@ -115,14 +115,12 @@ const routes = [
     component: () => import("@/views/cashier/OrdersView"),
     beforeEnter: [loginRequired, roleRequired("cashier")],
   },
-  // Lg
+  // Test 
   {
-    path: "/date",
-    name: "/date",
-    component: () => import("@/views/restuarant_owner/TestCode"),
-    // beforeEnter: [loginRequired, roleRequired("cashier")],
+    path: "/test",
+    name: "/test",
+    component: () => import("@/views/restuarant_owner/TestChart"),
   },
-
 ];
 
 const router = createRouter({

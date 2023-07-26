@@ -37,6 +37,16 @@ export const useProductStore = defineStore("product", {
         return err;
       }
     },
+    async searchProducts(keyword) {
+      try {
+        const res = await http.get(`products/search/${keyword}`);
+        if (res.data.success) {
+          this.products = res.data.data;
+        }
+      } catch (err) {
+        return err;
+      }
+    },
     async storeProduct(product) {
       try {
         const res = await http.post('products', product);

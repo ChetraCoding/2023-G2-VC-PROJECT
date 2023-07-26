@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar class="pl-1 mx-2 pr-2 bg-grey-darken-2 nav">
-    <div class="w-100 px-3 py-2 bg-grey-darken-2 rounded-lg  d-flex align-center justify-space-between">
+  <v-app-bar class="bg-transparent">
+    <div :class="`w-100 ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between ${props.class}`">
       <span class="text-white">{{ props.title }}</span>
       <div class="w-50">
         <slot></slot>
@@ -58,7 +58,7 @@ import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
 
 // Variables
-const props = defineProps(["title"]);
+const props = defineProps(["title", "class"]);
 const { getCookie, removeCookie } = useCookieStore();
 const user = ref(JSON.parse(getCookie('user')));
 const initials = user.value.first_name.slice(0, 1).toUpperCase() + user.value.last_name.slice(0, 1).toUpperCase();
@@ -82,10 +82,6 @@ const logout = async () => {
 </script>
 
 <style scoped>
-.nav {
-  border-radius: 10px 20px 20px 10px !important;
-}
-
 .font-inter {
   font-family: 'Inter', sans-serif !important;
 }

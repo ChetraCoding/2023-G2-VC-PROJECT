@@ -1,8 +1,22 @@
 <template>
-  <base-alert v-model="success">
+  <!-- create alert -->
+  <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h6 class="mt-2">Category created successfully!</h6>
   </base-alert>
+
+  <!-- update category successfully -->
+  <base-alert v-model="updateSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Updated category succeefully!</h6>
+  </base-alert>
+
+  <!-- delete alert -->
+  <base-alert v-model="deleteSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Delete category successfully!</h6>
+  </base-alert>
+
   <v-layout>
     <!-- Left side bar -->
     <res-owner-side-bar></res-owner-side-bar>
@@ -21,36 +35,42 @@
       </header-component>
 
       <!-- Main container -->
-      <main class="d-flex mt-2" v-if="categories.length > 0">
-        <div class="d-flex flex-column">
-          
-          <!-- list category -->
-          <div class="grid-container mt-2 gap-2">
-            <category-card
-              v-for="category in categories"
-              :key="category.category_id"
-              :category="category"
-            >
-              <div class="d-flex justify-space-between align-center mt-2">
-                <secondary-button>
-                  <v-icon
-                    icon="mdi-square-edit-outline"
-                    color="white"
-                    size="large"
-                  ></v-icon>
-                  Edit
-                </secondary-button>
-                <danger-button>
-                  <v-icon
-                    icon="mdi-delete-forever"
-                    color="white"
-                    size="large"
-                  ></v-icon>
-                  Delete
-                </danger-button>
-              </div>
-            </category-card>
-          </div>
+      <main class="d-flex flex-column mt-2">
+        <!-- list category -->
+        <div
+          class="grid-container mt-2 mr-2 gap-2"
+          v-if="categories.length > 0"
+        >
+          <category-card
+            v-for="category in categories"
+            :key="category.category_id"
+            :category="category"
+            ><div class="d-flex justify-space-between align-center mt-2">
+              <!-- close dialo delete category -->
+              <secondary-button @click="onEdit(category)">
+                <v-icon
+                  icon="mdi-square-edit-outline"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Edit
+              </secondary-button>
+
+              <!-- delete category -->
+              <danger-button @click="onDelete(category)">
+                <v-icon
+                  icon="mdi-delete-forever"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Delete
+              </danger-button>
+            </div>
+          </category-card>
+        </div>
+        <!-- list category empty -->
+        <div class="w-100 text-center" v-else>
+          <h6 class="text-center mt-5 text-white">Don't have any category.</h6>
         </div>
 
         <!-- Category Summary -->
@@ -67,24 +87,38 @@
           </template>
           <template v-slot:content>
             <div
-              class="bg-grey-darken-2 mt-5 py-3 rounded-lg d-flex justify-space-between align-center"
+              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
             >
               <span class="ml-2">Total</span>
-              <span class="mr-2">{{ categories.length }} items</span>
+              <span v-if="categories.length > 1" class="mr-2"
+                >{{ categories.length }} items</span
+              >
+              <span v-else class="mr-2">{{ categories.length }} item</span>
             </div>
           </template>
         </summary-component>
       </main>
-
-      <!-- list category empty -->
-      <div class="h-screen" v-else>
-        <h4 class="text-center mt-5 text-white">Don't have any category.</h4>
-      </div>
     </v-main>
   </v-layout>
+
   <!-- form create category -->
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
 
+  <!-- dialog delete category -->
+  <base-dialog
+    v-model="dialog"
+    title="Tips"
+    ms="Are you sure you want to delete category?"
+  >
+    <danger-button @click="dialog = false">
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon
+      >Cancel
+    </danger-button>
+    <primary-button @click="deleted">
+      <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
+      Delete
+    </primary-button>
+  </base-dialog>
 </template>
 
 <script setup>
@@ -93,9 +127,39 @@ import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { getCategory } = useCategoryStore();
-const { categories, success } = storeToRefs(useCategoryStore());
+const { getCategory, deleteCategory } = useCategoryStore();
+const {
+  categoryInForm,
+  categories,
+  createSuccess,
+  updateSuccess,
+  deleteSuccess,
+} = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
+const dialog = ref(false);
+const categoryId = ref(null);
+
+//Method
+
+// Delet category
+let onDelete = (id) => {
+  categoryId.value = id;
+  dialog.value = true;
+};
+
+const deleted = () => {
+  if (categoryId.value !== null) {
+    const id = categoryId.value["category_id"];
+    deleteCategory(id);
+  }
+  dialog.value = false;
+};
+
+// Edit category
+const onEdit = (category) => {
+  categoryInForm.value = { ...category };
+  isShowForm.value = true;
+};
 
 // Methods
 const closeForm = () => {
