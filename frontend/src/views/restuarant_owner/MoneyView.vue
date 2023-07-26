@@ -119,9 +119,7 @@ import { useMoneyStore } from "@/stores/money";
 import { storeToRefs } from "pinia";
 
 const { getMoneyByYear } = useMoneyStore();
-
 const { moneyReport } = storeToRefs(useMoneyStore());
-// console.log( "hellow" , moneyReport); // log the money object
 
 const filter = (key) => {
   const items = ref([]);
