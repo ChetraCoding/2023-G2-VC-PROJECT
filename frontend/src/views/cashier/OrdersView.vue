@@ -20,6 +20,8 @@
       <!-- Header -->
       <header-component title="Manage order">
         <v-text-field
+          v-model="keyword"
+          @keyup.enter="search"
           class="search text-white rounded-lg"
           density="compact"
           variant="solo-none"
@@ -71,8 +73,9 @@ import { defineProps } from 'vue';
 
 // Variable
 defineProps(['title']);
-const { getOrder } = useOrderStore();
+const { getOrder, searchOrders} = useOrderStore();
 const { notPaidOrders } = storeToRefs(useOrderStore());
+const keyword = ref("");
 const menus = ref([
   {
     link: "/cashier",
@@ -80,6 +83,10 @@ const menus = ref([
     icon: "mdi-home-analytics",
   },
 ]);
+
+// Methods
+const search = ()=> {
+  searchOrders(keyword.value);}
 
 // setInterval(() => {
 //   getOrder();
