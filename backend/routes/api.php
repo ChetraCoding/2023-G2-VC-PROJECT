@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -33,9 +34,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // get user already login ----------
     Route::get('/user',[UserController::class,'getUser']);
-
-    // staff  ---------------------//
-    Route::resource('/staff', StaffController::class);
+    
+    // chagne password  ---------------------//
+    Route::post('/changePassword', [ChangePasswordController::class, 'changePassword'] );
 
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
