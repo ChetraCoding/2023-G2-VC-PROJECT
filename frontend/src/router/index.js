@@ -81,6 +81,12 @@ const routes = [
     component: () => import("@/views/restuarant_owner/StaffView"),
     beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
+  {
+    path: "/money",
+    name: "money",
+    component: () => import("@/views/restuarant_owner/MoneyView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
+  },
   // waiter =====================================================
   {
     path: "/waiter",

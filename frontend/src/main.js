@@ -8,6 +8,7 @@ import router from './router';
 import vuetify from './plugins/vuetify'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import VueApexCharts from "vue3-apexcharts";
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import SecondaryButton from '@/components/widget/button/SecondaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
@@ -33,6 +34,9 @@ import CategoryCard from '@/components/widget/card/CategoryCard';
 import TableCard from '@/components/widget/card/TableCard';
 const app = createApp(App);
 const pinia = createPinia();
+
+// chart
+import MoneyChart from "@/components/chat/MoneyChart";
 
 // Card
 app.component('product-res-owner-card', ProductResOwnerCard);
@@ -64,7 +68,8 @@ app.component('category-form', CategoryForm)
 app.component('product-list-table', ProductListTable)
 app.component('product-form', ProductForm)
 app.component('staff-form', StaffForm);
-app.component('table-form', TableForm)
+app.component('table-form', TableForm);
+app.component('money-chart', MoneyChart);
 
 // Cashier component
 app.component('order-list-table', OrderListTable)
@@ -88,4 +93,5 @@ app.use(pinia)
   .use(OneSignal, oneSignalConfig)
   .use(vuetify)
   .use(router)
+  .use(VueApexCharts)
   .mount('#app')
