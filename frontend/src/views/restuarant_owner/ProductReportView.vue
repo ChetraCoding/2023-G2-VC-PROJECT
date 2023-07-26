@@ -26,7 +26,7 @@
           <apexchart
             :class="[
               productReports.length == 0 ? 'd-none' : '',
-              'bg-grey-darken-2 rounded-lg mr-2',
+              'bg-grey-darken-2 rounded-lg mr-2 text-black',
             ]"
             height="485"
             type="bar"
