@@ -8,7 +8,6 @@ import router from './router';
 import vuetify from './plugins/vuetify'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
-import VueApexCharts from "vue3-apexcharts";
 import PrimaryButton from '@/components/widget/button/PrimaryButton';
 import SecondaryButton from '@/components/widget/button/SecondaryButton';
 import DangerButton from '@/components/widget/button/DangerButton';
