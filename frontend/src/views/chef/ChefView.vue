@@ -74,9 +74,9 @@ const menus = ref([
   }
 ]);
 
-// setInterval(() => {
-//   getOrdersNotCompleted();
-// }, 6000);
+setInterval(() => {
+  getOrdersNotCompleted();
+}, 6000);
 
 // Lifecycle hook
 onMounted(() => {

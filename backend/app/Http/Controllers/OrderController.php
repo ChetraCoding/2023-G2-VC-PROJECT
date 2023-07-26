@@ -46,14 +46,6 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        // $devices = OneSignalManager::getDevices()['players'];
-        // // $devices = $devices->where('id', '27caea0a-6a51-470f-8f4c-f3d7aa288aa9');
-        // $data = array_filter($devices, function ($device) {
-        //     return $device["id"] === '27caea0a-6a51-470f-8f4c-f3d7aa288aa9';
-        // })[0]['invalid_identifier'];
-
-        // return response($data);
-
         $request['is_completed'] = false;
         $request['is_paid'] = false;
         $newOrder = Order::storeOrder($request);
@@ -61,6 +53,7 @@ class OrderController extends Controller
             $proCustomId = $productCustomize['product_customize_id'];
             $quantity = $productCustomize['quantity'];
             $price = ProductCustomize::find($proCustomId)->price;
+            // Store order details
             OrderDetail::storeOrderDetail([
                 'product_customize_id' => $proCustomId,
                 'order_id' => $newOrder->id,
@@ -68,6 +61,7 @@ class OrderController extends Controller
                 'price' => $quantity * $price
             ]);
         }
+        // Send notification to OneSignal app
         Onesignal::sendNotifications();
         return response()->json(["success" => true, "data" => new OrderResource($newOrder), "message" => "Create a new order is successfully."], 200);
     }

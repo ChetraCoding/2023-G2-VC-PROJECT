@@ -7,7 +7,6 @@ import http from "@/http-common";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "@/stores/user";
 import { useOneSignal } from '@onesignal/onesignal-vue3';
-import { onBeforeMount } from "vue";
 
 // Variables
 const { getUser } = useUserStore();
@@ -15,10 +14,11 @@ const { user } = storeToRefs(useUserStore());
 const oneSignal = useOneSignal()
 
 // On subscription change on OneSignal icon
-oneSignal.on('subscriptionChange', (isSubscribed) => {
+oneSignal.on('subscriptionChange', async (isSubscribed) => {
+  await getUser();
   // Only chef and cashier can be get notification from OneSignal
   if (user.value) {
-    if (isSubscribed && (user.value.role === 'chef' || user.value.role === 'cashier')) {
+    if (isSubscribed && (user.value.role.name === 'chef' || user.value.role.name === 'cashier')) {
       oneSignal.getUserId(async function (playerId) {
         try {
           const res = await http.post('onsignal', {
@@ -36,9 +36,6 @@ oneSignal.on('subscriptionChange', (isSubscribed) => {
   }
 });
 
-onBeforeMount(async () => {
-  await getUser();
-})
 </script>
 
 <style>
@@ -60,5 +57,9 @@ body {
 
 .active {
   background: #F25657;
+}
+
+#onesignal-bell-launcher {
+  margin-bottom: 7vh;
 }
 </style>

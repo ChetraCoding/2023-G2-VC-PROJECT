@@ -20,6 +20,7 @@ const roleRequired = (role) =>
       next("/404");
     }
   };
+
 const routes = [
   {
     path: "/login",
