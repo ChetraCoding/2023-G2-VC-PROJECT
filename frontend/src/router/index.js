@@ -11,15 +11,15 @@ const loginRequired = async (to, from, next) => {
   }
 };
 
-const roleRequired = (role) =>
-  async (to, from, next) => {
-    const { getCookie } = useCookieStore();
-    if (getCookie("user_role") === role) {
-      next();
-    } else {
-      next("/404");
-    }
-  };
+const roleRequired = (role) => async (to, from, next) => {
+  const { getCookie } = useCookieStore();
+  if (getCookie("user_role") === role) {
+    next();
+  } else {
+    next("/404");
+  }
+};
+
 const routes = [
   {
     path: "/login",
@@ -35,7 +35,7 @@ const routes = [
     path: "/reset_password/:token/:email",
     name: "reset_password",
     component: () => import("@/views/ResetPasswordView"),
-    props: true
+    props: true,
   },
   {
     path: "/:pathMatch(.*)*",
@@ -115,7 +115,7 @@ const routes = [
     component: () => import("@/views/cashier/OrdersView"),
     beforeEnter: [loginRequired, roleRequired("cashier")],
   },
-  // Test 
+  // Test
   {
     path: "/test",
     name: "/test",

@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MoneyReportController;
 use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\RecoverPasswordController;
 use App\Http\Controllers\ProductCustomizeController;
+use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TableController;
@@ -68,6 +69,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // product report
     Route::get('product_report/{month}/{year}', [ProductReportController::class, 'productReport']);
+
+    // money report
+    Route::get('money_report/{year}', [MoneyReportController::class, 'moneyReport']);
 });
 // login --------------------------------
 Route::post('/login',[UserController::class,'login']);  
