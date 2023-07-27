@@ -22,7 +22,7 @@ class ShowProductResource extends JsonResource
             'description'=>$this->description,
             'image'=>$this->image,
             'is_active'=>$this->is_active,
-            'product_customizes'=> ProductCustomizeResource::collection($this->productCustomize)
+            'product_customizes'=> ProductCustomizeResource::collection($this->productCustomizes)
         ];
     }
 }

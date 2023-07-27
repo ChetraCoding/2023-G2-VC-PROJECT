@@ -59,6 +59,18 @@ export const useProductStore = defineStore("product", {
         }
       }
     },
+    async getPopularProducts() {
+      try {
+        const res = await http.get('popular_products');
+        if (res.data.success) {
+          this.products = res.data.data;
+        }
+      } catch (err) {
+        if (!err.response.data.success) {
+          this.products = [];
+        }
+      }
+    },
     async storeProduct(product) {
       try {
         const res = await http.post('products', product);

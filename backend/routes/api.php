@@ -31,58 +31,68 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware(['auth:sanctum'])->group(function () {
-    // register by admin ----------
-    Route::post('/register',[UserController::class,'register']);
+    // Users ------------------//
+    // Register user by admin
+    Route::post('/register', [UserController::class, 'register']);
 
-    // get user already login ----------
-    Route::get('/user',[UserController::class,'getUser']);
-    
-    // chagne password  ---------------------//
-    Route::post('/changePassword', [ChangePasswordController::class, 'changePassword'] );
+    // Get auth user
+    Route::get('/user', [UserController::class, 'getUser']);
 
-    // logout ----------
-    Route::post('/logout',[UserController::class,'logout']);
+    // Chagne password
+    Route::post('/changePassword', [ChangePasswordController::class, 'changePassword']);
 
-    // category ------------------//
+    // Logout
+    Route::post('/logout', [UserController::class, 'logout']);
+
+    // Category ------------------//
     Route::resource('categories', CategoryController::class);
-    
-    // prouduct ------------------//
-    Route::resource('products', ProductController::class);
-    Route::get('/products/search/{keyowrd}', [ProductController::class, 'search']);
-    Route::get('/products/filter/{category_id}', [ProductController::class, 'filter']);
 
-    // prouduct customize ------------------//
+    // Prouduct ------------------//
+    Route::resource('products', ProductController::class);
+    // Search products
+    Route::get('/products/search/{keyowrd}', [ProductController::class, 'search']);
+    // Filter products
+    Route::get('/products/filter/{category_id}', [ProductController::class, 'filter']);
+    // Get popular products
+    Route::get('/popular_products', [ProductController::class, 'popular']);
+
+    // Prouduct customize ------------------//
     Route::delete('product_customizes/{id}', [ProductCustomizeController::class, 'destroy']);
 
-    // order ------------------//
+    // Order ------------------//
     Route::resource('orders', OrderController::class);
+    // Search order
     Route::get('/orders/search/{keyowrd}', [OrderController::class, 'search']);
-    
-    // staff ------------------//
-    Route::resource('staff', StaffController::class);
-
+    // Get orders completed or not
     Route::get('/orders/completed/{is_complete}', [OrderController::class, 'getByCompelted']);
+    // Get orders paid or not
     Route::get('/orders/paid/{is_paid}', [OrderController::class, 'getByPaid']);
 
-    // table ------------------//
+    // Staff ------------------//
+    Route::resource('staff', StaffController::class);
+
+    // Table ------------------//
     Route::resource('tables', TableController::class);
 
-    // role ------------------//
+    // Role ------------------//
     Route::resource('roles', RoleController::class);
 
-    // onsignal
+    // Onsignal ------------------//
     Route::post('onsignal', [OnesignalController::class, 'store']);
 
-    // product report
+    // Product report ------------------//
     Route::get('product_report/{month}/{year}', [ProductReportController::class, 'productReport']);
 
-    // money report
+    // Money report ------------------//
     Route::get('money_report/{year}', [MoneyReportController::class, 'moneyReport']);
 });
-// login --------------------------------
-Route::post('/login',[UserController::class,'login']);  
+// Login ------------------//
+Route::post('/login', [UserController::class, 'login']);
 
-// recover Password --------------------------------
-Route::post('/recover_password',[RecoverPasswordController::class, 'sendResetPassword']);
-Route::post('/recover_password/check',[RecoverPasswordController::class, 'checkResetPassword']);
-Route::post('/recover_password/reset',[RecoverPasswordController::class, 'resetPassword']);
+// Recover Password ------------------//
+// Send link
+Route::post('/recover_password', [RecoverPasswordController::class, 'sendResetPassword']);
+// Check link
+Route::post('/recover_password/check', [RecoverPasswordController::class, 'checkResetPassword']);
+// Reset new password
+Route::post('/recover_password/reset', [RecoverPasswordController::class, 'resetPassword']);
