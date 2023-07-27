@@ -21,21 +21,11 @@
     <!-- Left side bar -->
     <res-owner-side-bar></res-owner-side-bar>
     <v-main class="ml-2">
-      <header-component title="Manage Table">
-        <v-text-field
-          class="search text-white rounded-lg"
-          density="compact"
-          variant="solo-none"
-          label="Search for table..."
-          append-inner-icon="mdi-magnify"
-          single-line
-          hide-details
-          @click:append-inner="console.log('search')"
-        ></v-text-field>
+      <header-component title="Manage table">
       </header-component>
 
       <!-- Main container -->
-      <main class="d-flex flex-column mt-2">
+      <main class="d-flex flex-column mt-1 mr-2">
         <!-- list table -->
         <div class="grid-container mt-2 gap-2" v-if="tables.length > 0">
           <table-card
@@ -67,7 +57,7 @@
 
         <!-- list table empty -->
         <div class="h-screen" v-else>
-          <h6 class="text-center mt-5 text-white">Don't have any table.</h6>
+          <h4 class="text-center mt-5 text-white">Don't have any table.</h4>
         </div>
 
         <!-- Table Summary -->

@@ -1,79 +1,39 @@
 <template>
-  <div class="bg-grey-lighten-1">
-    <span
-      class="mdi mdi-keyboard-backspace ml-3"
-      style="font-size: 30px"
-      @click="comeback"
-    ></span>
-    <div class="h-screen bg-grey-lighten-1 d-flex justify-center align-center">
-      <v-form
-        @submit.prevent="change"
-        class="form d-flex flex-column align-center rounded-lg w-40 px-8 py-10"
-      >
-        <div class="d-flex text-center flex-column align-center justify-center">
-          <v-icon
-            icon="mdi-shield-lock"
-            class="logo mb-2 text-red-accent-2"
-          ></v-icon>
-          <h2>Change new password</h2>
-        </div>
-        <div class="w-100">
-          <v-text-field
-            class="text-black"
-            v-model="passwords.currentPassword"
-            :append-inner-icon="showCurrentPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showCurrentPassword ? 'text' : 'password'"
-            density="compact"
-            placeholder="Current password"
-            prepend-inner-icon="mdi-lock-outline"
-            variant="outlined"
-            @click:append-inner="showCurrentPassword = !showCurrentPassword"
-            :error-messages="v$.currentPassword.$errors.map((e) => e.$message)"
-            @input="v$.currentPassword.$touch"
-            @blur="v$.currentPassword.$touch"
-          ></v-text-field>
-          <v-text-field
-            class="text-black"
-            v-model="passwords.newPassword"
-            :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showNewPassword ? 'text' : 'password'"
-            density="compact"
-            placeholder="New password"
-            prepend-inner-icon="mdi-lock-outline"
-            variant="outlined"
-            @click:append-inner="showNewPassword = !showNewPassword"
-            :error-messages="v$.newPassword.$errors.map((e) => e.$message)"
-            @input="v$.newPassword.$touch"
-            @blur="v$.newPassword.$touch"
-          ></v-text-field>
-          <v-text-field
-            class="text-black mt-2"
-            v-model="passwords.confirmPassword"
-            :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showConfirm ? 'text' : 'password'"
-            density="compact"
-            placeholder="Confirm password"
-            prepend-inner-icon="mdi-lock-check-outline"
-            variant="outlined"
-            @click:append-inner="showConfirm = !showConfirm"
-            :rules="[passwordConfirmationRule]"
-            :error-messages="v$.confirmPassword.$errors.map((e) => e.$message)"
-            @input="v$.confirmPassword.$touch"
-            @blur="v$.confirmPassword.$touch"
-          ></v-text-field>
-        </div>
-        <primary-button
-          @click="v$.$touch()"
-          class="mt-2"
-          block
-          size="large"
-          type="medium"
-        >
-          <v-icon icon="mdi-lock-reset" class="mr-2"></v-icon>
-          CHANGE
-        </primary-button>
-      </v-form>
+  <div class="h-screen bg-grey-lighten-1 d-flex flex-column align-center">
+    <div class="w-100">
+      <span class="cursor mdi mdi-keyboard-backspace ml-3" style="font-size: 30px" @click="comeback"></span>
     </div>
+    <v-form @submit.prevent="change" class="form d-flex flex-column align-center rounded-lg  w-40 px-8 py-10">
+      <div class="d-flex text-center flex-column align-center justify-center">
+        <v-icon icon="mdi-shield-lock" class="logo mb-2 text-red-accent-2"></v-icon>
+        <h2>Change new password</h2>
+      </div>
+      <div class="w-100">
+        <v-text-field class="text-black" v-model="passwords.currentPassword"
+          :append-inner-icon="showCurrentPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="showCurrentPassword ? 'text' : 'password'" density="compact" placeholder="Current password"
+          prepend-inner-icon="mdi-lock-outline" variant="outlined"
+          @click:append-inner="showCurrentPassword = !showCurrentPassword"
+          :error-messages="v$.currentPassword.$errors.map((e) => e.$message)" @input="v$.currentPassword.$touch"
+          @blur="v$.currentPassword.$touch"></v-text-field>
+        <v-text-field class="text-black" v-model="passwords.newPassword"
+          :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'" :type="showNewPassword ? 'text' : 'password'"
+          density="compact" placeholder="New password" prepend-inner-icon="mdi-lock-outline" variant="outlined"
+          @click:append-inner="showNewPassword = !showNewPassword"
+          :error-messages="v$.newPassword.$errors.map((e) => e.$message)" @input="v$.newPassword.$touch"
+          @blur="v$.newPassword.$touch"></v-text-field>
+        <v-text-field class="text-black mt-2" v-model="passwords.confirmPassword"
+          :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'" :type="showConfirm ? 'text' : 'password'"
+          density="compact" placeholder="Confirm password" prepend-inner-icon="mdi-lock-check-outline" variant="outlined"
+          @click:append-inner="showConfirm = !showConfirm" :rules="[passwordConfirmationRule]"
+          :error-messages="v$.confirmPassword.$errors.map((e) => e.$message)" @input="v$.confirmPassword.$touch"
+          @blur="v$.confirmPassword.$touch"></v-text-field>
+      </div>
+      <primary-button @click="v$.$touch()" class="mt-2" block size="large" type="medium">
+        <v-icon icon="mdi-lock-reset" class="mr-2"></v-icon>
+        CHANGE
+      </primary-button>
+    </v-form>
   </div>
 
   <!-- Alert success -->
@@ -165,9 +125,11 @@ const comeback = () => {
 .w-40 {
   width: 40%;
 }
+
 .logo {
   font-size: 10rem;
 }
+
 .cursor {
   cursor: pointer;
 }
