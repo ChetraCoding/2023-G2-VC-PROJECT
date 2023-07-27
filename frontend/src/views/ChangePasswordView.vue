@@ -8,7 +8,7 @@
     <div class="h-screen bg-grey-lighten-1 d-flex justify-center align-center">
       <v-form
         @submit.prevent="change"
-        class="form d-flex flex-column align-center rounded-lg  w-40 px-8 py-10"
+        class="form d-flex flex-column align-center rounded-lg w-40 px-8 py-10"
       >
         <div class="d-flex text-center flex-column align-center justify-center">
           <v-icon
@@ -82,6 +82,11 @@
     <h6 class="mt-2">Password changed successfully.</h6>
   </base-alert>
 
+    <!-- Alert fail -->
+    <base-alert v-model="fail">
+        <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+        <h6 class="mt-2">Current password is incorrect.</h6>
+    </base-alert>
 </template>
 
 <script setup>
@@ -96,6 +101,7 @@ const { getCookie } = useCookieStore();
 const user = ref(JSON.parse(getCookie("user")));
 const router = useRouter();
 const success = ref(false);
+const fail = ref(false);
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirm = ref(false);
@@ -142,7 +148,7 @@ const change = async () => {
         }, 1800);
       }
     } catch (err) {
-      return err;
+      fail.value = true;
     }
   }
 };
