@@ -10,7 +10,7 @@
       </header-component>
 
       <!-- Main container -->
-      <main class="d-flex mt-1">
+      <main class="d-flex mt-1 mr-2">
         <div class="d-flex flex-column mr-2 w-100">
 
           <!-- List products card -->
