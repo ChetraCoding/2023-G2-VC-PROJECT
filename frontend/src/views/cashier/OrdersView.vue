@@ -5,6 +5,8 @@
     <!-- Header -->
     <header-component title="Manage order">
       <v-text-field
+        v-model="keyword"
+        @keyup.enter="search"
         class="search text-white rounded-lg"
         density="compact"
         variant="solo-none"
@@ -19,8 +21,11 @@
 
     <v-main style="height: auto">
       <!-- If no order -->
-      <div class="h-screen" v-if="notPaidOrders.length == 0">
-        <h4 class="text-center mt-5 text-orange-darken-4">
+      <div 
+      class="h-screen" 
+      v-if="notPaidOrders.length == 0"
+      >
+        <h4 class="text-center mt-5 text-white">
           Don't have any order.
         </h4>
       </div>
@@ -50,8 +55,9 @@ import { defineProps } from "vue";
 
 // Variable
 defineProps(["title"]);
-const { getOrder } = useOrderStore();
+const { getOrder, searchOrders } = useOrderStore();
 const { notPaidOrders } = storeToRefs(useOrderStore());
+const keyword = ref("");
 const menus = ref([
   {
     link: "/cashier",
@@ -60,9 +66,15 @@ const menus = ref([
   },
 ]);
 
-setInterval(() => {
-  getOrder();
-}, 6000);
+// Methods
+// Search orders
+const search = () => {
+  if(keyword.value){
+    searchOrders(keyword.value);
+  }else{
+    getOrder();
+  }
+}
 
 // Lifecycle hook
 onMounted(() => {

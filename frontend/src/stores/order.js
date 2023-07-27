@@ -32,6 +32,19 @@ export const useOrderStore = defineStore("order", {
                 }
             } catch (err) { return err; }
         },
+        // Search orders
+        async searchOrders(keyword) {
+            try {
+                const res = await http.get(`orders/search/${keyword}`);
+                if (res.data.success) {
+                    this.notPaidOrders = res.data.data;
+                }
+            } catch (err) {
+                if (!err.response.data.success) {
+                    this.notPaidOrders = [];
+                }
+            }
+        },
         // Update order to complete
         async updateOrdersToCompleted(orderId, order) {
             try {
