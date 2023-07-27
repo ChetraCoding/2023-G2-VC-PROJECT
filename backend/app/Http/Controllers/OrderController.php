@@ -90,7 +90,7 @@ class OrderController extends Controller
         $storeId = Auth::user()->store->id;
         $orders = Order::join('tables', 'orders.table_id', '=', 'tables.id')
             ->where('orders.store_id', $storeId)
-            ->where('table_number', $keyword)->get();
+            ->where('table_number','like', '%' . $keyword . '%')->get();
         if (count($orders) > 0) 
         {
             return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Search orders is successfully."], 200);
