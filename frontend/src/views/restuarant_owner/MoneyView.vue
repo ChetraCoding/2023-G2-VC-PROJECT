@@ -8,46 +8,39 @@
       <!-- Header top -->
       <header-component title="Manage Money"> </header-component>
       <!-- Main container -->
-      <main class="d-flex mt-2">
+      <main class="d-flex mt-3">
         <!-- <div class="w-75 d-flex flex-column"></div>  -->
         <div class="w-100 d-flex flex-column">
           <!-- Tab of month  -->
-          <v-slide-group>
-            <v-slide-group-item>
-              <secondary-button class="ml-2 mt-2">2018</secondary-button>
-              <secondary-button class="ml-2 mt-2">2019</secondary-button>
-              <secondary-button class="ml-2 mt-2">2020</secondary-button>
-              <secondary-button class="ml-2 mt-2">2021</secondary-button>
-              <secondary-button class="ml-2 mt-2">2022</secondary-button>
-              <secondary-button class="ml-2 mt-2">2023</secondary-button>
-            </v-slide-group-item>
-          </v-slide-group>
-          <!-- <money-chart ></money-chart> -->
-          <apexchart
-            height="500"
-            type="bar"
-            :options="options"
-            :series="series"
-          ></apexchart>
+          <!-- Select date -->
+          <div class="w-50">
+            <v-text-field v-model="year" @keyup.enter="change" class="text-white" variant="outlined" density="compact"
+              type="number" label="Year"></v-text-field>
+          </div>
+
+          <apexchart :class="[
+            moneyReports.length == 0 ? 'd-none' : '',
+            'bg-grey-darken-2 rounded-lg mr-2',
+          ]" height="485" type="bar" :options="options" :series="series"></apexchart>
+
+          <!-- No product report -->
+          <div v-if="moneyReports.length == 0" class="h-screen">
+            <h4 class="text-center mt-5 text-white">Don't have any report.</h4>
+          </div>
         </div>
         <!--Money summary -->
         <summary-component class="mt-2" title="Money Summary">
           <template v-slot:content>
-            <div
-              v-for="money in moneyReports"
-              :key="money"
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
-            >
+            <div v-for="moneyReport in moneyReports" :key="moneyReport"
+              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center">
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                {{ money.month }}
+                {{ getMonthName(moneyReport.month) }}
               </div>
-              <span class="mr-2">{{ money.total_money }}$</span>
+              <span class="mr-2">${{ Number(moneyReport.total_money) }}</span>
             </div>
-            <div
-              class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
-            >
+            <div class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
-              <!-- <span class="mr-2">{{ getTotalMoney() }} $</span> -->
+              <span class="mr-2">${{ totalMoney }}</span>
             </div>
           </template>
         </summary-component>
@@ -56,84 +49,36 @@
   </v-layout>
 </template>
 <script setup>
-// const data = [
-//   {
-//     month: "Jan",
-//     year: 2023,
-//     total_money: "100",
-//   },
-//   {
-//     month: "Feb",
-//     year: 2023,
-//     total_money: "110",
-//   },
-//   {
-//     month: "Mat",
-//     year: 2023,
-//     total_money: "150",
-//   },
-//   {
-//     month: "Apr",
-//     year: 2023,
-//     total_money: "150",
-//   },
-//   {
-//     month: "May",
-//     year: 2023,
-//     total_money: "140",
-//   },
-//   {
-//     month: "Jun",
-//     year: 2023,
-//     total_money: "190",
-//   },
-//   {
-//     month: "Jul",
-//     year: 2023,
-//     total_money: "200",
-//   },
-//   {
-//     month: "Aug",
-//     year: 2023,
-//     total_money: "190.50",
-//   },
-//   {
-//     month: "Sep",
-//     year: 2023,
-//     total_money: "190.9",
-//   },
-//   {
-//     month: "Oct",
-//     year: 2023,
-//     total_money: "210",
-//   },
-//   {
-//     month: "Nov",
-//     year: 2023,
-//     total_money: "215",
-//   },
-//   {
-//     month: "Dec",
-//     year: 2023,
-//     total_money: "250",
-//   },
-// ];
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
 
 // Variables
 const { getMoneyReports } = useReportsStore();
 const { moneyReports } = storeToRefs(useReportsStore());
+const currentYear = new Date().getFullYear();
+const year = ref(currentYear);
 
 // Get values from object in array
 const filter = (array, key) => {
-  let items = [4];
+  let items = [];
   array.filter(function (value) {
-    items.push(value[key]);
+    if (key === 'month') {
+      items.push(getMonthName(value[key]));
+    } else {
+      items.push(value[key]);
+    }
   });
   return items;
 };
+
+// Reference: https://codingbeautydev.com/blog/javascript-convert-month-number-to-name/#:~:text=To%20convert%20a%20month%20number%20to%20a%20month%20name%2C%20create,a%20specified%20locale%20and%20options.&text=Our%20getMonthName()%20function%20takes,the%20month%20with%20that%20position.
+const getMonthName = (monthNumber) => {
+  const date = new Date();
+  date.setMonth(monthNumber - 1);
+
+  return date.toLocaleString('en-US', { month: 'long' });
+}
 
 const options = ref({
   plotOptions: {
@@ -176,17 +121,14 @@ const series = ref([
     color: "#F25657",
   },
 ]);
-// Variable
-// const year = ref("2023");
 
-// Methods
-// const getTotalMoney = () => {
-//   const sumTotalMoney = ref(0);
-//   for (let money of moneyReports.value) {
-//     sumTotalMoney.value += money.total_money;
-//   }
-//   return sumTotalMoney.value;
-// };
+const totalMoney = computed(() => {
+  let sum = 0;
+  moneyReports.value.filter(function (value) {
+    sum += Number(value.total_money);
+  });
+  return sum;
+});
 
 // Render date to chart view
 const renderChart = () => {
@@ -197,9 +139,21 @@ const renderChart = () => {
   };
   series.value[0].data = filter(moneyReports.value, "total_money");
 };
+
+const change = async () => {
+  await getMoneyReports(year.value);
+  renderChart();
+}
+
 // Lifecycle hook
 onMounted(async () => {
-  await getMoneyReports(2023);
+  await getMoneyReports(year.value);
   renderChart();
 });
 </script>
+
+<style scoped>
+.card-summary {
+  background: #2c2c2c;
+}
+</style>
