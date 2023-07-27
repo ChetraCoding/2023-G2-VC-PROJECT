@@ -9,7 +9,7 @@
       <header-component title="Manage staff" />
 
       <!--List staff card-->
-      <div class="mt-2" v-if="staff.length > 0">
+      <div class="mt-3" v-if="staff.length > 0">
         <staff-card v-for="user in staff" :key="user.user_id" :user="user">
           <!--Edit button-->
           <dark-button @click="onEdit(user)">
@@ -45,7 +45,8 @@
             class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
           >
             <span class="ml-2">Total</span>
-            <span class="mr-2">3 items</span>
+            <span v-if="staff.length > 1" class="mr-2">{{ staff.length }} persons</span>
+            <span v-else class="mr-2">{{ staff.length }} person</span>
           </div>
         </template>
       </summary-component>

@@ -56,8 +56,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // order ------------------//
     Route::resource('orders', OrderController::class);
     Route::get('/orders/search/{keyowrd}', [OrderController::class, 'search']);
-
     
+    // staff ------------------//
+    Route::resource('staff', StaffController::class);
 
     Route::get('/orders/completed/{is_complete}', [OrderController::class, 'getByCompelted']);
     Route::get('/orders/paid/{is_paid}', [OrderController::class, 'getByPaid']);

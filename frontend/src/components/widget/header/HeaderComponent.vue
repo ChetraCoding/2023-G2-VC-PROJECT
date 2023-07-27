@@ -1,6 +1,7 @@
 <template>
   <v-app-bar class="bg-transparent">
-    <div :class="`w-100 ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between ${props.class}`">
+    <div
+      :class="`w-100 ml-2 px-3 py-2 bg-grey-darken-2 rounded-lg d-flex align-center justify-space-between ${props.class}`">
       <span class="text-white">{{ props.title }}</span>
       <div class="w-50">
         <slot></slot>
@@ -25,9 +26,9 @@
               <p class="font-inter text-subtitle-1 mt-1">
                 {{ user.email }}
               </p>
-              <p class="font-inter text-subtitle-1 mt-1" @click="$router.push('/manage_account')">
-                 <v-icon icon="mdi-cog" color="white" size="small"></v-icon>
-                  Manage Account
+              <p class="font-inter cursor text-subtitle-1 mt-1" @click="$router.push('/manage_account')">
+                <v-icon icon="mdi-cog" color="white" size="small"></v-icon>
+                Manage Account
               </p>
               <v-divider class="my-3"></v-divider>
               <div class="d-flex justify-center">
@@ -88,5 +89,9 @@ const logout = async () => {
 <style scoped>
 .font-inter {
   font-family: 'Inter', sans-serif !important;
+}
+
+.cursor {
+  cursor: pointer;
 }
 </style>

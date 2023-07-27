@@ -1,24 +1,16 @@
 <template>
   <v-layout>
-    <header-component title="Manage Account" />
+    <header-component :class="'m-auto'" title="Manage account" />
 
     <v-main style="height: auto">
-      <v-card class="card mt-5 bg-grey-darken-2">
-        <span
-          class="mdi mdi-keyboard-backspace"
-          style="font-size: 30px"
-          @click="comeback"
-        ></span>
+      <div class="card mt-5 pb-4 bg-grey-darken-2">
+        <span class="cursor mdi mdi-keyboard-backspace" style="font-size: 30px" @click="comeback"></span>
         <div class="card-continer d-flex justify-content-evenly">
           <v-avatar color="red-accent-2" size="150" class="align-self-center">
-            <v-img
-              v-if="user.image"
-              :src="user.image"
-              :alt="user.first_name"
-            ></v-img>
+            <v-img v-if="user.image" :src="user.image" :alt="user.first_name"></v-img>
           </v-avatar>
-          <div class="w-50">
-            <h5 class="font-weight-bold mb-2">Your Account</h5>
+          <div class="w-50 content">
+            <h5 class="font-weight-bold mb-3 text-center mb-2">Your Account</h5>
             <div>
               <h6>
                 First Name :
@@ -40,16 +32,12 @@
               </h6>
               <h6>
                 Password :
-                <span
-                  class="font-weight-bold text-blue"
-                  @click="$router.push('/change_password')"
-                  >change password</span
-                >
+                <span class="cursor font-weight-bold text-blue" @click="$router.push('/change_password')">change password</span>
               </h6>
             </div>
           </div>
         </div>
-      </v-card>
+      </div>
     </v-main>
   </v-layout>
 </template>
@@ -80,16 +68,26 @@ const comeback = () => {
   width: 40%;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 900px) {
   .card {
     width: 70%;
   }
 }
+
 @media screen and (max-width: 430px) {
   .card-continer {
     display: flex;
     flex-direction: column;
   }
+  .content {
+    width: 100% !important;
+    margin-top: 10px;
+  }
+
   .card {
     width: 100%;
   }

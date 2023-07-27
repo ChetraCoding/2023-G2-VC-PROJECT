@@ -67,7 +67,6 @@ const menus = ref([
 ]);
 
 // Methods
-
 // Search orders
 const search = () => {
   if(keyword.value){
@@ -76,10 +75,6 @@ const search = () => {
     getOrder();
   }
 }
-
-// setInterval(() => {
-//   getOrder();
-// }, 6000);
 
 // Lifecycle hook
 onMounted(() => {
