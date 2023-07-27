@@ -9,7 +9,7 @@
 
 
     <v-main class="mt-2 mb-15">
-      <v-tabs v-model="categoryId" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
+      <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
         <v-tab :value="'all'">All</v-tab>
         <v-tab :value="'popular'">Popular Foods</v-tab>
         <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
@@ -207,7 +207,7 @@ const { products } = storeToRefs(useProductStore());
 const { categories } = storeToRefs(useCategoryStore());
 const router = useRouter();
 const keyword = ref("");
-const categoryId = ref(null);
+const filterValue = ref(null);
 
 const isCustomize = ref(false);
 const isRemoveCustom = ref(false);
@@ -236,13 +236,13 @@ const search = () => {
 };
 // Filter for products
 const filter = () => {
-  console.log(categoryId.value);
-  if (categoryId.value === 'all') {
+  console.log(filterValue.value);
+  if (filterValue.value === 'all') {
     getProducts();
-  } else if (categoryId.value === 'popular') {
+  } else if (filterValue.value === 'popular') {
     getPopularProducts();
-  } else if (categoryId.value) {
-    filterProducts(categoryId.value);
+  } else if (filterValue.value) {
+    filterProducts(filterValue.value);
   }
 };
 // On click product customize
