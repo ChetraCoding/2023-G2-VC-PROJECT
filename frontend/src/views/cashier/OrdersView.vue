@@ -1,6 +1,5 @@
 <template>
   <!-- Order view -->
-
   <v-layout>
     <base-side-bar :menus="menus"></base-side-bar>
     <!-- Header -->
@@ -68,7 +67,6 @@ const menus = ref([
 ]);
 
 // Methods
-
 // Search orders
 const search = () => {
   if(keyword.value){
@@ -77,10 +75,6 @@ const search = () => {
     getOrder();
   }
 }
-
-// setInterval(() => {
-//   getOrder();
-// }, 6000);
 
 // Lifecycle hook
 onMounted(() => {

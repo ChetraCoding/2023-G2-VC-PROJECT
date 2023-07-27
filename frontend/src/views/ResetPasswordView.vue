@@ -92,7 +92,7 @@ const reset = async () => {
                 }, 1800);
             }
         } catch (err) {
-            console.log(err);
+            return err;
         }
     }
 };

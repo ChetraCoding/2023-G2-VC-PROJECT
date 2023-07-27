@@ -47,6 +47,30 @@ export const useProductStore = defineStore("product", {
         return err;
       }
     },
+    async filterProducts(category_id) {
+      try {
+        const res = await http.get(`products/filter/${category_id}`);
+        if (res.data.success) {
+          this.products = res.data.data;
+        }
+      } catch (err) {
+        if (!err.response.data.success) {
+          this.products = [];
+        }
+      }
+    },
+    async getPopularProducts() {
+      try {
+        const res = await http.get('popular_products');
+        if (res.data.success) {
+          this.products = res.data.data;
+        }
+      } catch (err) {
+        if (!err.response.data.success) {
+          this.products = [];
+        }
+      }
+    },
     async storeProduct(product) {
       try {
         const res = await http.post('products', product);
