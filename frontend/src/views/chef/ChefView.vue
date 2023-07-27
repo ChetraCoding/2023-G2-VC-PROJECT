@@ -9,25 +9,7 @@
       <!-- Main container -->
       <main class="d-flex mt-2">
         <div class="d-flex flex-column" style="width: 100%">
-          <div class="d-flex justify-space-between align-center">
-            <v-slide-group class="text-white">
-              <v-slide-group-item v-slot="{ isSelected, toggle }">
-                <v-btn :class="[
-                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                  'my-1 mr-2 rounded-lg text-none',
-                ]" @click="toggle">
-                  Done
-                </v-btn>
-              </v-slide-group-item>
-              <v-slide-group-item v-slot="{ isSelected, toggle }">
-                <v-btn :class="[
-                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                  'my-1 mr-2 rounded-lg text-none',
-                ]" @click="toggle">
-                  Don't
-                </v-btn>
-              </v-slide-group-item>
-            </v-slide-group>
+          <div class="d-flex justify-end align-center">
             <h6 class="text-white mr-3" v-if="orders.length > 1">
               Total {{ orders.length }} items
             </h6>

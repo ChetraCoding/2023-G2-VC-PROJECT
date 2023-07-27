@@ -28,6 +28,16 @@ const routes = [
     component: () => import("@/views/LoginView"),
   },
   {
+    path: "/manage_account",
+    name: "manage_account",
+    component: () => import("@/views/ManageAccountView"),
+  },
+  {
+    path: "/change_password",
+    name: "change_password",
+    component: () => import("@/views/ChangePasswordView"),
+  },
+  {
     path: "/recover_password",
     name: "recover_password",
     component: () => import("@/views/RecoverPasswordView"),
@@ -36,7 +46,7 @@ const routes = [
     path: "/reset_password/:token/:email",
     name: "reset_password",
     component: () => import("@/views/ResetPasswordView"),
-    props: true
+    props: true,
   },
   {
     path: "/:pathMatch(.*)*",
@@ -52,7 +62,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/views/HomeView"),
+    component: () => import("@/views/restuarant_owner/HomeView"),
     beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
     meta: {
       isRequiredAuth: true,
@@ -82,6 +92,18 @@ const routes = [
     component: () => import("@/views/restuarant_owner/StaffView"),
     beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
+  {
+    path: "/money",
+    name: "money",
+    component: () => import("@/views/restuarant_owner/MoneyView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
+  },
+  {
+    path: "/sale",
+    name: "/sale",
+    component: () => import("@/views/restuarant_owner/ProductReportView"),
+    beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
+  },
   // waiter =====================================================
   {
     path: "/waiter",
@@ -108,7 +130,7 @@ const routes = [
     name: "/cashier",
     component: () => import("@/views/cashier/OrdersView"),
     beforeEnter: [loginRequired, roleRequired("cashier")],
-  },
+  }
 ];
 
 const router = createRouter({

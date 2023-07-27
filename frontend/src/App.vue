@@ -11,7 +11,7 @@ import { useOneSignal } from '@onesignal/onesignal-vue3';
 // Variables
 const { getUser } = useUserStore();
 const { user } = storeToRefs(useUserStore());
-const oneSignal = useOneSignal()
+const oneSignal = useOneSignal();
 
 // On subscription change on OneSignal icon
 oneSignal.on('subscriptionChange', async (isSubscribed) => {
@@ -21,12 +21,12 @@ oneSignal.on('subscriptionChange', async (isSubscribed) => {
     if (isSubscribed && (user.value.role.name === 'chef' || user.value.role.name === 'cashier')) {
       oneSignal.getUserId(async function (playerId) {
         try {
-          const res = await http.post('onsignal', {
+          const res = await http.post("onsignal", {
             player_id: playerId,
-            user_id: user.value.user_id
+            user_id: user.value.user_id,
           });
           if (res.data.success) {
-            console.log('You have subscribe to notification.');
+            console.log("You have subscribe to notification.");
           }
         } catch (err) {
           console.log(err);
@@ -39,24 +39,24 @@ oneSignal.on('subscriptionChange', async (isSubscribed) => {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&display=swap");
 
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
 body {
-  background: #2C2C2C !important;
+  background: #2c2c2c !important;
 }
 
 .font-inter {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
 .active {
-  background: #F25657;
+  background: #f25657;
 }
 
 #onesignal-bell-launcher {
