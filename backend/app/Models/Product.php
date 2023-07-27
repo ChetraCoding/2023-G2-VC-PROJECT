@@ -39,6 +39,7 @@ class Product extends Model
     }
 
     // Reference: https://poe.com/s/9ulpWtTxukJrKzS6YVZ5
+    // Reference: https://poe.com/s/Z1U4pn0rFeXBj2Vcle53
     // Get popular products in store 
     public static function popularProducts()
     {   
@@ -62,7 +63,7 @@ class Product extends Model
             ->where('products.is_active', true)
             ->orderByDesc('order_count')
             ->limit(10)
-            ->with('productCustomize')
+            ->with('productCustomizes:id as product_customize_id,product_id,size,price')
             ->get();
         return $popularProducts;
     }
@@ -73,7 +74,7 @@ class Product extends Model
         return Auth::user()->store->products->contains($field, $value);
     }
 
-    public function productCustomize(): HasMany
+    public function productCustomizes(): HasMany
     {
         return $this->hasMany(ProductCustomize::class);
     }

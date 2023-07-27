@@ -24,7 +24,7 @@ class ProductController extends Controller
     ) {
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
-    $products = Auth::user()->store->products->sortByDesc('id');
+    $products = Auth::user()->store->products->where('is_active', true)->sortByDesc('id');
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products is successfully."], 200);
   }
 

@@ -10,7 +10,10 @@
 
     <v-main class="mt-2 mb-15">
       <v-tabs v-model="categoryId" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
-        <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{ category.name}}</v-tab>
+        <v-tab :value="'all'">All</v-tab>
+        <v-tab :value="'popular'">Popular Foods</v-tab>
+        <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
+          category.name }}</v-tab>
       </v-tabs>
 
       <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected"
@@ -195,7 +198,7 @@ import { storeToRefs } from "pinia";
 
 // Variables
 const { getCookie } = useCookieStore();
-const { getProducts, searchProducts, filterProducts } = useProductStore();
+const { getProducts, searchProducts, filterProducts, getPopularProducts } = useProductStore();
 const { getTables } = useTableStore();
 const { getCategory } = useCategoryStore();
 const user = ref(JSON.parse(getCookie("user")));
@@ -233,7 +236,12 @@ const search = () => {
 };
 // Filter for products
 const filter = () => {
-  if (categoryId.value) {
+  console.log(categoryId.value);
+  if (categoryId.value === 'all') {
+    getProducts();
+  } else if (categoryId.value === 'popular') {
+    getPopularProducts();
+  } else if (categoryId.value) {
     filterProducts(categoryId.value);
   }
 };
