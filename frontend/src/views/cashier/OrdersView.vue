@@ -6,7 +6,7 @@
     <header-component title="Manage order">
       <v-text-field
         v-model="keyword"
-        @keyup.enter="search"
+        @keyup="search"
         class="search text-white rounded-lg"
         density="compact"
         variant="solo-none"
