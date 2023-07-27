@@ -1,9 +1,15 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MoneyReportController;
+use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RecoverPasswordController;
+use App\Http\Controllers\ProductCustomizeController;
+use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -27,14 +33,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // register by admin ----------
     Route::post('/register',[UserController::class,'register']);
 
-    // register by restaurant ower ----------
-    Route::post('/create_account',[UserController::class,'createAccount']);
-
     // get user already login ----------
     Route::get('/user',[UserController::class,'getUser']);
 
-    // get staff by restaurant owner ----------
-    Route::get('/staff',[UserController::class,'getSaff']);
+    // staff  ---------------------//
+    Route::resource('/staff', StaffController::class);
 
     // logout ----------
     Route::post('/logout',[UserController::class,'logout']);
@@ -44,6 +47,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // prouduct ------------------//
     Route::resource('products', ProductController::class);
+    Route::get('/products/search/{keyowrd}', [ProductController::class, 'search']);
+
+    // prouduct customize ------------------//
+    Route::delete('product_customizes/{id}', [ProductCustomizeController::class, 'destroy']);
 
     // order ------------------//
     Route::resource('orders', OrderController::class);
@@ -56,6 +63,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // role ------------------//
     Route::resource('roles', RoleController::class);
-});
 
+    // onsignal
+    Route::post('onsignal', [OnesignalController::class, 'store']);
+
+    // product report
+    Route::get('product_report/{month}/{year}', [ProductReportController::class, 'productReport']);
+
+    // money report
+    Route::get('money_report/{year}', [MoneyReportController::class, 'moneyReport']);
+});
+// login --------------------------------
 Route::post('/login',[UserController::class,'login']);  
+
+// recover Password --------------------------------
+Route::post('/recover_password',[RecoverPasswordController::class, 'sendResetPassword']);
+Route::post('/recover_password/check',[RecoverPasswordController::class, 'checkResetPassword']);
+Route::post('/recover_password/reset',[RecoverPasswordController::class, 'resetPassword']);

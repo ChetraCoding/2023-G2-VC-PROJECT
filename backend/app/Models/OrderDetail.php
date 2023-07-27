@@ -14,20 +14,24 @@ class OrderDetail extends Model
         'quantity',
         'price'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public static function storeOrderDetail($request, $id = null)
     {
         $orderDetails = self::updateOrCreate(['id' => $id], $request);
-
         return $orderDetails;
     }
 
-    public function order():BelongsTo{
+    public function order(): BelongsTo
+    {
         return $this->belongsTo(Order::class);
     }
 
-    public function productCustomize():BelongsTo{
+    public function productCustomize(): BelongsTo
+    {
         return $this->belongsTo(ProductCustomize::class);
     }
-
 }

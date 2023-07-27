@@ -1,38 +1,124 @@
 <template>
-  <base-alert v-model="success">
+  <!-- create alert -->
+  <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h6 class="mt-2">Category created successfully!</h6>
   </base-alert>
-  <v-card>
-    <v-layout>
-      <side-bar />
-      <header-component title="Manage category" />
-      <v-main style="height: auto">
-        <v-card class="pa-3 mt-3 d-flex justify-space-between">
-          <v-icon
-            icon="mdi-plus"
-            size="40"
-            class="rounded-lg"
-            color="orange-darken-4"
-            @click="isShowForm = true"
-          ></v-icon>
-          <v-spacer></v-spacer>
-          <v-select
-            :items="items"
-            density="compact"
-            label="Row Number"
-          ></v-select>
-        </v-card>
-        <category-list-table v-if="categories.length > 0" :categories="categories"></category-list-table>
-        <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-orange-darken-4">
-            Don't have any category.
-          </h4>
+
+  <!-- update category successfully -->
+  <base-alert v-model="updateSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Updated category succeefully!</h6>
+  </base-alert>
+
+  <!-- delete alert -->
+  <base-alert v-model="deleteSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h6 class="mt-2">Delete category successfully!</h6>
+  </base-alert>
+
+  <v-layout>
+    <!-- Left side bar -->
+    <res-owner-side-bar></res-owner-side-bar>
+    <v-main class="ml-2">
+      <header-component title="Manage Category">
+        <v-text-field
+          class="search text-white rounded-lg"
+          density="compact"
+          variant="solo-none"
+          label="Search for category..."
+          append-inner-icon="mdi-magnify"
+          single-line
+          hide-details
+          @click:append-inner="console.log('search')"
+        ></v-text-field>
+      </header-component>
+
+      <!-- Main container -->
+      <main class="d-flex flex-column mt-2">
+        <!-- list category -->
+        <div
+          class="grid-container mt-2 mr-2 gap-2"
+          v-if="categories.length > 0"
+        >
+          <category-card
+            v-for="category in categories"
+            :key="category.category_id"
+            :category="category"
+            ><div class="d-flex justify-space-between align-center mt-2">
+              <!-- close dialo delete category -->
+              <secondary-button @click="onEdit(category)">
+                <v-icon
+                  icon="mdi-square-edit-outline"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Edit
+              </secondary-button>
+
+              <!-- delete category -->
+              <danger-button @click="onDelete(category)">
+                <v-icon
+                  icon="mdi-delete-forever"
+                  color="white"
+                  size="large"
+                ></v-icon>
+                Delete
+              </danger-button>
+            </div>
+          </category-card>
         </div>
-      </v-main>
-    </v-layout>
-  </v-card>
+        <!-- list category empty -->
+        <div class="w-100 text-center" v-else>
+          <h6 class="text-center mt-5 text-white">Don't have any category.</h6>
+        </div>
+
+        <!-- Category Summary -->
+        <summary-component class="mt-2" title="Category Summary">
+          <template v-slot:btn>
+            <secondary-button @click="isShowForm = true">
+              <v-icon
+                icon="mdi-plus-box-multiple"
+                color="white"
+                size="large"
+              ></v-icon>
+              Add More
+            </secondary-button>
+          </template>
+          <template v-slot:content>
+            <div
+              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
+            >
+              <span class="ml-2">Total</span>
+              <span v-if="categories.length > 1" class="mr-2"
+                >{{ categories.length }} items</span
+              >
+              <span v-else class="mr-2">{{ categories.length }} item</span>
+            </div>
+          </template>
+        </summary-component>
+      </main>
+    </v-main>
+  </v-layout>
+
+  <!-- form create category -->
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
+
+  <!-- dialog delete category -->
+  <base-dialog
+    v-model="dialog"
+    title="Tips"
+    ms="Are you sure you want to delete category?"
+  >
+    <danger-button @click="dialog = false">
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon
+      >Cancel
+    </danger-button>
+    <primary-button @click="deleted">
+      <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
+      Delete
+    </primary-button>
+  </base-dialog>
 </template>
 
 <script setup>
@@ -41,10 +127,39 @@ import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { getCategory } = useCategoryStore();
-const { categories, success } = storeToRefs(useCategoryStore());
+const { getCategory, deleteCategory } = useCategoryStore();
+const {
+  categoryInForm,
+  categories,
+  createSuccess,
+  updateSuccess,
+  deleteSuccess,
+} = storeToRefs(useCategoryStore());
 const isShowForm = ref(false);
-const items = ref([10, 15, 20, 25, 30, 35, 40]);
+const dialog = ref(false);
+const categoryId = ref(null);
+
+//Method
+
+// Delet category
+let onDelete = (id) => {
+  categoryId.value = id;
+  dialog.value = true;
+};
+
+const deleted = () => {
+  if (categoryId.value !== null) {
+    const id = categoryId.value["category_id"];
+    deleteCategory(id);
+  }
+  dialog.value = false;
+};
+
+// Edit category
+const onEdit = (category) => {
+  categoryInForm.value = { ...category };
+  isShowForm.value = true;
+};
 
 // Methods
 const closeForm = () => {
@@ -56,3 +171,16 @@ onMounted(() => {
   getCategory();
 });
 </script>
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.card-summary {
+  background: #2c2c2c;
+}
+.search {
+  background: #2c2c2c;
+}
+</style>

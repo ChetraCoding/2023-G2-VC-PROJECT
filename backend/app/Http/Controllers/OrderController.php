@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Models\Onesignal;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductCustomize;
@@ -21,14 +22,14 @@ class OrderController extends Controller
         $orders = Auth::user()->store->orders;
         return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Get all orders successfully."], 200);
     }
-    
+
     // Get orders by checking completed to the customer
     public function getByCompelted(bool $is_complete)
     {
         $orders = Auth::user()->store->orders->where('is_completed', '=', $is_complete)->sortByDesc('id');
         $message = 'Get orders not completed are successfully.';
         if ($is_complete) $message = 'Get orders completed are successfully.';
-        return Response()->json(['success' => true, 'message' => $message, 'data'=> OrderResource::collection($orders) ], 200);
+        return Response()->json(['success' => true, 'message' => $message, 'data' => OrderResource::collection($orders)], 200);
     }
 
     // Get orders by checking paid to the chasier
@@ -37,7 +38,7 @@ class OrderController extends Controller
         $orders = Auth::user()->store->orders->where('is_paid', '=', $is_paid)->sortByDesc('id');
         $message = 'Get orders not paid are successfully.';
         if ($is_paid) $message = 'Get orders paid are successfully.';
-        return Response()->json(['success' => true, 'message' => $message, 'data'=> OrderResource::collection($orders) ], 200);
+        return Response()->json(['success' => true, 'message' => $message, 'data' => OrderResource::collection($orders)], 200);
     }
 
     /**
@@ -48,10 +49,11 @@ class OrderController extends Controller
         $request['is_completed'] = false;
         $request['is_paid'] = false;
         $newOrder = Order::storeOrder($request);
-        foreach ($request->product_customizes as $product_customize) {
-            $proCustomId = $product_customize['product_customize_id'];
-            $quantity = $product_customize['quantity'];
+        foreach ($request->product_customizes as $productCustomize) {
+            $proCustomId = $productCustomize['product_customize_id'];
+            $quantity = $productCustomize['quantity'];
             $price = ProductCustomize::find($proCustomId)->price;
+            // Store order details
             OrderDetail::storeOrderDetail([
                 'product_customize_id' => $proCustomId,
                 'order_id' => $newOrder->id,
@@ -59,6 +61,8 @@ class OrderController extends Controller
                 'price' => $quantity * $price
             ]);
         }
+        // Send notification to OneSignal app
+        Onesignal::sendNotifications();
         return response()->json(["success" => true, "data" => new OrderResource($newOrder), "message" => "Create a new order is successfully."], 200);
     }
 
@@ -68,18 +72,18 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $checkOrder = Auth::user()->store->orders->contains($id);
-        if (!$checkOrder) return Response()->json(['success' => false, 'message' => ['order'=> 'Order id is not found.']], 404);
-        return Response()->json(['success' => true, 'message' => 'Show order is successfully.', 'data'=> new OrderResource(Order::find($id)) ], 200);
+        if (!$checkOrder) return Response()->json(['success' => false, 'message' => ['order' => 'Order id is not found.']], 404);
+        return Response()->json(['success' => true, 'message' => 'Show order is successfully.', 'data' => new OrderResource(Order::find($id))], 200);
     }
 
-    /**
+    /** 
      * Update the specified resource in storage.
      */
     public function update(UpdateOrderRequest $request, string $id)
     {
         $checkOrder = Auth::user()->store->orders->contains($id);
-        if (!$checkOrder) return Response()->json(['success' => false, 'message' => ['order'=> 'Order id is not found.']], 404);
-        return Response()->json(['success' => true, 'message' => 'Update order is successfully.', 'data'=> new OrderResource(Order::storeOrder($request, $id)) ], 200);
+        if (!$checkOrder) return Response()->json(['success' => false, 'message' => ['order' => 'Order id is not found.']], 404);
+        return Response()->json(['success' => true, 'message' => 'Update order is successfully.', 'data' => new OrderResource(Order::storeOrder($request, $id))], 200);
     }
 
     /**

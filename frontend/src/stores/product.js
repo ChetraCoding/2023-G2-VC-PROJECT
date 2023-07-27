@@ -1,18 +1,45 @@
 import { defineStore } from "pinia";
 import http from "../http-common";
 
+const initialProduct = {
+  name: null,
+  product_code: null,
+  category_id: null,
+  description: null,
+  is_active: false,
+  image: null,
+  product_customizes: []
+};
 export const useProductStore = defineStore("product", {
   state: () => {
     return {
+      productInForm: { ...initialProduct },
+      dialog: false,
       success: false,
-      err_barcode: '',
+      deleteSuccess: false,
+      updateSuccess: false,
+      errProductCode: '',
       products: []
     };
   },
   actions: {
+    resetProductForm() {
+      initialProduct.product_customizes = [];
+      this.productInForm = { ...initialProduct };
+    },
     async getProducts() {
       try {
         const res = await http.get('products');
+        if (res.data.success) {
+          this.products = res.data.data;
+        }
+      } catch (err) {
+        return err;
+      }
+    },
+    async searchProducts(keyword) {
+      try {
+        const res = await http.get(`products/search/${keyword}`);
         if (res.data.success) {
           this.products = res.data.data;
         }
@@ -25,14 +52,39 @@ export const useProductStore = defineStore("product", {
         const res = await http.post('products', product);
         if (res.data.success) {
           this.success = true;
-          this.err_barcode = '';
+          this.errProductCode = '';
           this.getProducts();
         }
       } catch (err) {
-        if (err.response.data.message.barcode) {
-          this.err_barcode = 'Barcode already exists.';
+        if (err.response.data.message.product_code) {
+          this.errProductCode = 'Code already exists.';
         }
       }
-    }
+    },
+    async updateProduct(product) {
+      try {
+        const res = await http.put(`products/${product.product_id}`, product);
+        if (res.data.success) {
+          this.updateSuccess = true;
+          this.errProductCode = '';
+          this.getProducts();
+        }
+      } catch (err) {
+        if (err.response.data.message.product_code) {
+          this.errProductCode = 'Code already exists.';
+        }
+      }
+    },
+    async deleteProduct(product_id) {
+      try {
+        const res = await http.delete(`products/${product_id}`);
+        if (res.data.success) {
+          this.getProducts();
+          this.deleteSuccess = true;
+        }
+      } catch (err) {
+        return err;
+      }
+    },
   },
 });

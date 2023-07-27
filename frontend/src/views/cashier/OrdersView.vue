@@ -1,59 +1,77 @@
 <template>
   <!-- Order view -->
-  <v-card>
-    <v-layout>
-      <base-side-bar title="Cashier">
-        <template v-slot:menu>
-          <v-list-item
-            prepend-icon="mdi-food"
-            title="Order"
-            name="Order"
-            value="orders"
-            class="text-orange-darken-4"
-            style="text-decoration: none"
-            to="/cashier"
+  <v-layout>
+    <base-side-bar :menus="menus"></base-side-bar>
+    <!-- Header -->
+    <header-component title="Manage order">
+      <v-text-field
+        class="search text-white rounded-lg"
+        density="compact"
+        variant="solo-none"
+        label="Search for order..."
+        append-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+        @click:append-inner="console.log('search')"
+      ></v-text-field>
+    </header-component>
+    <!------>
+
+    <v-main style="height: auto">
+      <!-- If no order -->
+      <div class="h-screen" v-if="notPaidOrders.length == 0">
+        <h4 class="text-center mt-5 text-orange-darken-4">
+          Don't have any order.
+        </h4>
+      </div>
+      <!-- If have some orders -->
+      <order-list-table v-else :orders="notPaidOrders" />
+      <!-- Product Summary -->
+      <summary-component class="mt-2" title="Order Summary">
+        <template v-slot:content>
+          <div
+            class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
           >
-          </v-list-item>
+            <span class="ml-2">Total</span>
+            <span class="mr-2">{{ notPaidOrders.length }} items</span>
+          </div>
         </template>
-      </base-side-bar>
-
-      <header-component title="Manage order" />
-
-      <v-main style="height: auto">
-        <v-card class="pa-3 mt-3 d-flex justify-space-between">
-          <v-spacer></v-spacer>
-          <v-text-field
-            density="compact"
-            variant="outlined"
-            placeholder="Search orders"
-            append-inner-icon="mdi-magnify"
-          ></v-text-field>
-        </v-card>
-        <!-- If no order -->
-        <div class="h-screen" v-if="notPaidOrders.length == 0">
-          <h4 class="text-center mt-5 text-orange-darken-4">
-            Don't have any order.
-          </h4>
-        </div>
-        <!-- If have some orders -->
-        <order-list-table v-else :orders="notPaidOrders" />
-      </v-main>
-    </v-layout>
-  </v-card>
+      </summary-component>
+    </v-main>
+  </v-layout>
 </template>
 
 <script setup>
-import {useOrderStore} from "@/stores/order";
+import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+import { ref } from "vue";
+import { defineProps } from "vue";
 
 // Variable
-const {getOrder} = useOrderStore();
-const {notPaidOrders} = storeToRefs(useOrderStore()); 
+defineProps(["title"]);
+const { getOrder } = useOrderStore();
+const { notPaidOrders } = storeToRefs(useOrderStore());
+const menus = ref([
+  {
+    link: "/cashier",
+    title: "Order",
+    icon: "mdi-home-analytics",
+  },
+]);
+
+setInterval(() => {
+  getOrder();
+}, 6000);
 
 // Lifecycle hook
-onMounted(()=>{
+onMounted(() => {
   getOrder();
-})
-
+});
 </script>
+
+<style scoped>
+.search {
+  background: #2c2c2c;
+}
+</style>
