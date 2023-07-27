@@ -53,7 +53,7 @@ class ProductController extends Controller
     public function filter(string $category_id)
     {
         // Check the user permission
-        if (!User::roleRequired('cashier')) 
+        if (!User::roleRequired('waiter')) 
         {
             return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
         }
