@@ -7,12 +7,19 @@
 
       <!-- Header top -->
       <header-component title="Manage product">
+        <v-text-field v-model="keyword" @keyup="search" class="search text-white rounded-lg" density="compact"
+          variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
+          hide-details></v-text-field>
       </header-component>
 
       <!-- Main container -->
       <main class="d-flex mt-1 mr-2">
         <div class="d-flex flex-column mr-2 w-100">
-
+          <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
+            <v-tab :value="'all'">All</v-tab>
+            <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
+              category.name }}</v-tab>
+          </v-tabs>
           <!-- List products card -->
           <div v-if="products.length > 0" class="grid-container mt-2 gap-2">
             <product-res-owner-card v-for="product in products" :key="product.product_id" :product="product">
@@ -94,11 +101,13 @@
 // Import
 import { onMounted } from "vue";
 import { useProductStore } from "@/stores/product";
+import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
 // Variables
-const { getProducts, deleteProduct } = useProductStore();
+const { getCategory } = useCategoryStore();
+const { getProducts, searchProducts, filterProducts, deleteProduct } = useProductStore();
 const {
   products,
   dialog,
@@ -107,10 +116,29 @@ const {
   updateSuccess,
   deleteSuccess,
 } = storeToRefs(useProductStore());
+const { categories } = storeToRefs(useCategoryStore());
 const isDelete = ref(false);
 const deleteId = ref(null);
+const keyword = ref("");
+const filterValue = ref(null);
 
-// Method
+// Methods
+// Search for products
+const search = () => {
+  if (keyword.value) {
+    searchProducts(keyword.value);
+  } else {
+    getProducts();
+  }
+};
+// Filter for products
+const filter = () => {
+  if (filterValue.value === 'all') {
+    getProducts();
+  } else if (filterValue.value) {
+    filterProducts(filterValue.value);
+  }
+};
 // Delete the product
 let deleted = async () => {
   await deleteProduct(deleteId.value);
@@ -126,7 +154,7 @@ const onEdit = (product) => {
 // Lifecycle hook
 onMounted(() => {
   getProducts();
-
+  getCategory();
 });
 </script>
 

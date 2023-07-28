@@ -45,9 +45,18 @@ class ProductController extends Controller
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
     $storeId = Auth::user()->store->id;
-    $products = Product::where('store_id', $storeId)
-      ->where('name', 'like', '%' . $keyword . '%')
-      ->orWhere('product_code', 'like', '%' . $keyword . '%')->get();
+    // Search products by restaurant owner
+    if (Auth::user()->role->name === 'restaurant_owner') {
+      $products = Product::where('store_id', $storeId)
+        ->where('name', 'like', '%' . $keyword . '%')
+        ->orWhere('product_code', 'like', '%' . $keyword . '%')->get();
+    } else {
+      // Search products by waiter
+      $products = Product::where('store_id', $storeId)
+        ->where('is_active', true)
+        ->where('name', 'like', '%' . $keyword . '%')
+        ->get();
+    }
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Search products is successfully."], 200);
   }
 
@@ -57,12 +66,23 @@ class ProductController extends Controller
   public function filter(string $category_id)
   {
     // Check the user permission
-    if (!User::roleRequired('waiter')) {
+    if (
+      !User::roleRequired('restaurant_owner') &&
+      !User::roleRequired('waiter')
+    ) {
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
     $storeId = Auth::user()->store->id;
-    $products = Product::where('store_id', $storeId)
-      ->where('category_id', '=', $category_id)->get();
+    // Filter products by restaurant owner
+    if (Auth::user()->role->name === 'restaurant_owner') {
+      $products = Product::where('store_id', $storeId)
+        ->where('category_id', '=', $category_id)->get();
+    } else {
+      // Filter products by waiter
+      $products = Product::where('store_id', $storeId)
+        ->where('is_active', true)
+        ->where('category_id', '=', $category_id)->get();
+    }
     if (count($products) > 0) {
       return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Filter products is successfully."], 200);
     } else {
@@ -76,7 +96,10 @@ class ProductController extends Controller
   public function popular()
   {
     // Check the user permission
-    if (!User::roleRequired('waiter')) {
+    if (
+      !User::roleRequired('restaurant_owner') &&
+      !User::roleRequired('waiter')
+    ) {
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
     return response()->json(["success" => true, "data" => Product::popularProducts(), "message" => "Get popular products is successfully."], 200);
