@@ -22,7 +22,8 @@
               @change="dateSelected"
             ></v-text-field>
           </div>
-
+          
+          <!-- Chart : column bar-->
           <apexchart
             :class="[
               productReports.length == 0 ? 'd-none' : '',
@@ -110,6 +111,7 @@ const filter = (array, key) => {
   return items;
 };
 
+// Reference of chart : https://codesandbox.io/s/o7339qql3z -->
 // Chart values
 const options = ref({
   plotOptions: {
