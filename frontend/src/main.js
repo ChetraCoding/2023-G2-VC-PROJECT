@@ -53,7 +53,6 @@ app.component("chef-order-card", ChefOrderCard);
 app.component("res-owner-side-bar", ResOwnerSideBar);
 app.component("base-side-bar", BaseSideBar);
 app.component("header-component", HeaderComponent);
-app.component("chef-order-card", ChefOrderCard);
 app.component("summary-component", SummaryComponent);
 
 // Forms
