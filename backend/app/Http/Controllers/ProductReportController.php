@@ -28,6 +28,8 @@ class ProductReportController extends Controller
             ->select('products.name as product_name', DB::raw('SUM(order_details.quantity) as total_orders'))
             // Check store id from the user
             ->where('orders.store_id', $storeId)
+            // Check order already paid
+            ->where('orders.is_paid', true)
             // Check year
             ->whereYear('datetime', '=', $year)
             // Check month

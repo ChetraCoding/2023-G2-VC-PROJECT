@@ -3,7 +3,7 @@
 <template>
   <!-- Alert message -->
   <base-alert v-model="paidSuccess">
-    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
     <h6 class="mt-2">Order have paid successfully!</h6>
   </base-alert>
 
@@ -14,27 +14,26 @@
     ms="Are you sure you want to completed?"
   >
     <danger-button @click="isComplete = false">
-      <v-icon icon="mdi-close-box-multiple"></v-icon>
+      <span icon="mdi-close-box-multiple"></span>
       Cancel
     </danger-button>
     <primary-button @click="complete()">
-      <v-icon icon="mdi-check-circle-outline"></v-icon>
+      <span icon="mdi-check-circle-outline"></span>
       Confirm
     </primary-button>
   </base-dialog>
 
   <!-- Create table of list orders -->
   <v-card
-    v-for="(order, index) in props.orders"
+    v-for="order in props.orders"
     :key="order.name"
     class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg"
   >
     <v-card-text class="d-flex justify-space-between">
-      <span>ID : {{ index + 1 }}</span>
+      <span>ID : {{ order.order_id }}</span>
       <span>Table : {{ order.table_number }}</span>
       <span>{{ new Date(order.datetime).toDateString() }}</span>
       <span>{{ new Date(order.datetime).toLocaleTimeString() }}</span>
-      <span v-if="order">${{ getTotalPrice(order) }}</span>
     </v-card-text>
     <v-card-actions>
       <dark-button @click="(orderInfo = order), (dialog = true)">
@@ -112,7 +111,7 @@
           <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
           <h6 v-if="orderInfo" class="font-weight-bold text-darken-4">
-            ${{ getTotalPrice(orderInfo) }}
+            ${{ totalPriceOrderInfo }}
           </h6>
         </div>
       </v-card-text>
@@ -130,18 +129,23 @@
   <div class="d-none">
     <div id="printOrder" v-if="orderPrint">
       <div width="100%">
-        <v-card-title class="text-center text-h4">
+        <h6 class="text-center text-h4">
           Store's name:
           <span class="font-weight-bold">{{ orderPrint.store.name }}</span>
-        </v-card-title>
+        </h6>
         <div class="p-2">
           <div class="p-1">
-            <v-sub-title class="text-subtitle-1">
-              លេខតុ / Table : <span class="font-weight-bold">{{ orderPrint.table_number }}</span> </v-sub-title
-            ><br />
-            <v-sub-title class="text-subtitle-1">
-              កាលបរិច្ឆេទ / Date Time : <span class="font-weight-bold">{{ orderPrint.datetime }}</span>
-            </v-sub-title>
+            <h6 class="text-subtitle-1">
+              លេខតុ / Table :
+              <span class="font-weight-bold">{{
+                orderPrint.table_number
+              }}</span>
+            </h6>
+            <br />
+            <h6 class="text-subtitle-1">
+              កាលបរិច្ឆេទ / Date Time :
+              <span class="font-weight-bold">{{ orderPrint.datetime }}</span>
+            </h6>
           </div>
           <!-- list of food -->
           <hr />
@@ -183,23 +187,26 @@
                 </td>
                 <td class="text-center">{{ order_detail.quantity }}</td>
                 <td class="text-center">
-                  {{ order_detail.product_customize.price }} $
+                  ${{ order_detail.product_customize.price }}
                 </td>
                 <td class="text-center">
-                  {{
+                  ${{
                     order_detail.quantity * order_detail.product_customize.price
                   }}
-                  $
                 </td>
               </tr>
             </tbody>
           </v-table>
           <hr />
           <div class="p-1">
-            <v-sub-title class="text-subtitle-1">
-              សរុប / Sub Total : <span class="font-weight-bold"> {{ getTotalPrice(orderPrint) }} $</span></v-sub-title
-            ><br />
-            <i class="font-weight-bold"> Thanks, Please come agains </i><br />
+            <h6 class="text-subtitle-1">
+              សរុប / Sub Total :
+              <span class="font-weight-bold">
+                ${{ totalPriceOrderPrint }}</span
+              >
+            </h6>
+            <br />
+            <i class="font-weight-bold"> Thanks, Please come again. </i><br />
           </div>
         </div>
       </div>
@@ -210,7 +217,7 @@
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
-import { ref, defineProps } from "vue";
+import { ref, defineProps, computed } from "vue";
 import printJS from "print-js";
 
 // Variables
@@ -222,6 +229,16 @@ const isComplete = ref(false);
 const orderClicked = ref(null);
 const { updateOrdersToPaid } = useOrderStore();
 const { paidSuccess } = storeToRefs(useOrderStore());
+
+// Computed
+// Total price for print
+const totalPriceOrderPrint = computed(() => {
+  return getTotalPrice(orderPrint.value);
+})
+// Total price to view
+const totalPriceOrderInfo = computed(() => {
+  return getTotalPrice(orderInfo.value);
+})
 
 // Method
 const getTotalPrice = (order) => {
@@ -245,14 +262,13 @@ const printClicked = async (order) => {
   orderPrint.value = order;
   // Referrent from :https://fontawesomeicons.com/tryit/code/vue-js-print-current-page/1
   // Purpose: to print a bill
-
-  document.title = " ID-" + order.order_id + " " + new Date().toLocaleString();
+  
   setTimeout(() => {
     printJS({
       printable: "printOrder",
       type: "html",
       targetStyles: ["*"],
     });
-  }, 10);
+  }, 1);
 };
 </script>

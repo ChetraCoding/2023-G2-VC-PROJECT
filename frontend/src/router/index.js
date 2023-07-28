@@ -11,20 +11,32 @@ const loginRequired = async (to, from, next) => {
   }
 };
 
-const roleRequired = (role) => async (to, from, next) => {
-  const { getCookie } = useCookieStore();
-  if (getCookie("user_role") === role) {
-    next();
-  } else {
-    next("/404");
-  }
-};
+const roleRequired = (role) =>
+  async (to, from, next) => {
+    const { getCookie } = useCookieStore();
+    if (getCookie("user_role") === role) {
+      next();
+    } else {
+      next("/404");
+    }
+  };
 
 const routes = [
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/LoginView"),
+  },
+  {
+    path: "/manage_account",
+    name: "manage_account",
+    component: () => import("@/views/ManageAccountView"),
+    beforeEnter: [loginRequired],
+  },
+  {
+    path: "/change_password",
+    name: "change_password",
+    component: () => import("@/views/ChangePasswordView"),
   },
   {
     path: "/recover_password",
@@ -51,7 +63,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/views/HomeView"),
+    component: () => import("@/views/restuarant_owner/HomeView"),
     beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
     meta: {
       isRequiredAuth: true,
@@ -79,9 +91,14 @@ const routes = [
     path: "/staff",
     name: "staff",
     component: () => import("@/views/restuarant_owner/StaffView"),
-    beforeEnter: [loginRequired, roleRequired("restaurant_owner")],
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
   },
-  // Product Report
+  {
+    path: "/money",
+    name: "money",
+    component: () => import("@/views/restuarant_owner/MoneyView"),
+    beforeEnter: [loginRequired, roleRequired('restaurant_owner')],
+  },
   {
     path: "/sale",
     name: "/sale",
@@ -114,7 +131,7 @@ const routes = [
     name: "/cashier",
     component: () => import("@/views/cashier/OrdersView"),
     beforeEnter: [loginRequired, roleRequired("cashier")],
-  },
+  }
 ];
 
 const router = createRouter({

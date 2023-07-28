@@ -67,7 +67,16 @@ const onSubmit = async () => {
       const res = await http.post("login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
       cookieStore.setCookie("user_role", res.data.user.role.name, 30);
-      cookieStore.setCookie("user", JSON.stringify(res.data.user), 30);
+      let user = {
+        user_id: res.data.user.user_id,
+        first_name: res.data.user.first_name,
+        last_name: res.data.user.last_name,
+        gender: res.data.user.gender,
+        email: res.data.user.email,
+        image: res.data.user.image,
+        store: res.data.user.store,
+      };
+      cookieStore.setCookie("user", JSON.stringify(user), 30);
       if (res.data.user.role.name === "restaurant_owner") {
         router.push("/");
       } else {
@@ -75,14 +84,18 @@ const onSubmit = async () => {
       }
     } catch (err) {
       if (err.response.data.message) {
-        errMessage.value = err.response.data.message;
+        errMessage.value = 'Invalid email or password.';
       }
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
+#onesignal-bell-launcher {
+  display: none !important;
+}
+
 .login-form {
   width: 40%;
 }

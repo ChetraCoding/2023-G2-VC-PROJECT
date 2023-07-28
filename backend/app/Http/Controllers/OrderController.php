@@ -9,6 +9,7 @@ use App\Models\Onesignal;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductCustomize;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,28 @@ class OrderController extends Controller
     {
         $orders = Auth::user()->store->orders;
         return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Get all orders successfully."], 200);
+    }
+
+    /**
+     * Search for orders.
+     */
+    public function search(string $keyword)
+    {
+        // Check the user permission
+        if (!User::roleRequired('cashier')) {
+            return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+        }
+        $storeId = Auth::user()->store->id;
+        $orders = Order::join('tables', 'orders.table_id', '=', 'tables.id')
+            ->select('orders.*')
+            ->where('orders.store_id', $storeId)
+            ->where('orders.is_paid', false)
+            ->where('table_number', 'like', '%' . $keyword . '%')->get();
+        if (count($orders) > 0) {
+            return response()->json(["success" => true, "data" => OrderResource::collection($orders), "message" => "Search orders is successfully."], 200);
+        } else {
+            return response()->json(["success" => false, "data" => OrderResource::collection($orders), "message" => "Don't have any order."], 404);
+        }
     }
 
     // Get orders by checking completed to the customer
@@ -46,14 +69,6 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        // $devices = OneSignalManager::getDevices()['players'];
-        // // $devices = $devices->where('id', '27caea0a-6a51-470f-8f4c-f3d7aa288aa9');
-        // $data = array_filter($devices, function ($device) {
-        //     return $device["id"] === '27caea0a-6a51-470f-8f4c-f3d7aa288aa9';
-        // })[0]['invalid_identifier'];
-
-        // return response($data);
-
         $request['is_completed'] = false;
         $request['is_paid'] = false;
         $newOrder = Order::storeOrder($request);
@@ -61,6 +76,7 @@ class OrderController extends Controller
             $proCustomId = $productCustomize['product_customize_id'];
             $quantity = $productCustomize['quantity'];
             $price = ProductCustomize::find($proCustomId)->price;
+            // Store order details
             OrderDetail::storeOrderDetail([
                 'product_customize_id' => $proCustomId,
                 'order_id' => $newOrder->id,
@@ -68,6 +84,7 @@ class OrderController extends Controller
                 'price' => $quantity * $price
             ]);
         }
+        // Send notification to OneSignal app
         Onesignal::sendNotifications();
         return response()->json(["success" => true, "data" => new OrderResource($newOrder), "message" => "Create a new order is successfully."], 200);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStaffRequest;
+use App\Http\Requests\UpdateStaffRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
@@ -47,7 +48,7 @@ class StaffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreStaffRequest $request, int $id)
+    public function update(UpdateStaffRequest $request, int $id)
     {
         // Check the user permission
         if (!User::roleRequired('restaurant_owner')) {

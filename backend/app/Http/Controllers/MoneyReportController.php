@@ -27,10 +27,12 @@ class MoneyReportController extends Controller
             ->select(DB::raw('MONTH(orders.datetime) as month'), DB::raw('YEAR(orders.datetime) as year'), DB::raw('SUM(order_details.price) as total_money'))
             // Check store id from the user
             ->where('orders.store_id', $storeId)
+            // Check order already paid
+            ->where('orders.is_paid', true)
             // Check year
             ->whereYear('orders.datetime', '=', $year)
             ->groupBy(DB::raw('MONTH(orders.datetime)'), DB::raw('YEAR(orders.datetime)'))
             ->get();
-        return response()->json(["success" => true, "data" => $totalMoneyReports, "message" => "Get product reports is successfully."], 200);
+        return response()->json(["success" => true, "data" => $totalMoneyReports, "message" => "Get money reports is successfully."], 200);
     }
 }

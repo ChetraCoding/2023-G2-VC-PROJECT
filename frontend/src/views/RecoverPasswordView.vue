@@ -68,7 +68,7 @@ const send = async () => {
         } catch (err) {
             loading.value = false;
             if (err.response.data.message.email) {
-                errMessage.value = "Email doesn't exist."
+                errMessage.value = "Invalid email address.";
             } else {
                 errMessage.value = 'Reset password link already send. Please check email.'
             }

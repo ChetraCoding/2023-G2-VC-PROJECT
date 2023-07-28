@@ -1,88 +1,39 @@
 <template>
   <v-layout>
-    
+
     <v-main class="ml-2">
       <!-- Left side bar -->
       <res-owner-side-bar></res-owner-side-bar>
-      
+
       <!-- Header top -->
-      <header-component title="Manage Product">
-        <v-text-field
-          class="search text-white rounded-lg"
-          density="compact"
-          variant="solo-none"
-          label="Search for product..."
-          append-inner-icon="mdi-magnify"
-          single-line
-          hide-details
-          @click:append-inner="console.log('search')"
-        ></v-text-field>
+      <header-component title="Manage product">
       </header-component>
 
       <!-- Main container -->
-      <main class="d-flex mt-2">
+      <main class="d-flex mt-1 mr-2">
         <div class="d-flex flex-column mr-2 w-100">
-          <!-- Tab categories -->
-          <v-slide-group class="text-white">
-            <v-slide-group-item v-slot="{ isSelected, toggle }">
-              <v-btn
-                :class="[
-                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                  'my-1 mr-2 rounded-lg text-none',
-                ]"
-                @click="toggle"
-              >
-                All
-              </v-btn>
-            </v-slide-group-item>
-            <v-slide-group-item
-              v-for="category in categories"
-              :key="category.category_id"
-              v-slot="{ isSelected, toggle }"
-            >
-              <v-btn
-                :class="[
-                  isSelected ? 'bg-red-accent-2' : 'bg-grey-darken-2',
-                  'my-1 mr-2 rounded-lg text-none',
-                ]"
-                @click="toggle"
-              >
-                {{ category.name }}
-              </v-btn>
-            </v-slide-group-item>
-          </v-slide-group>
 
           <!-- List products card -->
-          <div class="grid-container mt-2 gap-2">
-            <product-res-owner-card
-              v-for="product in products"
-              :key="product.product_id"
-              :product="product"
-            >
+          <div v-if="products.length > 0" class="grid-container mt-2 gap-2">
+            <product-res-owner-card v-for="product in products" :key="product.product_id" :product="product">
               <div class="d-flex justify-space-between align-center mt-2">
                 <secondary-button @click="onEdit(product)">
-                  <v-icon
-                    icon="mdi-square-edit-outline"
-                    color="white"
-                    size="large"
-                  ></v-icon>
+                  <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                   Edit
                 </secondary-button>
-                <danger-button
-                  @click="
-                    isDelete = true;
-                    deleteId = product.product_id;
-                  "
-                >
-                  <v-icon
-                    icon="mdi-delete-forever"
-                    color="white"
-                    size="large"
-                  ></v-icon>
+                <danger-button @click="
+                  isDelete = true;
+                deleteId = product.product_id;
+                ">
+                  <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                   Delete
                 </danger-button>
               </div>
             </product-res-owner-card>
+          </div>
+
+          <div class="w-100 text-center" v-else>
+            <h4 class="text-center mt-5 text-white">Don't have any product.</h4>
           </div>
         </div>
 
@@ -90,30 +41,15 @@
         <summary-component class="mt-2" title="Product Summary">
           <template v-slot:btn>
             <secondary-button @click="dialog = true">
-              <v-icon
-                icon="mdi-plus-box-multiple"
-                color="white"
-                size="large"
-              ></v-icon>
+              <v-icon icon="mdi-plus-box-multiple" color="white" size="large"></v-icon>
               Add More
             </secondary-button>
           </template>
           <template v-slot:content>
-            <div
-              v-for="category in categories"
-              :key="category.category_id"
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
-            >
-              <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                {{ category.name }}
-              </div>
-              <span class="mr-2">3 items</span>
-            </div>
-            <div
-              class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
-            >
+            <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
-              <span class="mr-2">3 items</span>
+              <span v-if="products.length > 1" class="mr-2">{{ products.length }} items</span>
+              <span v-else class="mr-2">{{ products.length }} item</span>
             </div>
           </template>
         </summary-component>
@@ -124,21 +60,13 @@
   <!-- Form create product -->
   <product-form></product-form>
 
-  <base-dialog
-    v-model="isDelete"
-    title="tips"
-    ms="Are you sure you want to delete?"
-  >
+  <base-dialog v-model="isDelete" title="tips" ms="Are you sure you want to delete?">
     <danger-button @click="isDelete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
     </danger-button>
     <primary-button @click="deleted">
-      <v-icon
-        icon="mdi-checkbox-multiple-marked"
-        color="white"
-        size="large"
-      ></v-icon>
+      <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
       Confirm
     </primary-button>
   </base-dialog>
@@ -166,13 +94,11 @@
 // Import
 import { onMounted } from "vue";
 import { useProductStore } from "@/stores/product";
-import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
 // Variables
 const { getProducts, deleteProduct } = useProductStore();
-const { categories } = storeToRefs(useCategoryStore());
 const {
   products,
   dialog,
@@ -200,6 +126,7 @@ const onEdit = (product) => {
 // Lifecycle hook
 onMounted(() => {
   getProducts();
+
 });
 </script>
 
