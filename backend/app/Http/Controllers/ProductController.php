@@ -24,7 +24,11 @@ class ProductController extends Controller
     ) {
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
-    $products = Auth::user()->store->products->where('is_active', true)->sortByDesc('id');
+    if (Auth::user()->role->name === 'waiter') {
+      $products = Auth::user()->store->products->where('is_active', true)->sortByDesc('id');
+    } else {
+      $products = Auth::user()->store->products->sortByDesc('id');
+    }
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products is successfully."], 200);
   }
 
@@ -133,7 +137,7 @@ class ProductController extends Controller
       foreach ($request->product_customizes as $customize) {
         if (isset($customize['product_customize_id'])) {
           $customizeId = $customize['product_customize_id'];
-          $customizesFromDB = $product->productCustomize;
+          $customizesFromDB = $product->productCustomizes;
           if ($customizesFromDB->where('id', $customizeId)->first()) {
             $customize['product_id'] = $id;
             ProductCustomize::store($customize, $customizeId);

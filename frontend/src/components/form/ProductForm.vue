@@ -34,15 +34,21 @@
           </div>
 
           <div class="w-30">
-            <v-file-input required accept="image/png, image/jpeg" :clearable="false" density="compact" label="File input"
-              class="mt-2 text-black" variant="outlined" prepend-icon="mdi-file-image"
+            <v-file-input ref="inputFile" required accept="image/png, image/jpeg" :clearable="false" density="compact"
+              label="File input" class="d-none" variant="outlined" prepend-icon="mdi-file-image"
               :error-messages="vp$.image.$errors.map((e) => e.$message)" @change="
                 vp$.image.$touch;
               imageUpload($event);
               " @blur="vp$.image.$touch"></v-file-input>
-            <v-img
-              :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
-              :width="238" :height="193" class="mt-2 rounded-lg" aspect-ratio="16/9" cover></v-img>
+
+            <v-tooltip v-model="showToolTip" location="bottom">
+              <template v-slot:activator="{ props }">
+                <v-img v-bind="props" @click="uploadClicked"
+                  :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
+                  :width="238" :height="193" class="cursor mt-2 rounded-lg" aspect-ratio="16/9" cover></v-img>
+              </template>
+              <span>Upload image</span>
+            </v-tooltip>
           </div>
 
           <div class="ml-3 mb-2 w-50">
@@ -97,6 +103,9 @@
       </v-card>
     </v-dialog>
   </v-form>
+
+  <!-- Uploading progress -->
+  <uploading-progress v-model="showProgress" :uploadValue="uploadValue"></uploading-progress>
 </template>
 
 <script setup>
@@ -115,7 +124,11 @@ const { storeProduct, updateProduct, resetProductForm } = useProductStore();
 const { dialog, productInForm, errProductCode } = storeToRefs(useProductStore());
 const { getCategory } = useCategoryStore();
 const { categories } = storeToRefs(useCategoryStore());
+const showToolTip = ref(false);
 const imgPreview = ref(null);
+const showProgress = ref(false);
+const uploadValue = ref(0);
+const inputFile = ref(null)
 
 // Validation product
 const vp$ = useVuelidate(
@@ -165,18 +178,19 @@ const clearCustomize = () => {
 };
 
 // Method
+// Clicked upload image
+const uploadClicked = () => {
+  inputFile.value.click();
+}
+
 // When upload image
 const imageUpload = (e) => {
+  uploadValue.value = 0;
+  showProgress.value = true;
   const file = e.target.files[0];
   if (file) {
-    // Base64 converter
-    const reader = new FileReader();
-    reader.onload = () => {
-      imgPreview.value = reader.result;
-    };
-    reader.readAsDataURL(file);
-
-    // Upload to firebase cloud
+    // Reference: https://medium.com/@choolakejay/upload-images-to-firebase-storage-with-vue-js-afb914566d9
+    // Upload image to firebase storage
     const storageRef = firebase
       .storage()
       .ref(`${file.name}`)
@@ -184,14 +198,17 @@ const imageUpload = (e) => {
     storageRef.on(
       `state_changed`,
       (snapshot) => {
-        console.log(snapshot);
+        uploadValue.value = parseInt((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       },
       (error) => {
         console.log(error.message);
       },
       () => {
         storageRef.snapshot.ref.getDownloadURL().then((url) => {
+          showProgress.value = false;
+          uploadValue.value = 100;
           productInForm.value.image = url;
+          imgPreview.value = url;
         });
       }
     );
@@ -264,6 +281,11 @@ onMounted(() => {
 .w-30 {
   width: 30%;
 }
+
+.cursor {
+  cursor: pointer;
+}
+
 .w-40 {
   width: 30%;
 }

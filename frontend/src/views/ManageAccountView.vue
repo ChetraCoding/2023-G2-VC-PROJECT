@@ -6,8 +6,8 @@
       <div class="card mt-5 pb-4 bg-grey-darken-2">
         <span class="cursor mdi mdi-keyboard-backspace" style="font-size: 30px" @click="comeback"></span>
         <div class="card-continer d-flex justify-content-evenly">
-          <v-avatar color="red-accent-2" size="150" class="align-self-center">
-            <v-img v-if="user.image" :src="user.image" :alt="user.first_name"></v-img>
+          <v-avatar v-bind="props" class="cursor align-self-center" color="red-accent-2" size="150">
+            <v-img v-if="user.image" :src="user.image" :alt="user.first_name" cover></v-img>
           </v-avatar>
           <div class="w-50 content">
             <h5 class="font-weight-bold mb-3 text-center mb-2">Your Account</h5>
@@ -32,7 +32,8 @@
               </h6>
               <h6>
                 Password :
-                <span class="cursor font-weight-bold text-blue" @click="$router.push('/change_password')">change password</span>
+                <span class="cursor font-weight-bold text-blue" @click="$router.push('/change_password')">change
+                  password</span>
               </h6>
             </div>
           </div>
@@ -50,7 +51,6 @@ import { useRouter } from "vue-router";
 const { getCookie } = useCookieStore();
 const user = ref(JSON.parse(getCookie("user")));
 const router = useRouter();
-
 // Method
 const comeback = () => {
   if (user.value.role.name === "restaurant_owner") {
@@ -83,6 +83,7 @@ const comeback = () => {
     display: flex;
     flex-direction: column;
   }
+
   .content {
     width: 100% !important;
     margin-top: 10px;

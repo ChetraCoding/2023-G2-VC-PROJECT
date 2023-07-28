@@ -60,6 +60,6 @@ body {
 }
 
 #onesignal-bell-launcher {
-  margin-bottom: 7vh;
+  display: none;
 }
 </style>

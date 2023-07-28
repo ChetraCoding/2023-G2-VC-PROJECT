@@ -126,6 +126,7 @@ const onEdit = (product) => {
 // Lifecycle hook
 onMounted(() => {
   getProducts();
+
 });
 </script>
 

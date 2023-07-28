@@ -86,6 +86,7 @@ export const useProductStore = defineStore("product", {
       }
     },
     async updateProduct(product) {
+      console.log(product);
       try {
         const res = await http.put(`products/${product.product_id}`, product);
         if (res.data.success) {
@@ -97,6 +98,7 @@ export const useProductStore = defineStore("product", {
         if (err.response.data.message.product_code) {
           this.errProductCode = 'Code already exists.';
         }
+        console.log(err.response.data);
       }
     },
     async deleteProduct(product_id) {
