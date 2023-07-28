@@ -1,6 +1,13 @@
 import { defineStore } from "pinia";
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
+const initialsUserProfile = {
+  first_name: "",
+  last_name: "",
+  gender: null,
+  email: null,
+  image: null,
+};
 const initialsStaff = {
   first_name: "",
   last_name: "",
@@ -13,6 +20,7 @@ export const useUserStore = defineStore("user", {
   state: () => {
     return {
       staffInForm : { ... initialsStaff },
+      UserProfileInForm : { ... initialsUserProfile },
       createSuccess: false,
       updateSuccess: false,
       errMessage: '',
@@ -76,7 +84,20 @@ export const useUserStore = defineStore("user", {
           this.getStaff();
         }
       } catch (err) {
-        console.log(err);
+        if (err.response.data.message.email) {
+          this.errMessage = 'The email has already been taken.';
+        }
+      }
+    },
+    // Update profile
+    async updateProfile(user) {
+      try {
+        const res = await http.put(`changeProfile/${user.user_id}`, user);
+        if (res.data.success) {
+          this.updateSuccess = true;
+          this.errMessage = '';
+        }
+      } catch (err) {
         if (err.response.data.message.email) {
           this.errMessage = 'The email has already been taken.';
         }
