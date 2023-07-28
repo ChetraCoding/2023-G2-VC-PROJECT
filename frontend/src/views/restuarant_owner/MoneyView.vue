@@ -9,19 +9,31 @@
       <header-component title="Manage Money"> </header-component>
       <!-- Main container -->
       <main class="d-flex mt-3">
-        <!-- <div class="w-75 d-flex flex-column"></div>  -->
         <div class="w-100 d-flex flex-column">
-          <!-- Tab of month  -->
           <!-- Select date -->
           <div class="w-50">
-            <v-text-field v-model="year" @keyup.enter="change" class="text-white" variant="outlined" density="compact"
-              type="number" label="Year"></v-text-field>
+            <v-text-field
+              v-model="year"
+              @keyup.enter="change"
+              class="text-white"
+              variant="outlined"
+              density="compact"
+              type="number"
+              label="Year"
+            ></v-text-field>
           </div>
 
-          <apexchart :class="[
-            moneyReports.length == 0 ? 'd-none' : '',
-            'bg-grey-darken-2 rounded-lg mr-2 text-black',
-          ]" height="485" type="bar" :options="options" :series="series"></apexchart>
+          <!-- Chart : column bar -->
+          <apexchart
+            :class="[
+              moneyReports.length == 0 ? 'd-none' : '',
+              'bg-grey-darken-2 rounded-lg mr-2 text-black',
+            ]"
+            height="485"
+            type="bar"
+            :options="options"
+            :series="series"
+          ></apexchart>
 
           <!-- No product report -->
           <div v-if="moneyReports.length == 0" class="h-screen">
@@ -31,14 +43,19 @@
         <!--Money summary -->
         <summary-component class="mt-2" title="Money Summary">
           <template v-slot:content>
-            <div v-for="moneyReport in moneyReports" :key="moneyReport"
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center">
+            <div
+              v-for="moneyReport in moneyReports"
+              :key="moneyReport"
+              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
+            >
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
                 {{ getMonthName(moneyReport.month) }}
               </div>
               <span class="mr-2">${{ Number(moneyReport.total_money) }}</span>
             </div>
-            <div class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center">
+            <div
+              class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
+            >
               <span class="ml-2">Total</span>
               <span class="mr-2">${{ totalMoney }}</span>
             </div>
@@ -49,6 +66,7 @@
   </v-layout>
 </template>
 <script setup>
+// Import
 import { computed, onMounted, ref } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
@@ -63,7 +81,7 @@ const year = ref(currentYear);
 const filter = (array, key) => {
   let items = [];
   array.filter(function (value) {
-    if (key === 'month') {
+    if (key === "month") {
       items.push(getMonthName(value[key]));
     } else {
       items.push(value[key]);
@@ -77,9 +95,10 @@ const getMonthName = (monthNumber) => {
   const date = new Date();
   date.setMonth(monthNumber - 1);
 
-  return date.toLocaleString('en-US', { month: 'long' });
-}
+  return date.toLocaleString("en-US", { month: "long" });
+};
 
+// Reference of chart : https://codesandbox.io/s/o7339qql3z -->
 const options = ref({
   plotOptions: {
     bar: {
@@ -143,7 +162,7 @@ const renderChart = () => {
 const change = async () => {
   await getMoneyReports(year.value);
   renderChart();
-}
+};
 
 // Lifecycle hook
 onMounted(async () => {
