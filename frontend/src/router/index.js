@@ -31,6 +31,7 @@ const routes = [
     path: "/manage_account",
     name: "manage_account",
     component: () => import("@/views/ManageAccountView"),
+    beforeEnter: [loginRequired],
   },
   {
     path: "/change_password",

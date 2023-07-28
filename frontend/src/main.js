@@ -27,6 +27,7 @@ import CategoryForm from "@/components/form/CategoryForm";
 import TableForm from "@/components/form/TableForm";
 import StaffCard from "@/components/widget/card/StaffCard";
 import StaffForm from "@/components/form/StaffForm";
+import UpdateProfileForm from "@/components/form/UpdateProfileForm";
 import BaseSideBar from "@/components/aside/BaseSideBar";
 import OrderListTable from "@/components/table/OrderListTable";
 import BaseDialog from "@/components/widget/dialog/BaseDialog";
@@ -60,6 +61,7 @@ app.component("category-form", CategoryForm);
 app.component("product-form", ProductForm);
 app.component("staff-form", StaffForm);
 app.component("table-form", TableForm);
+app.component("update-profile-form", UpdateProfileForm);
 
 // Tables
 app.component("product-list-table", ProductListTable);

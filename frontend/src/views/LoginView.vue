@@ -68,6 +68,7 @@ const onSubmit = async () => {
       cookieStore.setCookie("user_token", res.data.token, 30);
       cookieStore.setCookie("user_role", res.data.user.role.name, 30);
       let user = {
+        user_id: res.data.user.user_id,
         first_name: res.data.user.first_name,
         last_name: res.data.user.last_name,
         gender: res.data.user.gender,

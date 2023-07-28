@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\ChangeProfileController;
 use App\Http\Controllers\MoneyReportController;
 use App\Http\Controllers\OnesignalController;
 use App\Http\Controllers\OrderController;
@@ -37,6 +38,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Get auth user
     Route::get('/user', [UserController::class, 'getUser']);
+
+    // Update profile  ---------------------//
+    Route::put('/update_profile/{id}', [ChangeProfileController::class, 'updateProfile'] );
 
     // Chagne password
     Route::post('/changePassword', [ChangePasswordController::class, 'changePassword']);
