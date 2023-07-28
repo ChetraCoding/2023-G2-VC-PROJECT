@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeProfileRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChangeProfileController extends Controller
 {
-    public function changeProfile (ChangeProfileRequest $request, $id){
-        $user = User::find($id);
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
-        $user->gender = $request->input('gender');
-        $user->email = $request->input('email');
-        $user->image = $request->input('image');
-        $user->save();
-        return response()->json(['success'=>true,'message' => 'User updated successfully', 'data' => $user], 200);
+    public function updateProfile(ChangeProfileRequest $request, int $id)
+    {
+        $request['store_id'] = Auth::user()->store->id;
+        $request['role_id'] = Auth::user()->role->id;
+        $request['password'] = Auth::user()->password;
+        return response()->json(['success' => true, 'message' => 'User updated successfully', 'data' => new UserResource(User::storeUser($request, $id))], 200);
     }
 }

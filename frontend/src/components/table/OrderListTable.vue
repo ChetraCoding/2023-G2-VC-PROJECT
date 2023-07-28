@@ -25,16 +25,15 @@
 
   <!-- Create table of list orders -->
   <v-card
-    v-for="(order, index) in props.orders"
+    v-for="order in props.orders"
     :key="order.name"
     class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg"
   >
     <v-card-text class="d-flex justify-space-between">
-      <span>ID : {{ index + 1 }}</span>
+      <span>ID : {{ order.order_id }}</span>
       <span>Table : {{ order.table_number }}</span>
       <span>{{ new Date(order.datetime).toDateString() }}</span>
       <span>{{ new Date(order.datetime).toLocaleTimeString() }}</span>
-      <span v-if="order">${{ getTotalPrice(order) }}</span>
     </v-card-text>
     <v-card-actions>
       <dark-button @click="(orderInfo = order), (dialog = true)">
@@ -112,7 +111,7 @@
           <h6 class="text-darken-4 font-weight-bold">Total:</h6>
           <v-spacer></v-spacer>
           <h6 v-if="orderInfo" class="font-weight-bold text-darken-4">
-            ${{ getTotalPrice(orderInfo) }}
+            ${{ totalPriceOrderInfo }}
           </h6>
         </div>
       </v-card-text>
@@ -188,13 +187,12 @@
                 </td>
                 <td class="text-center">{{ order_detail.quantity }}</td>
                 <td class="text-center">
-                  {{ order_detail.product_customize.price }} $
+                  ${{ order_detail.product_customize.price }}
                 </td>
                 <td class="text-center">
-                  {{
+                  ${{
                     order_detail.quantity * order_detail.product_customize.price
                   }}
-                  $
                 </td>
               </tr>
             </tbody>
@@ -204,11 +202,11 @@
             <h6 class="text-subtitle-1">
               សរុប / Sub Total :
               <span class="font-weight-bold">
-                {{ getTotalPrice(orderPrint) }} $</span
+                ${{ totalPriceOrderPrint }}</span
               >
             </h6>
             <br />
-            <i class="font-weight-bold"> Thanks, Please come agains </i><br />
+            <i class="font-weight-bold"> Thanks, Please come again. </i><br />
           </div>
         </div>
       </div>
@@ -219,7 +217,7 @@
 <script setup>
 import { useOrderStore } from "@/stores/order";
 import { storeToRefs } from "pinia";
-import { ref, defineProps } from "vue";
+import { ref, defineProps, computed } from "vue";
 import printJS from "print-js";
 
 // Variables
@@ -231,6 +229,16 @@ const isComplete = ref(false);
 const orderClicked = ref(null);
 const { updateOrdersToPaid } = useOrderStore();
 const { paidSuccess } = storeToRefs(useOrderStore());
+
+// Computed
+// Total price for print
+const totalPriceOrderPrint = computed(() => {
+  return getTotalPrice(orderPrint.value);
+})
+// Total price to view
+const totalPriceOrderInfo = computed(() => {
+  return getTotalPrice(orderInfo.value);
+})
 
 // Method
 const getTotalPrice = (order) => {
@@ -254,8 +262,7 @@ const printClicked = async (order) => {
   orderPrint.value = order;
   // Referrent from :https://fontawesomeicons.com/tryit/code/vue-js-print-current-page/1
   // Purpose: to print a bill
-
-  document.title = " ID-" + order.order_id + " " + new Date().toLocaleString();
+  
   setTimeout(() => {
     printJS({
       printable: "printOrder",

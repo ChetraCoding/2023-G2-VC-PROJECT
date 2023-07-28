@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
 const initialsUserProfile = {
+  user_id: null,
   first_name: "",
   last_name: "",
   gender: null,
@@ -19,8 +20,8 @@ const initialsStaff = {
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
-      staffInForm : { ... initialsStaff },
-      UserProfileInForm : { ... initialsUserProfile },
+      staffInForm: { ...initialsStaff },
+      userProfileInForm: { ...initialsUserProfile },
       createSuccess: false,
       updateSuccess: false,
       errMessage: '',
@@ -31,7 +32,10 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     clearForm() {
-      this.staffInForm = { ... initialsStaff };
+      this.staffInForm = { ...initialsStaff };
+    },
+    clearProfileForm() {
+      this.userProfileInForm = { ...initialsUserProfile };
     },
     async getUser() {
       const { getCookie } = useCookieStore();
@@ -90,10 +94,21 @@ export const useUserStore = defineStore("user", {
       }
     },
     // Update profile
-    async updateProfile(user) {
+    async updateProfile(userUpdate) {
+      const { setCookie } = useCookieStore();
       try {
-        const res = await http.put(`changeProfile/${user.user_id}`, user);
+        const res = await http.put(`update_profile/${userUpdate.user_id}`, userUpdate);
         if (res.data.success) {
+          let user = {
+            user_id: res.data.data.user_id,
+            first_name: res.data.data.first_name,
+            last_name: res.data.data.last_name,
+            gender: res.data.data.gender,
+            email: res.data.data.email,
+            image: res.data.data.image,
+            store: res.data.data.store,
+          };
+          setCookie("user", JSON.stringify(user), 30);
           this.updateSuccess = true;
           this.errMessage = '';
         }

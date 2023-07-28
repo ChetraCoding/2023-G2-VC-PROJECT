@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class ChangeProfileRequest extends FormRequest
 {
@@ -31,8 +32,11 @@ class ChangeProfileRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'gender' => 'required',
-            'email' => 'required|email',
-            'image' => 'required',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($this->route('id')),
+            ]
         ];
     }
 }

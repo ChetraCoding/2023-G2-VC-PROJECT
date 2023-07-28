@@ -24,7 +24,11 @@ class ProductController extends Controller
     ) {
       return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
     }
-    $products = Auth::user()->store->products->sortByDesc('id');
+    if (Auth::user()->role->name === 'waiter') {
+      $products = Auth::user()->store->products->where('is_active', true)->sortByDesc('id');
+    } else {
+      $products = Auth::user()->store->products->sortByDesc('id');
+    }
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Get all products is successfully."], 200);
   }
 
@@ -45,6 +49,37 @@ class ProductController extends Controller
       ->where('name', 'like', '%' . $keyword . '%')
       ->orWhere('product_code', 'like', '%' . $keyword . '%')->get();
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Search products is successfully."], 200);
+  }
+
+  /**
+   * Filter products by category id.
+   */
+  public function filter(string $category_id)
+  {
+    // Check the user permission
+    if (!User::roleRequired('waiter')) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+    }
+    $storeId = Auth::user()->store->id;
+    $products = Product::where('store_id', $storeId)
+      ->where('category_id', '=', $category_id)->get();
+    if (count($products) > 0) {
+      return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Filter products is successfully."], 200);
+    } else {
+      return response()->json(["success" => false, "data" => ShowProductResource::collection($products), "message" => "Don't have any product."], 404);
+    }
+  }
+
+  /**
+   * Get popular products in store.
+   */
+  public function popular()
+  {
+    // Check the user permission
+    if (!User::roleRequired('waiter')) {
+      return response()->json(['success' => false, 'message' => "The user don't have permisstion to this route."], 403);
+    }
+    return response()->json(["success" => true, "data" => Product::popularProducts(), "message" => "Get popular products is successfully."], 200);
   }
 
   /**
@@ -102,7 +137,7 @@ class ProductController extends Controller
       foreach ($request->product_customizes as $customize) {
         if (isset($customize['product_customize_id'])) {
           $customizeId = $customize['product_customize_id'];
-          $customizesFromDB = $product->productCustomize;
+          $customizesFromDB = $product->productCustomizes;
           if ($customizesFromDB->where('id', $customizeId)->first()) {
             $customize['product_id'] = $id;
             ProductCustomize::store($customize, $customizeId);

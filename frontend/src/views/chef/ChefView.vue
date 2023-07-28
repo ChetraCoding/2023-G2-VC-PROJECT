@@ -65,3 +65,9 @@ onMounted(() => {
   getOrdersNotCompleted();
 });
 </script>
+
+<style>
+#onesignal-bell-launcher {
+  display: block;
+}
+</style>
