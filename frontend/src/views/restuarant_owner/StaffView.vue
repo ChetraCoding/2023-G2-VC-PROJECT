@@ -39,7 +39,7 @@
         <template v-slot:content>
           <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
             <span class="ml-2">Total</span>
-            <span v-if="staff.length > 1" class="mr-2">{{ staff.length }} persons</span>
+            <span v-if="staff.length > 1" class="mr-2">{{ staff.length }} people</span>
             <span v-else class="mr-2">{{ staff.length }} person</span>
           </div>
         </template>
@@ -50,7 +50,7 @@
   <staff-form :isShowForm="isShowForm" @closeForm="closeForm" />
 
   <!-- Delete dialog -->
-  <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete staff?">
+  <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete?">
     <danger-button @click="isDelete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
@@ -67,7 +67,7 @@
   <!--Alert delete success-->
   <base-alert v-model="deleteSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Deleted staff successfully!</h6>
+    <h5 class="mt-2">Deleted staff successfully!</h5>
   </base-alert>
 </template>
 

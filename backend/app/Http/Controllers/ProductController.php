@@ -53,8 +53,11 @@ class ProductController extends Controller
     } else {
       // Search products by waiter
       $products = Product::where('store_id', $storeId)
+        ->where(function ($query) use ($keyword) {
+          $query->where('name', 'like', '%' . $keyword . '%')
+            ->orWhere('product_code', 'like', '%' . $keyword . '%')->get();
+        })
         ->where('is_active', true)
-        ->where('name', 'like', '%' . $keyword . '%')
         ->get();
     }
     return response()->json(["success" => true, "data" => ShowProductResource::collection($products), "message" => "Search products is successfully."], 200);

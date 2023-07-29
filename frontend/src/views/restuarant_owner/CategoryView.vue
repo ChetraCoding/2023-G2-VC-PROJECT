@@ -2,19 +2,19 @@
   <!-- create alert -->
   <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Category created successfully!</h6>
+    <h5 class="mt-2">Created category successfully!</h5>
   </base-alert>
 
   <!-- update category successfully -->
   <base-alert v-model="updateSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Updated category succeefully!</h6>
+    <h5 class="mt-2">Updated category succeefully!</h5>
   </base-alert>
 
   <!-- delete alert -->
   <base-alert v-model="deleteSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Delete category successfully!</h6>
+    <h5 class="mt-2">Deleted category successfully!</h5>
   </base-alert>
 
   <v-layout>
@@ -73,7 +73,7 @@
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
 
   <!-- dialog delete category -->
-  <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete category?">
+  <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete?">
     <danger-button @click="dialog = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>Cancel
     </danger-button>

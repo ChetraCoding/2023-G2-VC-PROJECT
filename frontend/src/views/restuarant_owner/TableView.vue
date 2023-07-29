@@ -2,19 +2,19 @@
   <!-- create alet -->
   <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Table created successfully!</h6>
+    <h5 class="mt-2">Created table successfully!</h5>
   </base-alert>
 
   <!-- update table successfully -->
   <base-alert v-model="updateSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Updated succeefully!</h6>
+    <h5 class="mt-2">Updated table succeefully!</h5>
   </base-alert>
 
   <!-- delete alert -->
   <base-alert v-model="deleteSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Delete successfully!</h6>
+    <h5 class="mt-2">Deleted table successfully!</h5>
   </base-alert>
 
   <v-layout>
@@ -66,7 +66,7 @@
         </summary-component>
       </main>
     </v-main>
-    <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete table?">
+    <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete?">
       <danger-button @click="dialog = false" class="justify-end">
         <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
         Cancel

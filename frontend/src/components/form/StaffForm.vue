@@ -78,7 +78,7 @@
   <!-- Alert create success -->
   <base-alert v-model="createSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Added staff succeefully.</h5>
+    <h5 class="mt-2">Created staff succeefully.</h5>
   </base-alert>
 
   <!-- Alert update success -->

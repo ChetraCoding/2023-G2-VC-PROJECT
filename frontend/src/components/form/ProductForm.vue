@@ -36,10 +36,7 @@
           <div class="w-30">
             <v-file-input ref="inputFile" required accept="image/png, image/jpeg" :clearable="false" density="compact"
               label="File input" class="d-none" variant="outlined" prepend-icon="mdi-file-image"
-              :error-messages="vp$.image.$errors.map((e) => e.$message)" @change="
-                vp$.image.$touch;
-              imageUpload($event);
-              " @blur="vp$.image.$touch"></v-file-input>
+              @change="imageUpload($event);"></v-file-input>
 
             <v-tooltip v-model="showToolTip" location="center">
               <template v-slot:activator="{ props }">
@@ -64,7 +61,7 @@
                 label="Price ($)" type="number" :error-messages="vc$.price.$errors.map((e) => e.$message)"
                 @input="vc$.price.$touch" @blur="vc$.price.$touch"></v-text-field>
 
-              <primary-button @click="vc$.$validate(); addCustom(findCustIndex)" class="mb-3">
+              <primary-button @click="vc$.$validate(); storeCustom(findCustIndex)" class="mb-3">
                 <v-icon icon="mdi-content-save-all" color="white" size="large"></v-icon>
                 Save
               </primary-button>
@@ -79,11 +76,11 @@
                 <span>${{ customize.price }}</span>
               </div>
               <div class="w-40 d-flex justify-end">
-                <secondary-button @click="editCustom(index)">
+                <dark-button @click="editCustom(index)">
                   <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                   Edit
-                </secondary-button>
-                <danger-button @click="deleteCustom(index)" class="ml-2">
+                </dark-button>
+                <danger-button @click="isDelete = true; deleteCustIndex = index;" class="ml-2">
                   <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                   Delete
                 </danger-button>
@@ -106,6 +103,41 @@
       </v-card>
     </v-dialog>
   </v-form>
+
+  <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete?">
+    <danger-button @click="isDelete = false">
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
+      Cancel
+    </danger-button>
+    <primary-button @click="deleteCustom">
+      <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
+      Confirm
+    </primary-button>
+  </base-dialog>
+
+  <!-- Create product customize success -->
+  <base-alert v-model="createSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Created customize succeefully!</h5>
+  </base-alert>
+
+  <!-- Update product customize success -->
+  <base-alert v-model="updateSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Updated customize succeefully!</h5>
+  </base-alert>
+
+  <!-- Delete product customize success -->
+  <base-alert v-model="deleteSuccess">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Deleted customize succeefully!</h5>
+  </base-alert>
+
+  <!-- Alert select image -->
+  <base-alert v-model="isNoImage">
+    <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+    <h5 class="mt-2">Please upload image!</h5>
+  </base-alert>
 
   <!-- Uploading progress -->
   <uploading-progress v-model="showProgress" :uploadValue="uploadValue"></uploading-progress>
@@ -132,6 +164,12 @@ const imgPreview = ref(null);
 const showProgress = ref(false);
 const uploadValue = ref(0);
 const inputFile = ref(null)
+const isDelete = ref(false);
+const isNoImage = ref(false);
+const deleteCustIndex = ref(null);
+const createSuccess = ref(false);
+const updateSuccess = ref(false);
+const deleteSuccess = ref(false);
 
 // Validation product
 const vp$ = useVuelidate(
@@ -141,18 +179,18 @@ const vp$ = useVuelidate(
     category_id: { required },
     description: { required },
     is_active: { required },
-    image: { required },
   },
   productInForm
 );
 // Clear product form
 const clearPruduct = () => {
-  dialog.value = false;
+  productInForm.value.product_customizes = [];
   clearCustomize();
   errProductCode.value = "";
   imgPreview.value = null;
   resetProductForm();
   vp$.value.$reset();
+  dialog.value = false;
 };
 
 // Validation product customize
@@ -162,7 +200,7 @@ const initialCustomize = {
   price: null,
 };
 const customize = ref({
-  ...initialCustomize,
+  ...initialCustomize
 });
 const vc$ = useVuelidate(
   {
@@ -219,22 +257,26 @@ const imageUpload = (e) => {
 };
 
 // Add product customize
-const addCustom = (custIndex) => {
+const storeCustom = (custIndex) => {
   if (vc$.value.$errors.length === 0) {
+    // Update customize
     if (custIndex !== null) {
       productInForm.value.product_customizes[custIndex].size = customize.value.size;
       productInForm.value.product_customizes[custIndex].price = customize.value.price;
       clearCustomize();
+      updateSuccess.value = true;
     } else {
+      // Create customize
       productInForm.value.product_customizes.push({ ...customize.value });
       clearCustomize();
+      createSuccess.value = true;
     }
     findCustIndex.value = null;
   }
 };
 // Delete product customize
-const deleteCustom = (custIndex) => {
-  let productCustomizeId = productInForm.value.product_customizes[custIndex].product_customize_id;
+const deleteCustom = () => {
+  let productCustomizeId = productInForm.value.product_customizes[deleteCustIndex.value].product_customize_id;
   if (productCustomizeId) {
     try {
       http.delete(`product_customizes/${productCustomizeId}`);
@@ -242,7 +284,9 @@ const deleteCustom = (custIndex) => {
       console.log(err);
     }
   }
-  productInForm.value.product_customizes.splice(custIndex, 1);
+  productInForm.value.product_customizes.splice(deleteCustIndex.value, 1);
+  deleteSuccess.value = true;
+  isDelete.value = false;
 };
 // Edit product customize
 const editCustom = (index) => {
@@ -253,23 +297,28 @@ const editCustom = (index) => {
 
 // Save the product
 const save = async () => {
+  // Check customize
   if (productInForm.value.product_customizes.length === 0) {
     vc$.value.$touch();
   }
   if (vp$.value.$errors.length === 0 && productInForm.value.product_customizes.length > 0) {
-    // Check the product id
-    if (productInForm.value.product_id) {
-      // Update the product
-      await updateProduct(productInForm.value);
+    if (!productInForm.value.image) {
+      isNoImage.value = true;
     } else {
-      // Create a new product
-      await storeProduct(productInForm.value);
-    }
-    // Check the product code message
-    if (!errProductCode.value) {
-      dialog.value = false;
-      clearCustomize();
-      clearPruduct();
+      // Check the product id
+      if (productInForm.value.product_id) {
+        // Update the product
+        await updateProduct(productInForm.value);
+      } else {
+        // Create a new product
+        await storeProduct(productInForm.value);
+      }
+      // Check the product code message
+      if (!errProductCode.value) {
+        dialog.value = false;
+        clearCustomize();
+        clearPruduct();
+      }
     }
   }
 };

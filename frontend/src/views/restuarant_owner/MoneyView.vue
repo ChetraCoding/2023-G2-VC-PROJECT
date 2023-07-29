@@ -36,7 +36,7 @@
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
                 {{ getMonthName(moneyReport.month) }}
               </div>
-              <span class="mr-2">${{ Number(moneyReport.total_money) }}</span>
+              <span class="mr-2">${{ Number(moneyReport.total_money).toFixed(2) }}</span>
             </div>
             <div class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
@@ -66,7 +66,7 @@ const filter = (array, key) => {
     if (key === 'month') {
       items.push(getMonthName(value[key]));
     } else {
-      items.push(value[key]);
+      items.push(Number(value[key]));
     }
   });
   return items;

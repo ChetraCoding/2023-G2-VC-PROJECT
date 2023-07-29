@@ -67,6 +67,7 @@
   <!-- Form create product -->
   <product-form></product-form>
 
+  <!-- Delete product customize -->
   <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete?">
     <danger-button @click="isDelete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
