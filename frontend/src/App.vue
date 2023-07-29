@@ -12,6 +12,10 @@ import { useOneSignal } from '@onesignal/onesignal-vue3';
 const { getUser } = useUserStore();
 const { user } = storeToRefs(useUserStore());
 const oneSignal = useOneSignal();
+// Chang site title and icon
+document.title = 'Restaurant Management System';
+let favicon = document.querySelector('link[rel="icon"]')
+favicon.setAttribute('href', require('@/assets/logo.png'));
 
 // On subscription change on OneSignal icon
 oneSignal.on('subscriptionChange', async (isSubscribed) => {
