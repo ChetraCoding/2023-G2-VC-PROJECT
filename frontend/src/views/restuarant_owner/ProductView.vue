@@ -24,10 +24,10 @@
           <div v-if="products.length > 0" class="grid-container mt-2 gap-2">
             <product-res-owner-card v-for="product in products" :key="product.product_id" :product="product">
               <div class="d-flex justify-space-between align-center mt-2">
-                <secondary-button @click="onEdit(product)">
+                <dark-button @click="onEdit(product)">
                   <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                   Edit
-                </secondary-button>
+                </dark-button>
                 <danger-button @click="
                   isDelete = true;
                 deleteId = product.product_id;
@@ -67,7 +67,7 @@
   <!-- Form create product -->
   <product-form></product-form>
 
-  <base-dialog v-model="isDelete" title="tips" ms="Are you sure you want to delete?">
+  <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete?">
     <danger-button @click="isDelete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel

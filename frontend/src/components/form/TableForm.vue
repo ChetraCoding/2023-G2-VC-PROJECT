@@ -4,7 +4,7 @@
       <v-card class="rounded-lg">
         <v-card-title class="text-center bg-red-accent-2">
           <span v-if="tableInForm.table_id" class="text-h6">Update table</span>
-          <span v-else class="text-h6">Create New Table</span>
+          <span v-else class="text-h6">Create new table</span>
         </v-card-title>
         <div>
           <v-col class="mt-2" cols="12">

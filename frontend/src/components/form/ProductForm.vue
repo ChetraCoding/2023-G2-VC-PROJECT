@@ -41,13 +41,16 @@
               imageUpload($event);
               " @blur="vp$.image.$touch"></v-file-input>
 
-            <v-tooltip v-model="showToolTip" location="bottom">
+            <v-tooltip v-model="showToolTip" location="center">
               <template v-slot:activator="{ props }">
                 <v-img v-bind="props" @click="uploadClicked"
                   :src="(productInForm.image) ? productInForm.image : (imgPreview) ? imgPreview : require('../../assets/select_product.png')"
                   :width="238" :height="193" class="cursor mt-2 rounded-lg" aspect-ratio="16/9" cover></v-img>
               </template>
-              <span>Upload image</span>
+              <div class="d-flex flex-column py-2 align-center">
+                <v-icon class="text-h4" color="white" icon="mdi-image-plus"></v-icon>
+                <span>Upload image</span>
+              </div>
             </v-tooltip>
           </div>
 

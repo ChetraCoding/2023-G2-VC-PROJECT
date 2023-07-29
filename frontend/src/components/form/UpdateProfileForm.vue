@@ -5,90 +5,49 @@
   <v-form>
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent width="550" no-padding>
-      <v-card class="rounded-lg bg-white">
+      <v-card class="h-auto rounded-lg d-flex flex-column bg-white">
         <!--Card title-->
         <v-card-title class="text-center mb-1 bg-red-accent-2">
           <span class="font-inter text-h6">Update Profile</span>
         </v-card-title>
         <!--Card container-->
-        <v-container>
+        <v-container class="mt-2">
           <v-row class="d-flex px-2 flex-column justify-center gap-2">
             <v-tooltip v-model="showToolTip" location="center">
               <template v-slot:activator="{ props }">
-                <v-avatar
-                  v-bind="props"
-                  size="140"
-                  class="profile align-self-center"
-                >
-                  <v-img
-                    v-if="userProfileInForm.image"
-                    :src="userProfileInForm.image"
-                    alt="user profile"
-                  ></v-img>
+                <v-avatar v-bind="props" size="150" class="profile align-self-center">
+                  <v-img v-if="userProfileInForm.image" :src="userProfileInForm.image" alt="user profile"></v-img>
                   <span v-else class="text-h2 text-white">{{ initials }}</span>
 
-                  <input
-                    @change="imageUpload($event)"
-                    type="file"
-                    class="input-image"
-                    accept="image/png, image/jpeg"
-                  />
+                  <input @change="imageUpload($event)" type="file" class="input-image" accept="image/png, image/jpeg" />
                 </v-avatar>
               </template>
-              <span class="d-flex flex-column align-center">
-                <v-icon
-                  class="text-h4"
-                  color="white"
-                  icon="mdi-camera-image"
-                ></v-icon>
-                Upload image
-              </span>
+              <div class="py-2 d-flex flex-column align-center">
+                <v-icon class="text-h4" color="white" icon="mdi-camera-image"></v-icon>
+                <span>Upload image</span>
+              </div>
             </v-tooltip>
-            <div class="gap-2">
-              <!--Input first name field-->
-              <v-text-field
-                v-model="userProfileInForm.first_name"
-                class="text-black"
-                variant="outlined"
-                label="First name"
-                density="compact"
-                :error-messages="v$.first_name.$errors.map((e) => e.$message)"
-                @blur="v$.first_name.$touch"
-              ></v-text-field>
-              <!--Input last name field-->
-              <v-text-field
-                v-model="userProfileInForm.last_name"
-                class="text-black mt-2"
-                label="Last name"
-                density="compact"
-                variant="outlined"
-                :error-messages="v$.last_name.$errors.map((e) => e.$message)"
-                @blur="v$.last_name.$touch"
-              ></v-text-field>
+            <div class="gap-2 mt-2">
+              <div class="input-group gap-2">
+                <!--Input first name field-->
+                <v-text-field v-model="userProfileInForm.first_name" class="text-black" variant="outlined"
+                  label="First name" density="compact" :error-messages="v$.first_name.$errors.map((e) => e.$message)"
+                  @blur="v$.first_name.$touch"></v-text-field>
+                <!--Input last name field-->
+                <v-text-field v-model="userProfileInForm.last_name" class="text-black" label="Last name" density="compact"
+                  variant="outlined" :error-messages="v$.last_name.$errors.map((e) => e.$message)"
+                  @blur="v$.last_name.$touch"></v-text-field>
+              </div>
               <!--Select gender field-->
-              <v-select
-                v-model="userProfileInForm.gender"
-                label="Gender"
-                :items="['Male', 'Female', 'Other']"
-                density="compact"
-                class="text-black mt-2"
-                variant="outlined"
-                :error-messages="v$.gender.$errors.map((e) => e.$message)"
-                @blur="v$.gender.$touch"
-              ></v-select>
+              <v-select v-model="userProfileInForm.gender" label="Gender" :items="['Male', 'Female', 'Other']"
+                density="compact" class="text-black mt-2" variant="outlined"
+                :error-messages="v$.gender.$errors.map((e) => e.$message)" @blur="v$.gender.$touch"></v-select>
+              <!--Input email field-->
+              <v-text-field v-model="userProfileInForm.email" class="mt-1 text-black" label="Email" density="compact"
+                variant="outlined" :error-messages="`${v$.email.$errors.map(
+                  (e) => e.$message
+                )}${errMessage}`" @blur="v$.email.$touch"></v-text-field>
             </div>
-            <!--Input email field-->
-            <v-text-field
-              v-model="userProfileInForm.email"
-              class="mt-2 text-black"
-              label="Email"
-              density="compact"
-              variant="outlined"
-              :error-messages="`${v$.email.$errors.map(
-                (e) => e.$message
-              )}${errMessage}`"
-              @blur="v$.email.$touch"
-            ></v-text-field>
           </v-row>
         </v-container>
         <v-card-actions class="bg-grey-lighten-2">
@@ -100,16 +59,11 @@
             Close
           </danger-button>
           <!--Save button-->
-          <primary-button
-            class="mr-1"
-            type="submit"
-            @click="
-              () => {
-                v$.$validate();
-                save();
-              }
-            "
-          >
+          <primary-button class="mr-1" type="submit" @click="() => {
+            v$.$validate();
+            save();
+          }
+            ">
             <v-icon icon="mdi-content-save-all" color="white" size="large">
             </v-icon>
             Save
@@ -121,10 +75,7 @@
   </v-form>
 
   <!-- Uploading progress -->
-  <uploading-progress
-    v-model="showProgress"
-    :uploadValue="uploadValue"
-  ></uploading-progress>
+  <uploading-progress v-model="showProgress" :uploadValue="uploadValue"></uploading-progress>
 
   <!-- Alert update success -->
   <base-alert v-model="updateSuccess">
@@ -220,9 +171,16 @@ onMounted(async () => {
 .font-inter {
   font-family: "Inter", sans-serif !important;
 }
+
 .profile {
   background: #2c2c2c;
 }
+
+.input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .input-image {
   position: absolute;
   top: 0;

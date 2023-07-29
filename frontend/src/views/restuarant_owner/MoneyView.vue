@@ -14,7 +14,7 @@
           <!-- Tab of month  -->
           <!-- Select date -->
           <div class="w-50">
-            <v-text-field v-model="year" @keyup.enter="change" class="text-white" variant="outlined" density="compact"
+            <v-text-field v-model="year" @keyup="change" class="text-white" variant="outlined" density="compact"
               type="number" label="Year"></v-text-field>
           </div>
 

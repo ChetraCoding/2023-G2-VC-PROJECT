@@ -27,32 +27,18 @@
       <!-- Main container -->
       <main class="d-flex flex-column mt-2">
         <!-- list category -->
-        <div
-          class="grid-container mt-1 mr-2 gap-2"
-          v-if="categories.length > 0"
-        >
-          <category-card
-            v-for="category in categories"
-            :key="category.category_id"
-            :category="category"
-            ><div class="d-flex justify-space-between align-center mt-2">
+        <div class="grid-container mt-1 mr-2 gap-2" v-if="categories.length > 0">
+          <category-card v-for="category in categories" :key="category.category_id" :category="category">
+            <div class="d-flex justify-space-between align-center mt-2">
               <!-- close dialo delete category -->
-              <secondary-button @click="onEdit(category)">
-                <v-icon
-                  icon="mdi-square-edit-outline"
-                  color="white"
-                  size="large"
-                ></v-icon>
+              <dark-button @click="onEdit(category)">
+                <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                 Edit
-              </secondary-button>
+              </dark-button>
 
               <!-- delete category -->
               <danger-button @click="onDelete(category)">
-                <v-icon
-                  icon="mdi-delete-forever"
-                  color="white"
-                  size="large"
-                ></v-icon>
+                <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                 Delete
               </danger-button>
             </div>
@@ -67,22 +53,14 @@
         <summary-component class="mt-2" title="Category Summary">
           <template v-slot:btn>
             <secondary-button @click="isShowForm = true">
-              <v-icon
-                icon="mdi-plus-box-multiple"
-                color="white"
-                size="large"
-              ></v-icon>
+              <v-icon icon="mdi-plus-box-multiple" color="white" size="large"></v-icon>
               Add More
             </secondary-button>
           </template>
           <template v-slot:content>
-            <div
-              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
-            >
+            <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
-              <span v-if="categories.length > 1" class="mr-2"
-                >{{ categories.length }} items</span
-              >
+              <span v-if="categories.length > 1" class="mr-2">{{ categories.length }} items</span>
               <span v-else class="mr-2">{{ categories.length }} item</span>
             </div>
           </template>
@@ -95,18 +73,13 @@
   <category-form :isShowForm="isShowForm" @closeForm="closeForm" />
 
   <!-- dialog delete category -->
-  <base-dialog
-    v-model="dialog"
-    title="Tips"
-    ms="Are you sure you want to delete category?"
-  >
+  <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete category?">
     <danger-button @click="dialog = false">
-      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon
-      >Cancel
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>Cancel
     </danger-button>
     <primary-button @click="deleted">
-      <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
-      Delete
+      <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
+      Confirm
     </primary-button>
   </base-dialog>
 </template>
@@ -167,9 +140,11 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
+
 .card-summary {
   background: #2c2c2c;
 }
+
 .search {
   background: #2c2c2c;
 }

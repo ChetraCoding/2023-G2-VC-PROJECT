@@ -5,9 +5,9 @@
   >
     <span class="w-15 ml-2">{{ user.first_name }}</span>
     <span class="w-15">{{ user.last_name }}</span>
-    <span class="w-15">{{ user.gender }}</span>
-    <span class="w-20">{{ user.email }}</span>
-    <span class="w-15 pl-5">{{ user.role.name }}</span>
+    <span class="w-10">{{ user.gender }}</span>
+    <span class="w-25">{{ user.email }}</span>
+    <span class="text-capitalize w-15 pl-5">{{ user.role.name }}</span>
     <!--Action-->
     <v-card-actions class="w-20 d-flex justify-end">
       <slot></slot>
@@ -28,6 +28,9 @@ defineProps(["user"]);
 }
 .w-15 {
   width: 15%;
+}
+.w-10 {
+  width: 10%;
 }
 .w-20 {
   width: 20%;

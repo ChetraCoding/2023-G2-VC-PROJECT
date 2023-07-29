@@ -11,7 +11,7 @@
     <v-main class="mt-2 mb-15">
       <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
         <v-tab :value="'all'">All</v-tab>
-        <v-tab :value="'popular'">Popular Foods</v-tab>
+        <v-tab :value="'popular'">Popular Products</v-tab>
         <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
           category.name }}</v-tab>
       </v-tabs>
@@ -40,8 +40,8 @@
   <!-- A product customize -->
   <v-card v-if="productCustomize" class="overflow-visible">
     <v-layout>
-      <v-navigation-drawer style="margin-bottom: 56px" class="bg-grey-darken-2 h-auto rounded-t-lg" v-model="isCustomize"
-        temporary location="bottom">
+      <v-navigation-drawer v-model="isCustomize" class="customize-drawer bg-grey-darken-2 h-auto rounded-t-lg" rail
+        permanent location="bottom">
         <v-card class="mx-auto rounded-t-lg bg-grey-darken-2">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
@@ -63,17 +63,17 @@
           <v-list>
             <v-list-item append-icon="mdi-plus-none">
               <div class="d-flex">
-                <span>Size:</span>
+                <h5>Size:</h5>
                 <v-spacer></v-spacer>
-                <span>Price:</span>
+                <h5>Price:</h5>
               </div>
             </v-list-item>
 
             <v-list-item v-for="customize in productCustomize.product_customizes" :key="customize.id">
               <div class="d-flex align-center">
-                <span class="font-weight-bold">{{ customize.size }}</span>
+                <h5 class="font-weight-bold">{{ customize.size }}</h5>
                 <v-spacer></v-spacer>
-                <span class="mr-6 font-weight-bold">${{ customize.price }}</span>
+                <h5 class="mr-6 font-weight-bold">${{ customize.price }}</h5>
                 <v-icon @click="addCustomize(productCustomize, customize)" class="text-h4" color="red-accent-2"
                   icon="mdi-plus-circle"></v-icon>
               </div>
@@ -109,10 +109,10 @@
   </v-layout>
 
   <!-- My cart -->
-  <v-card v-if="myCart.length > 0" class="overflow-visible">
-    <v-layout>
-      <v-navigation-drawer style="margin-bottom: 56px" class="h-auto bg-grey-darken-2 rounded-t-lg" v-model="isCart"
-        temporary location="bottom">
+  <v-card v-if="myCart.length > 0">
+    <v-layout class="overflow-visible">
+      <v-navigation-drawer v-model="isCart" class="cart-drawer bg-grey-darken-2 rounded-t-lg" rail permanent
+        location="bottom">
         <v-card class="mx-auto bg-grey-darken-2 rounded-t-lg">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
@@ -145,7 +145,7 @@
                     </h6>
                     <span>Size / {{ customize.size }}</span>
                     <h5 class="font-weight-bold">
-                      ${{ customize.quantity * customize.price }}
+                      ${{ (customize.quantity * customize.price).toFixed(2) }}
                     </h5>
                   </div>
                 </div>
@@ -169,8 +169,14 @@
 
   <!-- Dialog remove customize -->
   <base-dialog v-model="isRemoveCustom" title="Tips" ms="Are you sure you don't want it?">
-    <danger-button @click="isRemoveCustom = false">Cancel</danger-button>
-    <primary-button @click="removeCustomize(deleteCustomId)">Confirm</primary-button>
+    <danger-button @click="isRemoveCustom = false">
+      <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
+      Cancel
+    </danger-button>
+    <primary-button @click="removeCustomize(deleteCustomId)">
+      <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
+      Confirm
+    </primary-button>
   </base-dialog>
 
   <!-- Alert please selecet table -->
@@ -256,7 +262,7 @@ const totalPrice = computed(() => {
   for (let customize of myCart.value) {
     total += Number(customize.price) * customize.quantity;
   }
-  return total;
+  return total.toFixed(2);
 });
 // Total order food
 const totalFoods = computed(() => {
@@ -347,6 +353,15 @@ onMounted(() => {
 <style scoped>
 .search {
   background: #2c2c2c;
+}
+
+.cart-drawer,
+.customize-drawer {
+  margin-bottom: 56px;
+}
+
+.cart-drawer {
+  height: 70vh !important;
 }
 
 .select-table {

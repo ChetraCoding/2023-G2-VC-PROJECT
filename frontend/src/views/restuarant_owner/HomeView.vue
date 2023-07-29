@@ -42,7 +42,7 @@
           <span class="mt-1">Staff</span>
         </div>
         <div class="w-50 d-flex justify-center">
-          <h5 v-if="staff.length > 1" class="mt-2">{{ staff.length }} persons</h5>
+          <h5 v-if="staff.length > 1" class="mt-2">{{ staff.length }} poeple</h5>
           <h5 v-else class="mt-2">{{ staff.length }} person</h5>
         </div>
       </div>

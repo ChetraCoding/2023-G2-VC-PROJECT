@@ -50,7 +50,7 @@
   <staff-form :isShowForm="isShowForm" @closeForm="closeForm" />
 
   <!-- Delete dialog -->
-  <base-dialog v-model="isDelete" title="Confirm delete" ms="Are you sure you want to delete staff?">
+  <base-dialog v-model="isDelete" title="Tips" ms="Are you sure you want to delete staff?">
     <danger-button @click="isDelete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
@@ -60,7 +60,7 @@
     isDelete = false;
     ">
       <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
-      Delete
+      Confirm
     </primary-button>
   </base-dialog>
 

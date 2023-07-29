@@ -28,27 +28,15 @@
       <main class="d-flex flex-column mt-1 mr-2">
         <!-- list table -->
         <div class="grid-container mt-2 gap-2" v-if="tables.length > 0">
-          <table-card
-            v-for="table in tables"
-            :key="table.table_id"
-            :table="table"
-          >
+          <table-card v-for="table in tables" :key="table.table_id" :table="table">
             <div class="d-flex justify-space-between align-center mt-2">
               <!-- close dialo delete table -->
-              <secondary-button @click="onEdit(table)">
-                <v-icon
-                  icon="mdi-square-edit-outline"
-                  color="white"
-                  size="large"
-                ></v-icon>
+              <dark-button @click="onEdit(table)">
+                <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                 Edit
-              </secondary-button>
+              </dark-button>
               <danger-button @click="onDelete(table)">
-                <v-icon
-                  icon="mdi-delete-forever"
-                  color="white"
-                  size="large"
-                ></v-icon>
+                <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                 Delete
               </danger-button>
             </div>
@@ -64,45 +52,29 @@
         <summary-component class="mt-2" title="Table Summary">
           <template v-slot:btn>
             <secondary-button @click="isShowForm = true">
-              <v-icon
-                icon="mdi-plus-box-multiple"
-                color="white"
-                size="large"
-              ></v-icon>
+              <v-icon icon="mdi-plus-box-multiple" color="white" size="large"></v-icon>
               Add More
             </secondary-button>
           </template>
           <template v-slot:content>
-            <div
-              class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center"
-            >
+            <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
-              <span v-if="tables.length > 1" class="mr-2"
-                >{{ tables.length }} items</span
-              >
+              <span v-if="tables.length > 1" class="mr-2">{{ tables.length }} items</span>
               <span v-else class="mr-2">{{ tables.length }} item</span>
             </div>
           </template>
         </summary-component>
       </main>
     </v-main>
-    <base-dialog
-      v-model="dialog"
-      title="Tips"
-      ms="Are you sure you want to delete table?"
-    >
-        <danger-button @click="dialog = false" class="justify-end">
-          <v-icon
-            icon="mdi-close-box-multiple"
-            color="white"
-            size="large"
-          ></v-icon>
-          Cancel
-        </danger-button>
-        <primary-button @click="deleted">
-          <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
-          Delete
-        </primary-button>
+    <base-dialog v-model="dialog" title="Tips" ms="Are you sure you want to delete table?">
+      <danger-button @click="dialog = false" class="justify-end">
+        <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
+        Cancel
+      </danger-button>
+      <primary-button @click="deleted">
+        <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
+        Confirm
+      </primary-button>
     </base-dialog>
   </v-layout>
 
@@ -156,9 +128,11 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
+
 .card-summary {
   background: #2c2c2c;
 }
+
 .search {
   background: #2c2c2c;
 }

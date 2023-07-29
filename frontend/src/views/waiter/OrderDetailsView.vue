@@ -23,7 +23,7 @@
                 <span>Size / {{ customize.size }}</span>
                 <h5>x {{ customize.quantity }}</h5>
             </div>
-            <h5 class="font-weight-bold">${{ customize.quantity * customize.price }}</h5>
+            <h5 class="font-weight-bold">${{ (customize.quantity * customize.price).toFixed(2) }}</h5>
         </div>
     </div>
 
@@ -66,7 +66,7 @@ const totalPrice = computed(() => {
     for (let customize of myCart.value) {
         total += Number(customize.price) * customize.quantity;
     }
-    return total;
+    return total.toFixed(2);
 })
 
 // Method

@@ -82,7 +82,7 @@ onMounted(() => {
 .card {
   height: 487px;
   overflow: auto;
-  width: 238px;
+  width: auto;
 }
 .card::-webkit-scrollbar {
   display: none;
