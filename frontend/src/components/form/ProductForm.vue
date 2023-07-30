@@ -73,7 +73,7 @@
                 <span>{{ customize.size }}</span>
               </div>
               <div class="w-40">
-                <span>${{ customize.price }}</span>
+                <span>${{ Number(customize.price).toFixed(2) }}</span>
               </div>
               <div class="w-40 d-flex justify-end">
                 <dark-button @click="editCustom(index)">

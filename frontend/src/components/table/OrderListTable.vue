@@ -4,7 +4,7 @@
   <!-- Alert message -->
   <base-alert v-model="paidSuccess">
     <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
-    <h6 class="mt-2">Order have paid successfully!</h6>
+    <h5 class="mt-2">Order have paid successfully!</h5>
   </base-alert>
 
   <!-- Dialog remove customize -->

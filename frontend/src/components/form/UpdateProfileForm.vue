@@ -80,7 +80,7 @@
   <!-- Alert update success -->
   <base-alert v-model="updateSuccess">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Updated profile succeefully.</h6>
+    <h6 class="mt-2">Updated profile successfully.</h6>
   </base-alert>
 </template>
 
