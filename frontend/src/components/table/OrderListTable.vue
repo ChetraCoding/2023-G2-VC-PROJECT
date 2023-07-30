@@ -8,7 +8,7 @@
   </base-alert>
 
   <!-- Dialog remove customize -->
-  <base-dialog v-model="isComplete" title="Tips" ms="Are you sure you want to completed?">
+  <base-dialog v-model="isComplete" title="Tips" ms="Are you sure you want to check?">
     <danger-button @click="isComplete = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon> Cancel </danger-button>
     <primary-button @click="complete()">

@@ -48,7 +48,7 @@ const menus = ref([
   {
     link: "/cashier",
     title: "Order",
-    icon: "mdi-home-analytics",
+    icon: "mdi-storefront-plus",
   },
 ]);
 

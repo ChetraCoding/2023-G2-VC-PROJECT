@@ -74,9 +74,8 @@ const filter = (array, key) => {
 
 // Reference: https://codingbeautydev.com/blog/javascript-convert-month-number-to-name/#:~:text=To%20convert%20a%20month%20number%20to%20a%20month%20name%2C%20create,a%20specified%20locale%20and%20options.&text=Our%20getMonthName()%20function%20takes,the%20month%20with%20that%20position.
 const getMonthName = (monthNumber) => {
-  const date = new Date();
+  const date = new Date(`${year.value}-${monthNumber}-1`);
   date.setMonth(monthNumber - 1);
-
   return date.toLocaleString('en-US', { month: 'long' });
 }
 
@@ -144,7 +143,6 @@ const change = async () => {
   await getMoneyReports(year.value);
   renderChart();
 }
-
 // Lifecycle hook
 onMounted(async () => {
   await getMoneyReports(year.value);
