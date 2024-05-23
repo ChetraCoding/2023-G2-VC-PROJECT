@@ -1,18 +1,6 @@
-# POS System
+# POS System​ 🍕🍔🍟🌭🍿🎊
 
-## Description
-
-POS System is a web application built with the Laravel framework. It is designed to provide a robust, scalable, and maintainable application architecture. This project serves as a boilerplate for Laravel applications, including user authentication, role management, and a customizable dashboard.
-
-## Features
-
-- User Authentication
-- Role-based Access Control
-- Customizable Dashboard
-- RESTful API Endpoints
-- Responsive Design
-
-## Prerequisites
+## Prerequisites 🧨🧨
 
 Before you begin, ensure you have met the following requirements:
 
@@ -21,7 +9,7 @@ Before you begin, ensure you have met the following requirements:
 - Node.js & npm
 - MySQL or another supported database
 
-## Installation
+## Installation 🧨🧨
 
 ### Steps
 
@@ -29,7 +17,7 @@ Before you begin, ensure you have met the following requirements:
 
 Location `./backend/.env`
 
-Database connection
+**Database connection**
 - `DB_CONNECTION`: `"mysql"`.
 - `DB_HOST`: `"127.0.0.1"`.
 - `DB_PORT`: `"3306"`.
@@ -37,7 +25,7 @@ Database connection
 - `DB_USERNAME`: `"root"`.
 - `DB_PASSWORD`: `"pwd_example"`.
 
-Mail connection
+**Mail connection**
 - `MAIL_MAILER`: `"smtp"`.
 - `MAIL_HOST`: `"smtp.gmail.com"`.
 - `MAIL_PORT`: `"587"`.
@@ -47,17 +35,23 @@ Mail connection
 - `MAIL_FROM_NAME`: `"Restaurant Admin"`.​
 - `VUE_APP_BASE_URL`: `"http://localhost:8080/"`.​
 
+**Follow commands**
+- `Generate key`: `php artisan key:generate`.
+- `Migrations`: `php artisan migrate`.
+- `Seeders`: `php artisan db:seed`.
+- `Start`: `php artisan serve`.
+
 2. **Frontend:**
 
 Location `./frontend/.env.development` | `./frontend/.env.production`
 
-Res APIs connection
+**Res APIs connection**
 - `VUE_APP_API_URL`: `"http://127.0.0.1:8000/api/"`.
 - `VUE_APP_SOCKET_URL`: `"http://127.0.0.1:8000"`.
 
 Location `./frontend/firebase.js`
 
-Firebase connection
+**Firebase connection**
 - `apiKey`: `"key"`.
 - `authDomain`: `"key"`.
 - `projectId`: `"key"`.
@@ -65,3 +59,12 @@ Firebase connection
 - `messagingSenderId`: `"key"`.
 - `appId`: `"key"`.
 - `measurementId`: `"key"`.
+
+**Follow commands**
+- `Start`: `npm run serve`.
+
+## ✨🎉🎉 Great! Let's go to use POS System 🎉🎉✨
+- `Restaurant Owner`: `restaurant_owner@example.com` | `Password`: `123`.
+- `Waiter`: `waiter@example.com` | `Password`: `123`.
+- `Chef`: `chef@example.com` | `Password`: `123`.
+- `Cashier`: `cashier@example.com` | `Password`: `123`.

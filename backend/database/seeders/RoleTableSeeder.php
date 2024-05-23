@@ -14,7 +14,7 @@ class RoleTableSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['name'=> "admin"],
+            ['name'=> "admin"], // Not using that role yet!
             ['name'=> "waiter"],
             ['name'=> "chef"],
             ['name'=> "cashier"],
