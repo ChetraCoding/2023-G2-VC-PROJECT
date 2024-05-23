@@ -44,11 +44,13 @@ Location `./backend/.env`
 ### 2. **Frontend:**
 
 **Res APIs connection**
+
 Location `./frontend/.env.development` | `./frontend/.env.production`
 - `VUE_APP_API_URL`: `"http://127.0.0.1:8000/api/"`.
 - `VUE_APP_SOCKET_URL`: `"http://127.0.0.1:8000"`.
 
 **Firebase connection**
+
 Location `./frontend/firebase.js`
 - `apiKey`: `"key"`.
 - `authDomain`: `"key"`.
