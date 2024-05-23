@@ -47,7 +47,7 @@ Mail connection
 - `MAIL_FROM_NAME`: `"Restaurant Admin"`.​
 - `VUE_APP_BASE_URL`: `"http://localhost:8080/"`.​
 
-1. **Frontend:**
+2. **Frontend:**
 
 Location `./frontend/.env`
 
