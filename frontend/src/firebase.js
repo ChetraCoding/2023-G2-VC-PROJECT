@@ -1,3 +1,6 @@
+/* Please setup your own firebase instead of using this one! */
+/* Please follow this video: https://www.youtube.com/watch?v=TAjlNU7dVXE */
+
 export default {
     apiKey: "AIzaSyDpjEd1HdFG-DdKxnrdYHEtp6VvKNX6cY4",
     authDomain: "vc-2023.firebaseapp.com",

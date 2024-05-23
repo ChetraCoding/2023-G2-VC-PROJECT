@@ -9,7 +9,7 @@
         <div class="mt-4">
           <v-text-field class="text-black" v-model="credentials.email" density="compact" placeholder="Email address"
             type="email" prepend-inner-icon="mdi-email-outline" variant="outlined"
-            :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`" @input="v$.email.$touch"
+            :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`" @input="v$.email.$touch, errMessage = ''"
             @blur="v$.email.$touch"></v-text-field>
         </div>
 

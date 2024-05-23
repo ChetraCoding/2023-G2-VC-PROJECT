@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useCookieStore } from "@/stores/cookie";
+import router from "@/router/index";
 
 const BASE_URL = process.env.VUE_APP_API_URL;
 const http = axios.create({
@@ -17,5 +18,21 @@ http.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json";
   return config;
 });
+
+http.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const { removeCookie } = useCookieStore();
+    if (error.request.status === 401) {
+      removeCookie("user_token");
+      removeCookie("user_role");
+      removeCookie("user");
+      router.push("/login");
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default http;
