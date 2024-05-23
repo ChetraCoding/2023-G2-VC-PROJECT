@@ -49,7 +49,7 @@ Mail connection
 
 2. **Frontend:**
 
-Location `./frontend/.env`
+Location `./frontend/.env.development` | `./frontend/.env.production`
 
 Res APIs connection
 - `VUE_APP_API_URL`: `"http://127.0.0.1:8000/api/"`.
