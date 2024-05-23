@@ -8,7 +8,7 @@
       <!-- Header top -->
       <header-component title="Manage product">
         <v-text-field v-model="keyword" @keyup="search" class="search text-white rounded-lg" density="compact"
-          variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
+          variant="solo" label="Search for product..." append-inner-icon="mdi-magnify" single-line
           hide-details></v-text-field>
       </header-component>
 
@@ -100,6 +100,7 @@
 
 <script setup>
 // Import
+import { debounce } from 'lodash';
 import { onMounted } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
@@ -125,13 +126,13 @@ const filterValue = ref(null);
 
 // Methods
 // Search for products
-const search = () => {
+const search = debounce(function s() {
   if (keyword.value) {
     searchProducts(keyword.value);
   } else {
     getProducts();
   }
-};
+}, 600);
 // Filter for products
 const filter = () => {
   if (filterValue.value === 'all') {
@@ -160,16 +161,17 @@ onMounted(() => {
 </script>
 
 <style scoped>
+::v-deep .search .v-input__control .v-theme--light {
+  color: white;
+  background-color: #2c2c2c !important;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .card-summary {
-  background: #2c2c2c;
-}
-
-.search {
   background: #2c2c2c;
 }
 </style>

@@ -13,9 +13,14 @@
         <div class="w-100 d-flex flex-column">
           <!-- Tab of month  -->
           <!-- Select date -->
-          <div class="w-50">
-            <v-text-field v-model="year" @keyup="change" class="text-white" variant="outlined" density="compact"
-              type="number" label="Year"></v-text-field>
+          <div class="w-25 mb-3">
+            <vue-date-picker
+              :model-value="year"
+              @update:model-value="change"
+              year-picker
+              dark
+              auto-apply
+            ></vue-date-picker>
           </div>
 
           <apexchart :class="[
@@ -49,6 +54,8 @@
   </v-layout>
 </template>
 <script setup>
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 import { computed, onMounted, ref } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
@@ -139,8 +146,10 @@ const renderChart = () => {
   series.value[0].data = filter(moneyReports.value, "total_money");
 };
 
-const change = async () => {
-  await getMoneyReports(year.value);
+const change = async (value) => {
+  if (!value) return;
+  year.value = value
+  await getMoneyReports(value);
   renderChart();
 }
 // Lifecycle hook

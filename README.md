@@ -13,7 +13,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Steps
 
-1. **Backend:**
+### 1. **Backend:**
 
 Location `./backend/.env`
 
@@ -41,17 +41,15 @@ Location `./backend/.env`
 - `Seeders`: `php artisan db:seed`.
 - `Start`: `php artisan serve`.
 
-2. **Frontend:**
-
-Location `./frontend/.env.development` | `./frontend/.env.production`
+### 2. **Frontend:**
 
 **Res APIs connection**
+Location `./frontend/.env.development` | `./frontend/.env.production`
 - `VUE_APP_API_URL`: `"http://127.0.0.1:8000/api/"`.
 - `VUE_APP_SOCKET_URL`: `"http://127.0.0.1:8000"`.
 
-Location `./frontend/firebase.js`
-
 **Firebase connection**
+Location `./frontend/firebase.js`
 - `apiKey`: `"key"`.
 - `authDomain`: `"key"`.
 - `projectId`: `"key"`.
@@ -63,7 +61,7 @@ Location `./frontend/firebase.js`
 **Follow commands**
 - `Start`: `npm run serve`.
 
-## ✨🎉🎉 Great! Let's go to use POS System 🎉🎉✨
+## ✨🎉🎉 Great! Let's go to use POS System! 🎉🎉✨
 - `Restaurant Owner`: `restaurant_owner@example.com` | `Password`: `123`.
 - `Waiter`: `waiter@example.com` | `Password`: `123`.
 - `Chef`: `chef@example.com` | `Password`: `123`.

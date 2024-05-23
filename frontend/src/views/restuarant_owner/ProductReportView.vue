@@ -11,18 +11,16 @@
       <main class="d-flex mt-3">
         <div class="w-100 d-flex flex-column">
           <!-- Select date -->
-          <div class="w-50">
-            <v-text-field
-              v-model="dateValue"
-              class="text-white"
-              variant="outlined"
-              density="compact"
-              type="month"
-              label="Select date"
-              @change="dateSelected"
-            ></v-text-field>
+          <div class="w-25 mb-3">
+            <vue-date-picker
+              :model-value="dateValue"
+              @update:model-value="dateSelected"
+              month-picker
+              dark
+              auto-apply
+            ></vue-date-picker>
           </div>
-          
+
           <!-- Chart : column bar-->
           <apexchart
             :class="[
@@ -76,6 +74,8 @@
 </template>
 <script setup>
 // Imports
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 import { onMounted, ref, computed } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
@@ -167,9 +167,10 @@ const renderChart = () => {
 };
 
 // Seleted on date
-const dateSelected = async () => {
-  const date = new Date(dateValue.value);
-  await getProductReports(date.getMonth() + 1, date.getFullYear());
+const dateSelected = async (modelData) => {
+  if (!modelData) return;
+  dateValue.value = modelData;
+  await getProductReports(modelData.month + 1, modelData.year);
   renderChart();
 };
 
