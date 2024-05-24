@@ -29,11 +29,17 @@ Location `./backend/.env`
 - `MAIL_MAILER`: `"smtp"`.
 - `MAIL_HOST`: `"smtp.gmail.com"`.
 - `MAIL_PORT`: `"587"`.
+- `MAIL_USERNAME`: `"admin@example.com"`.
 - `MAIL_PASSWORD`: `"secret key"`.
 - `MAIL_ENCRYPTION`: `"tls"`.
 - `MAIL_FROM_ADDRESS`: `"admin@example.com"`.​
 - `MAIL_FROM_NAME`: `"Restaurant Admin"`.​
 - `VUE_APP_BASE_URL`: `"http://localhost:8080/"`.​
+
+**OneSignal connection (Optional)**
+Read documentation: [https://documentation.onesignal.com/docs/web-push-quickstart]
+- `ONE_SIGNAL_APP_ID`: `"key"`.​
+- `ONE_SIGNAL_AUTHORIZE`: `"key"`.​
 
 **Follow commands**
 - `Install dependencies`: `composer install`.
@@ -62,6 +68,11 @@ Watch video: [https://www.youtube.com/watch?v=TAjlNU7dVXE]
 - `messagingSenderId`: `"key"`.
 - `appId`: `"key"`.
 - `measurementId`: `"key"`.
+
+**OneSignal connection (Optional)**
+
+Location `./frontend/onesignal.js`
+- `appId`: `"key (Use the same as env key **ONE_SIGNAL_APP_ID** in backend)"`.
 
 **Follow commands**
 - `Install dependencies`: `npm install`.
