@@ -54,7 +54,7 @@ Location `./frontend/.env.development` | `./frontend/.env.production`
 
 Location `./frontend/firebase.js`
 
-Watch video: `https://www.youtube.com/watch?v=TAjlNU7dVXE`
+Watch video: [https://www.youtube.com/watch?v=TAjlNU7dVXE]
 - `apiKey`: `"key"`.
 - `authDomain`: `"key"`.
 - `projectId`: `"key"`.
