@@ -37,6 +37,7 @@ Location `./backend/.env`
 - `VUE_APP_BASE_URL`: `"http://localhost:8080/"`.​
 
 **OneSignal connection (Optional)**
+
 Read documentation: [https://documentation.onesignal.com/docs/web-push-quickstart]
 - `ONE_SIGNAL_APP_ID`: `"key"`.​
 - `ONE_SIGNAL_AUTHORIZE`: `"key"`.​
@@ -72,7 +73,7 @@ Watch video: [https://www.youtube.com/watch?v=TAjlNU7dVXE]
 **OneSignal connection (Optional)**
 
 Location `./frontend/onesignal.js`
-- `appId`: `"key (Use the same as env key **ONE_SIGNAL_APP_ID** in backend)"`.
+- `appId`: `"key (Use the same as env key ONE_SIGNAL_APP_ID in backend)"`.
 
 **Follow commands**
 - `Install dependencies`: `npm install`.
