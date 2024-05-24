@@ -36,6 +36,7 @@ Location `./backend/.env`
 - `VUE_APP_BASE_URL`: `"http://localhost:8080/"`.​
 
 **Follow commands**
+- `Install dependencies`: `composer install`.
 - `Generate key`: `php artisan key:generate`.
 - `Migrations`: `php artisan migrate`.
 - `Seeders`: `php artisan db:seed`.
@@ -52,6 +53,8 @@ Location `./frontend/.env.development` | `./frontend/.env.production`
 **Firebase connection**
 
 Location `./frontend/firebase.js`
+
+Watch video: `https://www.youtube.com/watch?v=TAjlNU7dVXE`
 - `apiKey`: `"key"`.
 - `authDomain`: `"key"`.
 - `projectId`: `"key"`.
@@ -61,9 +64,12 @@ Location `./frontend/firebase.js`
 - `measurementId`: `"key"`.
 
 **Follow commands**
+- `Install dependencies`: `npm install`.
 - `Start`: `npm run serve`.
 
 ## ✨🎉🎉 Great! Let's go to use POS System! 🎉🎉✨
+
+**Follow users**
 - `Restaurant Owner`: `restaurant_owner@example.com` | `Password`: `123`.
 - `Waiter`: `waiter@example.com` | `Password`: `123`.
 - `Chef`: `chef@example.com` | `Password`: `123`.
